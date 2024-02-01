@@ -1,0 +1,7 @@
+# .gitignore
+
+# Ignore vendor directory
+/vendor
+
+# Ignore the .env file
+.env

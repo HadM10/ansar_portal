@@ -1,3 +1,12 @@
+<?php
+
+
+require __DIR__ . '/../vendor/autoload.php';  // Adjust the path based on your project structure
+Dotenv\Dotenv::createImmutable(__DIR__ . '/..')->load();
+
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 

@@ -3,9 +3,9 @@
 include('db_connection.php');
 
 // Retrieve stores with associated images
-$selectQuery = "SELECT s.store_id, s.store_name, s.category, s.description, GROUP_CONCAT(i.image_url) as images
+$selectQuery = "SELECT s.store_id, s.store_name, s.category_id, s.store_description, GROUP_CONCAT(i.image_url) as images
                 FROM stores s
-                LEFT JOIN images i ON s.store_id = i.store_id
+                LEFT JOIN storeimages i ON s.store_id = i.store_id
                 GROUP BY s.store_id";
 $result = $conn->query($selectQuery);
 

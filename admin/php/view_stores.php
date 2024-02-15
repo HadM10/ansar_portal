@@ -15,12 +15,13 @@ while ($row = $result->fetch_assoc()) {
     $stores[] = array(
         "store_id" => $row["store_id"],
         "store_name" => $row["store_name"],
-        "category" => $row["category"],
-        "description" => $row["description"],
+        "category" => $row["category_id"],
+        "description" => $row["store_description"],
         "images" => explode(",", $row["images"]) // Convert comma-separated images to an array
     );
 }
 
+header('Content-Type: application/json');
 echo json_encode($stores);
 $conn->close();
 ?>

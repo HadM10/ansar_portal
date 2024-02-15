@@ -1,12 +1,18 @@
 <?php
-
-
-require __DIR__ . '/../vendor/autoload.php';  // Adjust the path based on your project structure
+require __DIR__ . '/../vendor/autoload.php';
 Dotenv\Dotenv::createImmutable(__DIR__ . '/..')->load();
 
+// Start or resume the session
+session_start();
 
-
+// Check if the user is not authenticated (not logged in)
+if (!isset($_SESSION['user_id'])) {
+    // Redirect to the login page
+    header("Location: html/login.html");
+    exit();
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,8 +20,7 @@ Dotenv\Dotenv::createImmutable(__DIR__ . '/..')->load();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - Ansar Portal</title>
-    <!-- Link to your admin_style.css file -->
-    <link rel="stylesheet" href="path/to/your/admin/admin_style.css">
+    <link rel="stylesheet" href="css/admin_style.css">
 </head>
 
 <body>
@@ -72,7 +77,7 @@ Dotenv\Dotenv::createImmutable(__DIR__ . '/..')->load();
                     <li><a href="../admin/php/delete_image.php">Delete Image</a></li>
                 </ul>
             </li>
-            <!-- Add more main sections and sub-sections as needed -->
+            <li><a href="#" id="logoutBtn">Logout</a></li>
         </ul>
     </aside>
 
@@ -81,8 +86,7 @@ Dotenv\Dotenv::createImmutable(__DIR__ . '/..')->load();
         <h1>Welcome to the Admin Panel</h1>
     </div>
 
-    <!-- Include your JavaScript scripts if needed -->
-
+    <script src="js/admin_script.js"></script>
 </body>
 
 </html>

@@ -4,7 +4,7 @@ include('db_connection.php');
 
 // Retrieve special offers information from the database
 $selectQuery = "SELECT store_id, offer_title, offer_description, start_date, end_date, image_url
-                FROM special_offers";
+                FROM offers";
 $result = $conn->query($selectQuery);
 
 $offers = array();

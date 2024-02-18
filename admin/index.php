@@ -13,6 +13,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 ?>
 
+<!-- Your HTML -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,7 +31,7 @@ if (!isset($_SESSION['user_id'])) {
         <ul>
             <li><a href="#">Stores</a>
                 <ul>
-                    <li><a href="../admin/php/view_stores.php">View Stores</a></li>
+                    <li><a href="#" id="viewStoresBtn">View Stores</a></li>
                     <li><a href="../admin/php/add_store.php">Add Store</a></li>
                     <li><a href="../admin/php/delete_store.php">Delete Store</a></li>
                     <li><a href="../admin/php/edit_store.php">Edit Store</a></li>
@@ -82,8 +83,14 @@ if (!isset($_SESSION['user_id'])) {
     </aside>
 
     <div class="content">
-        <!-- Your admin panel content goes here -->
-        <h1>Welcome to the Admin Panel</h1>
+        <h1 id="admin-welcome">Welcome to the Admin Panel</h1>
+
+        <!-- Add an empty list with id "storeList" where the stores will be displayed -->
+        <ul id="storeList"></ul>
+    </div>
+
+    <!-- Your admin panel content goes here -->
+
     </div>
 
     <script src="js/admin_script.js"></script>

@@ -67,3 +67,102 @@ button:hover {
 .register-link a:hover {
     text-decoration: underline;
 }
+
+/* ADMIN SIDEBAR */
+
+.sidebar {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #333;
+    padding-top: 20px;
+}
+
+.sidebar h1 {
+    color: #fff;
+    text-align: center;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar a {
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+.sidebar a:hover {
+    background-color: #555;
+}
+
+/* Sub-navigation styles */
+.sidebar ul ul {
+    display: none;
+    padding-left: 20px;
+}
+
+.sidebar li:hover ul {
+    display: block;
+}
+
+.sidebar ul ul li {
+    margin-top: 10px;
+}
+
+.content {
+    margin-left: 250px;
+    padding: 20px;
+}
+
+#logoutBtn {
+    background-color: #ff6347;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    display: block;
+    margin-top: 20px;
+}
+
+#logoutBtn:hover {
+    background-color: #ff4500;
+}
+
+/* STORES */
+
+.store-container {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}
+
+.store-name {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.store-category,
+.store-description,
+.store-phone,
+.store-likes,
+.store-images {
+    margin-bottom: 10px;
+}
+
+.store-images img {
+    width: 200px;
+    height: auto;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}

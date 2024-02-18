@@ -1,6 +1,22 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+    //SHOW HIDE SECTIONS
+
+    // CONTENT SECTIONS
+    const storeList = document.getElementById("storeList");
+    const adminWelcome = document.getElementById("admin-welcome");
+
+
+    //CONTENT NAV-LINKS
+    const viewStoresBtn = document.getElementById('viewStoresBtn');
+
+    function hideAllSections() {
+        storeList.style.display = "none";
+        adminWelcome.style.display = "none";
+    }
+
     // LOGIN
+
     if (window.location.pathname.includes("login.html")) {
         document.getElementById('loginForm').addEventListener('submit', function (event) {
             event.preventDefault();
@@ -112,6 +128,76 @@ document.addEventListener('DOMContentLoaded', function () {
             xhr.send();
         });
     }
+
+
+
+    // VIEW STORES
+
+    viewStoresBtn.addEventListener('click', function (event) {
+        event.preventDefault();
+        // Add your AJAX logic to fetch and display stores here
+        fetchAndDisplayStores();
+    });
+
+    // Function to fetch and display stores using AJAX
+    function fetchAndDisplayStores() {
+        var xhr = new XMLHttpRequest();
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                try {
+                    var storesData = JSON.parse(xhr.responseText);
+                    console.log(xhr.responseText);
+                    displayStores(storesData);
+                } catch (error) {
+                    console.error('Error parsing JSON:', error);
+                }
+            }
+        };
+
+        xhr.open('GET', 'php/view_stores.php', true);
+        xhr.send();
+    }
+
+    // Function to display stores
+    function displayStores(storesData) {
+        var storeList = document.getElementById('storeList');
+
+        // Clear existing content
+        storeList.innerHTML = '';
+
+        storesData.forEach(function (store) {
+            // Create a list item for each store
+            var listItem = document.createElement('li');
+            listItem.innerHTML = `
+            <div class="store-container">
+            <div class="store-images">
+                    
+                    <ul>
+                        ${store.images.map(image => `<li><img src="${image}" alt="Store Image"></li>`).join('')}
+                    </ul>
+                </div>
+                <h2 class="store-name"> ${store.store_name}</h2>
+                <p class="store-category">${store.category}</p>
+                <p class="store-description">${store.description}</p>
+                <p class="store-phone">${store.phone_number}</p>
+                <p class="store-likes"><strong>Total Likes:</strong> ${store.total_likes}</p>
+                
+            </div>
+        `;
+
+            // Append the list item to the store list
+            storeList.appendChild(listItem);
+        });
+    }
+
+    viewStoresBtn.addEventListener('click', function () {
+        // Fetch and display products when the page loads
+        hideAllSections()
+        fetchAndDisplayStores();
+        storeList.style.display = 'flex';
+    });
+
 });
 
 

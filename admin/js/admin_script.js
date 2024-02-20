@@ -5,19 +5,23 @@ document.addEventListener('DOMContentLoaded', function () {
     // CONTENT SECTIONS
     const storeList = document.getElementById("storeList");
     const adminWelcome = document.getElementById("admin-welcome");
+    const addStore = document.getElementById("addStoreFormContainer");
+
 
 
     //CONTENT NAV-LINKS
     const viewStoresBtn = document.getElementById('viewStoresBtn');
+    const addStoresBtn = document.getElementById('addStoresBtn');
 
     function hideAllSections() {
         storeList.style.display = "none";
         adminWelcome.style.display = "none";
+        addStore.style.display = "none";
     }
 
     // LOGIN
 
-    if (window.location.pathname.includes("login.html")) {
+    if (window.location.pathname.includes("login.php")) {
         document.getElementById('loginForm').addEventListener('submit', function (event) {
             event.preventDefault();
 
@@ -29,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var xhr = new XMLHttpRequest();
 
             // Configure the request
-            xhr.open('POST', '../php/login_admin.php', true);
+            xhr.open('POST', 'login_admin.php', true);
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
             // Define the callback function
@@ -61,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // REGISTER
 
-    if (window.location.pathname.includes("register.html")) {
+    if (window.location.pathname.includes("register.php")) {
         document.getElementById('registerForm').addEventListener('submit', function (event) {
             event.preventDefault();
 
@@ -73,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var xhr = new XMLHttpRequest();
 
             // Configure the request
-            xhr.open('POST', '../php/register_admin.php', true);
+            xhr.open('POST', 'register_admin.php', true);
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
             // Define the callback function
@@ -81,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 var response = JSON.parse(xhr.responseText);
                 if (response.message) {
                     alert(response.message);
-                    window.location.href = 'login.html';
+                    window.location.href = 'login.php';
                     // Redirect to the login page or perform any other action on successful registration
                 } else {
                     alert(response.error);
@@ -114,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         if (response.success) {
                             // Logout successful
-                            window.location.href = 'html/login.html';
+                            window.location.href = 'php/login.php';
                         } else {
                             console.error('Logout failed:', response.error);
                         }
@@ -197,6 +201,78 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchAndDisplayStores();
         storeList.style.display = 'flex';
     });
+
+    // ADD STORE
+
+
+
+
+    // Add Store Form Submission
+
+    document.getElementById('addStoreForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        // Gather form data
+        var storeName = document.getElementById('store_name').value;
+        var category = document.getElementById('category_id').value;
+        var description = document.getElementById('store_description').value;
+        var phone = document.getElementById('phone_number').value;
+
+        // Create XMLHttpRequest object (or use fetch API)
+        var xhr = new XMLHttpRequest();
+
+        // Configure the request
+        xhr.open('POST', 'php/add_store.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        // Define the callback function
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                console.log(xhr.responseText);
+                try {
+                    var response = JSON.parse(xhr.responseText);
+
+                    if (response.status === 'success') {
+                        alert(response.message);
+                        // You may perform additional actions on successful store addition
+                    } else {
+                        alert(response.message);
+                    }
+                } catch (error) {
+                    console.log(xhr.responseText);
+                    console.error('Error parsing JSON:', error);
+                }
+            }
+        };
+
+        // Send the request with form data
+        xhr.send('store_name=' + storeName + '&category_id=' + category + '&store_description=' + description + '&phone_number=' + phone);
+    });
+
+    // Event listener for button click
+    addStoresBtn.addEventListener('click', function () {
+        // Fetch and display products when the page loads
+        hideAllSections();
+
+        // Fetch Categories
+        fetch('php/view_categories.php')
+            .then(response => response.json())
+            .then(categories => {
+                // Populate the select dropdown with categories
+                const categoryDropdown = document.getElementById('category_id');
+                categories.forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category.category_id;
+                    option.textContent = category.category_name;
+                    categoryDropdown.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching categories:', error));
+
+        addStore.style.display = 'block';
+    });
+
+
 
 });
 

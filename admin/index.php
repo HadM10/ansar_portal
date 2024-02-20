@@ -8,7 +8,7 @@ session_start();
 // Check if the user is not authenticated (not logged in)
 if (!isset($_SESSION['user_id'])) {
     // Redirect to the login page
-    header("Location: html/login.html");
+    header("Location: php/login.php");
     exit();
 }
 ?>
@@ -32,7 +32,7 @@ if (!isset($_SESSION['user_id'])) {
             <li><a href="#">Stores</a>
                 <ul>
                     <li><a href="#" id="viewStoresBtn">View Stores</a></li>
-                    <li><a href="../admin/php/add_store.php">Add Store</a></li>
+                    <li><a href="#" id="addStoresBtn">Add Store</a></li>
                     <li><a href="../admin/php/delete_store.php">Delete Store</a></li>
                     <li><a href="../admin/php/edit_store.php">Edit Store</a></li>
                 </ul>
@@ -87,11 +87,31 @@ if (!isset($_SESSION['user_id'])) {
 
         <!-- Add an empty list with id "storeList" where the stores will be displayed -->
         <ul id="storeList"></ul>
+
+        <!-- Add Store Form -->
+        <div id="addStoreFormContainer">
+            <h2>Add Store</h2>
+            <form id="addStoreForm" action="#" method="post">
+                <label for="store_name">Store Name:</label>
+                <input type="text" id="store_name" name="store_name" required>
+
+                <label for="category_id">Category:</label>
+                <select id="category_id" name="category_id" required>
+
+                </select>
+
+                <label for="store_description">Store Description:</label>
+                <textarea id="store_description" name="store_description" required></textarea>
+
+                <label for="phone_number">Phone Number:</label>
+                <input type="text" id="phone_number" name="phone_number" required>
+
+                <button type="submit">Add Store</button>
+            </form>
+        </div>
     </div>
 
     <!-- Your admin panel content goes here -->
-
-    </div>
 
     <script src="js/admin_script.js"></script>
 </body>

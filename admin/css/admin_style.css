@@ -166,3 +166,53 @@ button:hover {
     margin-right: 10px;
     margin-bottom: 10px;
 }
+
+/* Add Store Form Styles */
+
+#addStoreFormContainer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    display: none;
+    width: 300px;
+}
+
+#addStoreFormContainer h2 {
+    text-align: center;
+}
+
+#addStoreForm h2 {
+    color: #ff4500;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#addStoreForm label {
+    display: block;
+    margin-bottom: 8px;
+    color: #fff;
+}
+
+#addStoreForm input,
+#addStoreForm textarea,
+#addStoreForm select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+#addStoreForm button {
+    background-color: #ff4500;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#addStoreForm button:hover {
+    background-color: #d43f00;
+}

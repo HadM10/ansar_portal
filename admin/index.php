@@ -109,6 +109,24 @@ if (!isset($_SESSION['user_id'])) {
                 <button type="submit">Add Store</button>
             </form>
         </div>
+         
+        <!-- Add News Form -->
+<div id="addNewsFormContainer">
+    <h2>Add News</h2>
+    <form id="addNewsForm" action="#" method="post" enctype="multipart/form-data">
+        <label for="news_title">News Title:</label>
+        <input type="text" id="news_title" name="news_title" required>
+
+        <label for="news_content">News Content:</label>
+        <textarea id="news_content" name="news_content" required></textarea>
+
+        <label for="news_image">Image File:</label>
+        <input type="file" id="news_image" name="news_image" accept="image/*" required>
+
+        <button type="submit">Add News</button>
+    </form>
+</div>
+
     </div>
 
     <!-- Your admin panel content goes here -->

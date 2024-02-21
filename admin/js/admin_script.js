@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const storeList = document.getElementById("storeList");
     const adminWelcome = document.getElementById("admin-welcome");
     const addStore = document.getElementById("addStoreFormContainer");
-
+    
 
 
     //CONTENT NAV-LINKS
@@ -273,6 +273,46 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
+// Add News Form Submission
+
+document.getElementById('addNewsForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    // Gather form data
+    var title = document.getElementById('news_title').value;
+    var content = document.getElementById('news_content').value;
+    var imageUrl = document.getElementById('news_image_url').value;
+
+    // Create XMLHttpRequest object (or use fetch API)
+    var xhr = new XMLHttpRequest();
+
+    // Configure the request
+    xhr.open('POST', 'admin/php/add_news.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+    // Define the callback function
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            console.log(xhr.responseText);
+            try {
+                var response = JSON.parse(xhr.responseText);
+
+                if (response.status === 'success') {
+                    alert(response.message);
+                    // You may perform additional actions on successful news addition
+                } else {
+                    alert(response.message);
+                }
+            } catch (error) {
+                console.log(xhr.responseText);
+                console.error('Error parsing JSON:', error);
+            }
+        }
+    };
+
+    // Send the request with form data
+    xhr.send('title=' + title + '&content=' + content + '&image_url=' + imageUrl);
+});
 
 });
 

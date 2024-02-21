@@ -16,7 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Authentication successful
             session_start();
             $_SESSION['user_id'] = $row['admin_id'];
+            $_SESSION['login_time'] = time();  // Set login timestamp
             echo json_encode(array("message" => "Sign in successfully"));
+
         } else {
             echo json_encode(array("error" => "Invalid password"));
         }

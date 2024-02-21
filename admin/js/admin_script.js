@@ -6,17 +6,23 @@ document.addEventListener('DOMContentLoaded', function () {
     const storeList = document.getElementById("storeList");
     const adminWelcome = document.getElementById("admin-welcome");
     const addStore = document.getElementById("addStoreFormContainer");
-    
+    const addNews = document.getElementById("addNewsFormContainer");
+    const newsList = document.getElementById('newsList');
+
 
 
     //CONTENT NAV-LINKS
     const viewStoresBtn = document.getElementById('viewStoresBtn');
     const addStoresBtn = document.getElementById('addStoresBtn');
+    const addNewsBtn = document.getElementById('addNewsBtn');
+    const viewNewsBtn = document.getElementById('viewNewsBtn');
 
     function hideAllSections() {
         storeList.style.display = "none";
         adminWelcome.style.display = "none";
         addStore.style.display = "none";
+        addNews.style.display = "none";
+        newsList.style.display = "none";
     }
 
     // LOGIN
@@ -239,7 +245,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         alert(response.message);
                     }
                 } catch (error) {
-                    console.log(xhr.responseText);
                     console.error('Error parsing JSON:', error);
                 }
             }
@@ -273,46 +278,102 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-// Add News Form Submission
+    // Add News Form Submission
 
-document.getElementById('addNewsForm').addEventListener('submit', function (event) {
-    event.preventDefault();
+    document.getElementById("addNewsForm").addEventListener("submit", function (event) {
+        event.preventDefault();
 
-    // Gather form data
-    var title = document.getElementById('news_title').value;
-    var content = document.getElementById('news_content').value;
-    var imageUrl = document.getElementById('news_image_url').value;
+        const formData = new FormData(this);
 
-    // Create XMLHttpRequest object (or use fetch API)
-    var xhr = new XMLHttpRequest();
-
-    // Configure the request
-    xhr.open('POST', 'admin/php/add_news.php', true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-    // Define the callback function
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-            console.log(xhr.responseText);
-            try {
-                var response = JSON.parse(xhr.responseText);
-
-                if (response.status === 'success') {
-                    alert(response.message);
-                    // You may perform additional actions on successful news addition
-                } else {
-                    alert(response.message);
-                }
-            } catch (error) {
+        // Make an AJAX request to send the form data to your PHP script
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "php/add_news.php", true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
                 console.log(xhr.responseText);
-                console.error('Error parsing JSON:', error);
+                // Process the response, e.g., show a success message or handle errors
+                try {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.status === 'success') {
+                        alert("News added successfully.");
+                    } else {
+                        alert("Error: " + response.message);
+                    }
+                } catch (error) {
+                    console.error('Error parsing JSON:', error);
+                }
             }
-        }
-    };
+        };
+        xhr.send(formData);
+    });
 
-    // Send the request with form data
-    xhr.send('title=' + title + '&content=' + content + '&image_url=' + imageUrl);
-});
+
+    addNewsBtn.addEventListener('click', function () {
+        // Fetch and display products when the page loads
+        hideAllSections()
+        addNews.style.display = 'block';
+    });
+
+    // VIEW NEWS 
+
+    // Add an event listener for the "View News" button
+    viewNewsBtn.addEventListener('click', function (event) {
+        event.preventDefault();
+        // Add your AJAX logic to fetch and display news here
+        fetchAndDisplayNews();
+    });
+
+    // Function to fetch and display news using AJAX
+    function fetchAndDisplayNews() {
+        var xhr = new XMLHttpRequest();
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                try {
+                    var newsData = JSON.parse(xhr.responseText);
+                    console.log(xhr.responseText);
+                    displayNews(newsData);
+                } catch (error) {
+                    console.error('Error parsing JSON:', error);
+                }
+            }
+        };
+
+        xhr.open('GET', 'php/view_news.php', true);
+        xhr.send();
+    }
+
+    // Function to display news
+    function displayNews(newsData) {
+
+        // Clear existing content
+        newsList.innerHTML = '';
+
+        newsData.forEach(function (news) {
+            // Create a list item for each news
+            var listItem = document.createElement('li');
+            listItem.innerHTML = `
+            <div class="news-container">
+                <img class="news-image" src="ansar_portal/${news.image_url}" alt="News Image">
+                <h2 class="news-title">${news.title}</h2>
+                <p class="news-content">${news.content}</p>
+                <p class="news-publication-date"><strong>Publication Date:</strong> ${news.publication_date}</p>
+            </div>
+        `;
+
+            // Append the list item to the news list
+            newsList.appendChild(listItem);
+        });
+    }
+
+    // Hide other sections and display the news section
+    viewNewsBtn.addEventListener('click', function () {
+        hideAllSections();
+        fetchAndDisplayNews();
+        newsList.style.display = 'flex';
+    });
+
+
 
 });
 

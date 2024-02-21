@@ -14,6 +14,7 @@ if ($result->num_rows > 0) {
             "news_id" => $row["news_id"],
             "title" => $row["title"],
             "content" => $row["content"],
+            "publication_date" => $row["publication_date"],
             "image_url" => $row["image_url"]
         );
     }

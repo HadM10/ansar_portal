@@ -5,12 +5,16 @@ Dotenv\Dotenv::createImmutable(__DIR__ . '/..')->load();
 // Start or resume the session
 session_start();
 
-// Check if the user is not authenticated (not logged in)
-if (!isset($_SESSION['user_id'])) {
+// Check if the user is not authenticated (not logged in or session timeout)
+if (!isset($_SESSION['user_id']) || (time() - $_SESSION['login_time'] > 1800)) {
+    // Destroy the session
+    session_destroy();
+
     // Redirect to the login page
     header("Location: php/login.php");
     exit();
 }
+
 ?>
 
 <!-- Your HTML -->
@@ -55,8 +59,8 @@ if (!isset($_SESSION['user_id'])) {
             </li>
             <li><a href="#">News</a>
                 <ul>
-                    <li><a href="../admin/php/view_news.php">View News</a></li>
-                    <li><a href="../admin/php/add_news.php">Add News</a></li>
+                    <li><a id="viewNewsBtn">View News</a></li>
+                    <li><a id="addNewsBtn">Add News</a></li>
                     <li><a href="../admin/php/delete_news.php">Delete News</a></li>
                     <li><a href="../admin/php/edit_news.php">Edit News</a></li>
                 </ul>
@@ -109,23 +113,27 @@ if (!isset($_SESSION['user_id'])) {
                 <button type="submit">Add Store</button>
             </form>
         </div>
-         
+
+        <!-- Add an empty list with id "newsList" where the news will be displayed -->
+        <ul id="newsList"></ul>
+
         <!-- Add News Form -->
-<div id="addNewsFormContainer">
-    <h2>Add News</h2>
-    <form id="addNewsForm" action="#" method="post" enctype="multipart/form-data">
-        <label for="news_title">News Title:</label>
-        <input type="text" id="news_title" name="news_title" required>
+        <div id="addNewsFormContainer">
+            <h2>Add News</h2>
+            <form id="addNewsForm" action="#" method="post" enctype="multipart/form-data">
+                <label for="title">News Title:</label>
+                <input type="text" id="title" name="title" required>
 
-        <label for="news_content">News Content:</label>
-        <textarea id="news_content" name="news_content" required></textarea>
+                <label for="content">News Content:</label>
+                <textarea id="content" name="content" required></textarea>
 
-        <label for="news_image">Image File:</label>
-        <input type="file" id="news_image" name="news_image" accept="image/*" required>
+                <label for="image">Image File:</label>
+                <input type="file" id="image" name="image" accept="image/*" required>
 
-        <button type="submit">Add News</button>
-    </form>
-</div>
+                <button type="submit">Add News</button>
+            </form>
+
+        </div>
 
     </div>
 

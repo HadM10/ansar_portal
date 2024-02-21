@@ -1,40 +1,49 @@
 <?php
-// admin/php/add_news.php
-include('db_connection.php');
+include 'db_connection.php';
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Retrieve news data from the form
+    $title = $_POST['title'];
+    $content = $_POST['content'];
 
-    if (isset($_POST["title"]) && isset($_POST["content"]) && isset($_POST["image_url"])) {
-        $title = $_POST['title'];
-        $content = $_POST['content'];
-        $image_url = $_POST['image_url'];
+    // Handle image upload
+    if (isset($_FILES['image'])) {
+        $targetDirectory = "../../assets/images/news/";
+        $targetFile = $targetDirectory . basename($_FILES['image']['name']);
 
-        // Sanitize and validate data (Add your validation logic here)
-
-        // Insert news into the database
-        $insertQuery = "INSERT INTO news (title, content, image_url) VALUES ('$title', '$content', '$image_url')";
-
-        if ($conn->query($insertQuery) === TRUE) {
-            // Success message
-            $response = array('status' => 'success', 'message' => 'News added successfully');
+        // Check if the file was successfully uploaded
+        if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFile)) {
+            // Image uploaded successfully
         } else {
-            // Error message
-            $response = array('status' => 'error', 'message' => 'Error adding news: ' . $conn->error);
+            echo json_encode(['status' => 'error', 'message' => 'Failed to upload image.']);
+            exit;
         }
-
-        // Send JSON response
-        header('Content-Type: application/json');
-        echo json_encode($response);
-
-        // Close the database connection
-        $conn->close();
     } else {
-        // If the form is not submitted, redirect or handle accordingly
-        // (e.g., show an error message, redirect to the form page)
-        header("Location: /path/to/news_form.php");
-        exit();
+        echo json_encode(['status' => 'error', 'message' => 'Image not provided.']);
+        exit;
     }
+
+    // Add publication_date to the data
+    $publication_date = date('Y-m-d'); // Set the current date
+
+    // Insert the news into the database
+    $query = "INSERT INTO news (title, content, publication_date, image_url) VALUES (?, ?, ?, ?)";
+    if ($stmt = $conn->prepare($query)) {
+        $stmt->bind_param("ssss", $title, $content, $publication_date, $targetFile);
+        if ($stmt->execute()) {
+            echo json_encode(['status' => 'success', 'message' => 'News added successfully']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => $stmt->error]);
+        }
+    } else {
+        echo json_encode(['status' => 'error', 'message' => $conn->error]);
+    }
+
+    $conn->close();
+} else {
+    // If the form is not submitted, redirect or handle accordingly
+    // (e.g., show an error message, redirect to the form page)
+    exit();
 }
 ?>

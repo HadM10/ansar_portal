@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($conn->query($deleteQuery) === TRUE) {
         // Also delete associated images
-        $deleteImagesQuery = "DELETE FROM images WHERE store_id = $storeId";
+        $deleteImagesQuery = "DELETE FROM storeimages WHERE store_id = $storeId";
         $conn->query($deleteImagesQuery);
 
         $response = array("status" => "success", "message" => "Store and associated images deleted successfully");
@@ -20,6 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $response = array("status" => "error", "message" => "Error deleting store: " . $conn->error);
     }
 
+    header('Content-Type: application/json'); // Set JSON header
     echo json_encode($response);
     exit();
 }

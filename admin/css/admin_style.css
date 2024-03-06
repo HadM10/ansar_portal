@@ -217,6 +217,93 @@ button:hover {
     background-color: #d43f00;
 }
 
+/* ADD CATEGORIES */
+
+/* Style for the form container */
+#addCategoryFormContainer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    display: none;
+    width: 300px;
+}
+
+/* Style for form elements */
+#addCategoryForm {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+#addCategoryForm h2 {
+    color: #ff4500;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#addCategoryForm label {
+    display: block;
+    margin-bottom: 8px;
+    color: #fff;
+}
+
+#addCategoryForm input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+#addCategoryForm button {
+    background-color: #ff4500;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#addCategoryForm button:hover {
+    background-color: #d43f00;
+}
+
+/* VIEW CATEGORIES */
+
+/* Style for category name */
+span.category-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+/* Style for category image */
+img.category-image {
+    width: 300px;
+    height: auto;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+/* Style for the Edit button */
+button.edit-button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Hover effect for the Edit button */
+button.edit-button:hover {
+    background-color: #45a049;
+}
+
+
+
+
+
 /* ADD NEWS */
 
 #addNewsFormContainer {

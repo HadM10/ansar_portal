@@ -41,8 +41,8 @@ if (!isset($_SESSION['user_id']) || (time() - $_SESSION['login_time'] > 1800)) {
             </li>
             <li><a href="#">Categories</a>
                 <ul>
-                    <li><a href="../admin/php/view_categories.php">View Categories</a></li>
-                    <li><a href="../admin/php/add_category.php">Add Category</a></li>
+                    <li><a href="#" id="viewCategoriesBtn">View Categories</a></li>
+                    <li><a href="#" id="addCategoriesBtn">Add Category</a></li>
                 </ul>
             </li>
             <li><a href="#">Special Offers</a>
@@ -103,6 +103,23 @@ if (!isset($_SESSION['user_id']) || (time() - $_SESSION['login_time'] > 1800)) {
                 <input type="text" id="phone_number" name="phone_number" required>
 
                 <button type="submit">Add Store</button>
+            </form>
+        </div>
+
+        <!-- Add an empty list with id "categoryList" where the categories will be displayed -->
+        <ul id="categoryList"></ul>
+
+        <!-- Add Category Form -->
+        <div id="addCategoryFormContainer">
+            <h2>Add Category</h2>
+            <form id="addCategoryForm" action="#" method="post" enctype="multipart/form-data">
+                <label for="category_name">Category Name:</label>
+                <input type="text" id="category_name" name="category_name" required>
+
+                <label for="category_image">Category Image:</label>
+                <input type="file" id="category_image" name="category_image" accept="image/*" required>
+
+                <button type="submit">Add Category</button>
             </form>
         </div>
 

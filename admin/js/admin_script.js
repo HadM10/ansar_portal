@@ -183,97 +183,141 @@ function confirmDelete(storeId) {
 
 // Function to edit store
 function editStore(storeId) {
-    // Fetch store details using AJAX and create a dynamic form for editing
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", "php/view_stores.php?store_id=" + storeId, true);
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            try {
-                var storeDetails = JSON.parse(xhr.responseText);
-                // Create a dynamic form with fields filled with store details
-                createEditForm(storeId, storeDetails);
-            } catch (error) {
-                console.error("Error parsing JSON:", error);
-            }
-        }
-    };
-    xhr.send();
+  // Fetch store details using AJAX and create a dynamic form for editing
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "php/view_stores.php?store_id=" + storeId, true);
+  xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+          try {
+              var storeDetails = JSON.parse(xhr.responseText);
+
+              // Fetch categories for the dropdown
+              fetchCategories(storeId, storeDetails);
+          } catch (error) {
+              console.error("Error parsing JSON:", error);
+          }
+      }
+  };
+  xhr.send();
+}
+
+// Function to fetch categories and then call createEditForm
+function fetchCategories(storeId, storeDetails) {
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "php/view_categories.php", true);
+  xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+          try {
+              var categories = JSON.parse(xhr.responseText);
+
+              // Create a dynamic form with fields filled with store details
+              createEditForm(storeId, storeDetails, categories);
+          } catch (error) {
+              console.error("Error parsing JSON:", error);
+          }
+      }
+  };
+  xhr.send();
 }
 
 // Function to save changes
 function saveChanges(storeId, updatedData) {
-    // Make an AJAX request to save the changes
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "php/edit_store.php", true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-            try {
-                var response = JSON.parse(xhr.responseText);
-                if (response.status === 'success') {
-                    alert(response.message);
-                    // Optionally, you may refresh the store list or update the UI
-                    // You can call fetchAndDisplayStores() or similar function here
-                } else {
-                    alert(response.message);
-                }
-            } catch (error) {
-                console.error('Error parsing JSON:', error);
-            }
-        }
-    };
+  // Create a FormData object and append the data
+  var formData = new FormData();
+  formData.append('store_id', storeId);
 
-    // Send the request with store ID and updated data
-    var requestData = {
-        store_id: storeId,
-        updated_data: updatedData
-    };
-    xhr.send(JSON.stringify(requestData));
+  // Update these lines to match your PHP script expectations
+  formData.append('new_store_name', updatedData.name);
+  formData.append('new_category', updatedData.category);
+  formData.append('new_description', updatedData.description);
+
+  // Make an AJAX request to save the changes
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "php/edit_store.php", true);
+  xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        console.log(xhr.responseText);
+          try {
+              var response = JSON.parse(xhr.responseText);
+              if (response.status === 'success') {
+                  alert(response.message);
+                  // Optionally, you may refresh the store list or update the UI
+                  fetchAndDisplayStores();
+              } else {
+                  alert(response.message);
+              }
+          } catch (error) {
+              console.error('Error parsing JSON:', error);
+          }
+      }
+  };
+
+  // Send the request with FormData
+  xhr.send(formData);
 }
 
 // Function to create an edit form dynamically
-function createEditForm(storeId, storeDetails) {
-    var formContainer = document.createElement("div");
-    formContainer.innerHTML = `
-        <form id="editStoreForm">
-            <label for="editStoreName">Store Name:</label>
-            <input type="text" id="editStoreName" value="${storeDetails.name}" required>
+function createEditForm(storeId, storeDetailsArray, categories) {
+  // Access the first element of the array
+  var storeDetails = storeDetailsArray[0];
 
-            <label for="editStoreCategory">Category:</label>
-            <input type="text" id="editStoreCategory" value="${storeDetails.category}" required>
+  console.log("storeDetails:", storeDetails);
 
-            <label for="editStoreDescription">Description:</label>
-            <textarea id="editStoreDescription" required>${storeDetails.description}</textarea>
+  // Rest of the function remains the same...
+  var formContainer = document.createElement("div");
+  formContainer.innerHTML = `
+      <form id="editStoreForm">
+          <label for="editStoreName">Store Name:</label>
+          <input type="text" id="editStoreName" required>
 
-            <label for="editStorePhone">Phone Number:</label>
-            <input type="text" id="editStorePhone" value="${storeDetails.phone}" required>
+          <label for="editStoreCategory">Category:</label>
+          <select id="editStoreCategory" required>
+              ${categories.map(category => `<option value="${category.category_id}">${category.category_name}</option>`).join('')}
+          </select>
 
-            <button type="button" onclick="saveChanges(${storeId}, getUpdatedData())">Save Changes</button>
-        </form>
-    `;
+          <label for="editStoreDescription">Description:</label>
+          <textarea id="editStoreDescription" required></textarea>
 
-    // Replace the existing store container with the edit form
-    var existingStoreContainer = document
-      .getElementById("storeList")
-      .querySelector(`[data-store-id="${storeId}"]`);
-    existingStoreContainer.innerHTML = "";
-    existingStoreContainer.appendChild(formContainer);
+          <label for="editStorePhone">Phone Number:</label>
+          <input type="text" id="editStorePhone" required>
+
+          <button type="button" onclick="saveChanges(${storeId}, getUpdatedData())">Save Changes</button>
+      </form>
+  `;
+
+  // Set the values in the form fields
+  var editStoreNameInput = formContainer.querySelector("#editStoreName");
+  var editStoreCategorySelect = formContainer.querySelector("#editStoreCategory");
+  var editStoreDescriptionTextarea = formContainer.querySelector("#editStoreDescription");
+  var editStorePhoneInput = formContainer.querySelector("#editStorePhone");
+
+  editStoreNameInput.value = storeDetails.store_name;
+  editStoreDescriptionTextarea.value = storeDetails.description;
+  editStorePhoneInput.value = storeDetails.phone_number;
+
+  // Set the selected category in the dropdown
+  editStoreCategorySelect.value = storeDetails.category;
+
+  // Replace the existing store container with the edit form
+  var existingStoreContainer = document
+    .getElementById("storeList")
+    .querySelector(`[data-store-id="${storeId}"]`);
+  existingStoreContainer.innerHTML = "";
+  existingStoreContainer.appendChild(formContainer);
 }
 
 // Function to get updated data from the edit form
 function getUpdatedData() {
-    var updatedData = {
-      name: document.getElementById("editStoreName").value,
-      category: document.getElementById("editStoreCategory").value,
-      description: document.getElementById("editStoreDescription").value,
-      phone: document.getElementById("editStorePhone").value,
-      // Add more fields as needed
-    };
+  var updatedData = {
+    name: document.getElementById("editStoreName").value,
+    category: document.getElementById("editStoreCategory").value,
+    description: document.getElementById("editStoreDescription").value,
+    phone: document.getElementById("editStorePhone").value,
+    // Add more fields as needed
+  };
 
-    return updatedData;
+  return updatedData;
 }
-
-
 
 
 // Function to display stores

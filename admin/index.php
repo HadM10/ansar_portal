@@ -37,31 +37,24 @@ if (!isset($_SESSION['user_id']) || (time() - $_SESSION['login_time'] > 1800)) {
                 <ul>
                     <li><a href="#" id="viewStoresBtn">View Stores</a></li>
                     <li><a href="#" id="addStoresBtn">Add Store</a></li>
-                    <li><a href="../admin/php/edit_store.php">Edit Store</a></li>
                 </ul>
             </li>
             <li><a href="#">Categories</a>
                 <ul>
                     <li><a href="../admin/php/view_categories.php">View Categories</a></li>
                     <li><a href="../admin/php/add_category.php">Add Category</a></li>
-                    <li><a href="../admin/php/delete_category.php">Delete Category</a></li>
-                    <li><a href="../admin/php/edit_category.php">Edit Category</a></li>
                 </ul>
             </li>
             <li><a href="#">Special Offers</a>
                 <ul>
                     <li><a href="../admin/php/view_special_offers.php">View Special Offers</a></li>
                     <li><a href="../admin/php/add_special_offer.php">Add Special Offer</a></li>
-                    <li><a href="../admin/php/delete_special_offer.php">Delete Special Offer</a></li>
-                    <li><a href="../admin/php/edit_special_offer.php">Edit Special Offer</a></li>
                 </ul>
             </li>
             <li><a href="#">News</a>
                 <ul>
                     <li><a id="viewNewsBtn">View News</a></li>
                     <li><a id="addNewsBtn">Add News</a></li>
-                    <li><a href="../admin/php/delete_news.php">Delete News</a></li>
-                    <li><a href="../admin/php/edit_news.php">Edit News</a></li>
                 </ul>
             </li>
             <li><a href="#">Users</a>

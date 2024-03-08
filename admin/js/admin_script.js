@@ -8,6 +8,8 @@ const addStore = document.getElementById("addStoreFormContainer");
 const addCategory = document.getElementById("addCategoryFormContainer");
 const addNews = document.getElementById("addNewsFormContainer");
 const newsList = document.getElementById("newsList");
+const offerList = document.getElementById("offerList");
+const addOffers = document.getElementById("addOfferFormContainer");
 
 // CONTENT NAV-LINKS
 const viewStoresBtn = document.getElementById("viewStoresBtn");
@@ -16,6 +18,8 @@ const addStoresBtn = document.getElementById("addStoresBtn");
 const addCategoriesBtn = document.getElementById("addCategoriesBtn");
 const addNewsBtn = document.getElementById("addNewsBtn");
 const viewNewsBtn = document.getElementById("viewNewsBtn");
+const viewOffersBtn = document.getElementById("viewOffersBtn");
+const addOffersBtn = document.getElementById("addOffersBtn");
 
 function hideAllSections() {
   storeList.style.display = "none";
@@ -25,6 +29,8 @@ function hideAllSections() {
   addCategory.style.display = "none";
   addNews.style.display = "none";
   newsList.style.display = "none";
+  offerList.style.display = "none";
+  addOffers.style.display = "none";
 }
 
 // LOGIN
@@ -392,6 +398,14 @@ function fetchAndDisplayStores() {
 
   xhr.open("GET", "php/view_stores.php", true);
   xhr.send();
+
+  // const storeDropdown = document.getElementById("store_id");
+  // storesData.forEach(store => {
+  //     const option = document.createElement("option");
+  //     option.value = store.store_id;
+  //     option.textContent = store.store_name; // Assuming you have a 'store_name' field
+  //     storeDropdown.appendChild(option);
+  // });
 }
 
 
@@ -652,6 +666,426 @@ addCategoriesBtn.addEventListener("click", function () {
   addCategory.style.display = "block";
 });
 
+// SPECIAL OFFERS
+
+// Function to fetch and display offers using AJAX
+function fetchAndDisplayOffers() {
+  var xhr = new XMLHttpRequest();
+
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      try {
+        var offersData = JSON.parse(xhr.responseText);
+        console.log(xhr.responseText);
+        displayOffers(offersData);
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
+      }
+    }
+  };
+
+  xhr.open("GET", "php/view_offers.php", true);
+  xhr.send();
+}
+
+// Function to display offers
+function displayOffers(offersData) {
+  
+  offerList.innerHTML = ""; // Clear the previous content
+
+  offersData.forEach(function (offer) {
+    var offerItem = document.createElement("li");
+    offerItem.innerHTML = `
+    <h3>${offer.offer_title}</h3>
+    <p>${offer.offer_description}</p>
+    <p>Start Date: ${offer.start_date}</p>
+    <p>End Date: ${offer.end_date}</p>
+    <img src="${offer.image_url}" alt="${offer.offer_title} Image" class="offer-image">
+    <div>
+        <button onclick="editOffer(${offer.offer_id})">Edit</button>
+        <button onclick="deleteOffer(${offer.offer_id})">Delete</button>
+    </div>
+`;
+
+
+    offerList.appendChild(offerItem);
+  });
+}
+
+// Example usage:
+// Assuming you have an element with ID "viewOffersBtn" for triggering the display
+
+viewOffersBtn.addEventListener("click", function () {
+  // Fetch and display offers
+  hideAllSections(); // Assuming you have a function to hide other sections
+  fetchAndDisplayOffers();
+  offerList.style.display = "block"; // Assuming you have an element with ID "offerList"
+});
+
+// Add Offer Form Submission
+document.getElementById("addOfferForm").addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  // Gather form data
+  var storeId = document.getElementById("store_id").value;
+  var offerTitle = document.getElementById("offer_title").value;
+  var offerDescription = document.getElementById("offer_description").value;
+  var startDate = document.getElementById("start_date").value;
+  var endDate = document.getElementById("end_date").value;
+  var imageInput = document.getElementById("image_url");
+  
+  // Check if the file input has a selected file
+  if (imageInput.files.length > 0) {
+      var imageFile = imageInput.files[0];
+
+      // Create FormData object to handle file upload
+      var formData = new FormData();
+      formData.append('store_id', storeId);
+      formData.append('offer_title', offerTitle);
+      formData.append('offer_description', offerDescription);
+      formData.append('start_date', startDate);
+      formData.append('end_date', endDate);
+      formData.append('image_url', imageFile);
+
+      // Create XMLHttpRequest object
+      var xhr = new XMLHttpRequest();
+
+      // Configure the request
+      xhr.open("POST", "php/add_special_offer.php", true);
+
+      // Define the callback function
+      xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4) {
+              console.log(xhr.responseText);
+              try {
+                  var response = JSON.parse(xhr.responseText);
+
+                  if (response.status === "success") {
+                      alert(response.message);
+                      // You may perform additional actions on successful offer addition
+                  } else {
+                      alert(response.message);
+                  }
+              } catch (error) {
+                  console.error("Error parsing JSON:", error);
+              }
+          }
+      };
+
+      // Send the request with FormData
+      xhr.send(formData);
+  } else {
+      alert("Please select an offer image");
+  }
+});
+
+// Event listener for button click
+addOffersBtn.addEventListener("click", function () {
+  // Fetch and display stores when adding an offer
+  hideAllSections();
+  fetchAndDisplayStoresForOffer();
+  addOffers.style.display = "block";
+});
+
+// Fetch and display stores for the offer form
+function fetchAndDisplayStoresForOffer() {
+  var xhr = new XMLHttpRequest();
+
+  xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+          try {
+              var storesData = JSON.parse(xhr.responseText);
+              console.log(xhr.responseText);
+
+              // Populate store dropdown for the offer form
+              const storeDropdown = document.getElementById("store_id");
+              storeDropdown.innerHTML = ""; // Clear existing options
+              storesData.forEach(store => {
+                  const option = document.createElement("option");
+                  option.value = store.store_id;
+                  option.textContent = store.store_name; // Assuming you have a 'store_name' field
+                  storeDropdown.appendChild(option);
+              });
+
+          } catch (error) {
+              console.error("Error parsing JSON:", error);
+          }
+      }
+  };
+
+  xhr.open("GET", "php/view_stores.php", true);
+  xhr.send();
+}
+
+// DELETE OFFER
+
+// Function to delete an offer
+function deleteOffer(offerId) {
+  var confirmation = confirm("Are you sure you want to delete this offer?");
+  if (confirmation) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "php/delete_offer.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        console.log(xhr.responseText);
+        try {
+          var response = JSON.parse(xhr.responseText);
+          if (response.status === "success") {
+            alert(response.message);
+            // Refresh the offer list or update the UI
+            fetchAndDisplayOffers();
+          } else {
+            alert(response.message);
+          }
+        } catch (error) {
+          console.error("Error parsing JSON:", error);
+        }
+      }
+    };
+
+    // Send the request to delete the offer
+    xhr.send("offer_id=" + offerId);
+  }
+}
+
+// Function to get updated offer data from the edit form
+function getUpdatedOfferData() {
+  var updatedData = {
+    store_id: document.getElementById("editStoreId").value,
+    offer_title: document.getElementById("editOfferTitle").value,
+    offer_description: document.getElementById("editOfferDescription").value,
+    start_date: document.getElementById("editStartDate").value,
+    end_date: document.getElementById("editEndDate").value,
+  };
+
+  // Handle file input
+  var editImageInput = document.getElementById("editImage");
+  if (editImageInput.files.length > 0) {
+    updatedData.image_file = editImageInput.files[0];
+  }
+
+  // Add more fields as needed
+
+  return updatedData;
+}
+
+
+// Function to edit an offer
+function editOffer(offerId) {
+  // Fetch offer details using AJAX and create a dynamic form for editing
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "php/view_offers.php?offer_id=" + offerId, true);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      try {
+        var offerDetails = JSON.parse(xhr.responseText);
+
+        // Create a dynamic form with fields filled with offer details
+        createEditOfferForm(offerId, offerDetails);
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
+      }
+    }
+  };
+  xhr.send();
+}
+
+// Function to save offer changes
+function saveOfferChanges(offerId, updatedData) {
+  // Create a FormData object and append the data
+  var formData = new FormData();
+  formData.append("offer_id", offerId);
+
+  // Update these lines to match your PHP script expectations
+  formData.append("store_id", updatedData.store_id);
+  formData.append("offer_title", updatedData.offer_title);
+  formData.append("offer_description", updatedData.offer_description);
+  formData.append("start_date", updatedData.start_date);
+  formData.append("end_date", updatedData.end_date);
+  formData.append("image_url", updatedData.image_url);
+
+  if (updatedData.image_file) {
+    formData.append("image_file", updatedData.image_file);
+  }
+
+  // Make an AJAX request to save the changes
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "php/edit_offer.php", true);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      console.log(xhr.responseText);
+      try {
+        var response = JSON.parse(xhr.responseText);
+        if (response.status === "success") {
+          alert(response.message);
+          // Optionally, you may refresh the offer list or update the UI
+          fetchAndDisplayOffers();
+        } else {
+          alert(response.message);
+        }
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
+      }
+    }
+  };
+
+  // Send the request with FormData
+  xhr.send(formData);
+}
+
+// Function to create an edit offer form dynamically
+function createEditOfferForm(offerId, offerDetails) {
+  // Access the first element of the array
+  var offerDetails = offerDetails[0];
+
+  // Rest of the function remains the same...
+  var formContainer = document.createElement("div");
+  formContainer.innerHTML = `
+      <form id="editOfferForm" enctype="multipart/form-data">
+          <label for="editStoreId">Store:</label>
+          <select id="editStoreId" required></select>
+
+          <label for="editOfferTitle">Offer Title:</label>
+          <input type="text" id="editOfferTitle" required>
+
+          <label for="editOfferDescription">Offer Description:</label>
+          <textarea id="editOfferDescription" required></textarea>
+
+          <label for="editStartDate">Start Date:</label>
+          <input type="date" id="editStartDate" required>
+
+          <label for="editEndDate">End Date:</label>
+          <input type="date" id="editEndDate" required>
+
+          <label for="editImage">Image:</label>
+          <input type="file" id="editImage" accept="image/*">
+
+          <button type="button" onclick="saveOfferChanges(${offerId}, getUpdatedOfferData())">Save Changes</button>
+      </form>
+  `;
+
+  // Set the values in the form fields
+  var editStoreIdInput = formContainer.querySelector("#editStoreId");
+  var editOfferTitleInput = formContainer.querySelector("#editOfferTitle");
+  var editOfferDescriptionInput = formContainer.querySelector("#editOfferDescription");
+  var editStartDateInput = formContainer.querySelector("#editStartDate");
+  var editEndDateInput = formContainer.querySelector("#editEndDate");
+
+  editOfferTitleInput.value = offerDetails.offer_title;
+  editOfferDescriptionInput.value = offerDetails.offer_description;
+  editStartDateInput.value = offerDetails.start_date;
+  editEndDateInput.value = offerDetails.end_date;
+
+  // Fetch and populate the store dropdown
+  fetchAndPopulateStoresDropdown(editStoreIdInput, offerDetails.store_id);
+
+  // Get the existing offer container
+  var existingOfferContainer = document
+    .getElementById("offerList")
+    .querySelector(`[data-offer-id="${offerId}"]`);
+
+    var existingOfferContainer = document.getElementById("offerList")
+
+  // If the existing offer container is found, replace its content with the edit form
+
+    existingOfferContainer.innerHTML = "";
+    existingOfferContainer.appendChild(formContainer);
+
+}
+
+
+// Function to fetch and populate the store dropdown in the edit form
+function fetchAndPopulateStoresDropdown(selectElement, selectedStoreId) {
+  var xhr = new XMLHttpRequest();
+
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      try {
+        var storesData = JSON.parse(xhr.responseText);
+        selectElement.innerHTML = ""; // Clear existing options
+        storesData.forEach(store => {
+          var option = document.createElement("option");
+          option.value = store.store_id;
+          option.textContent = store.store_name; // Assuming you have a 'store_name' field
+          selectElement.appendChild(option);
+        });
+
+        // Set the selected store
+        if (selectedStoreId) {
+          selectElement.value = selectedStoreId;
+        }
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
+      }
+    }
+  };
+
+  xhr.open("GET", "php/view_stores.php", true);
+  xhr.send();
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Add News Form Submission
 
@@ -747,4 +1181,5 @@ viewNewsBtn.addEventListener("click", function () {
   fetchAndDisplayNews();
   newsList.style.display = "flex";
 });
+
 }

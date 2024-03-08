@@ -47,14 +47,14 @@ if (!isset($_SESSION['user_id']) || (time() - $_SESSION['login_time'] > 1800)) {
             </li>
             <li><a href="#">Special Offers</a>
                 <ul>
-                    <li><a href="../admin/php/view_special_offers.php">View Special Offers</a></li>
-                    <li><a href="../admin/php/add_special_offer.php">Add Special Offer</a></li>
+                    <li><a href="#" id="viewOffersBtn">View Special Offers</a></li>
+                    <li><a href="#" id="addOffersBtn">Add Special Offer</a></li>
                 </ul>
             </li>
             <li><a href="#">News</a>
                 <ul>
-                    <li><a id="viewNewsBtn">View News</a></li>
-                    <li><a id="addNewsBtn">Add News</a></li>
+                    <li><a href="#" id="viewNewsBtn">View News</a></li>
+                    <li><a href="#" id="addNewsBtn">Add News</a></li>
                 </ul>
             </li>
             <li><a href="#">Users</a>
@@ -122,6 +122,39 @@ if (!isset($_SESSION['user_id']) || (time() - $_SESSION['login_time'] > 1800)) {
                 <button type="submit">Add Category</button>
             </form>
         </div>
+
+        <ul id="offerList"></ul>
+
+        <!-- Add Offer Form -->
+        <div id="addOfferFormContainer">
+            <h2>Add Offer</h2>
+            <form id="addOfferForm" action="#" method="post" enctype="multipart/form-data">
+                <!-- Other fields... -->
+                <label for="store_id">Select Store:</label>
+                <select id="store_id" name="store_id" required>
+                    <!-- Options will be dynamically added using JavaScript -->
+                </select>
+
+                <label for="offer_title">Offer Title:</label>
+                <input type="text" id="offer_title" name="offer_title" required>
+
+                <label for="offer_description">Offer Description:</label>
+                <textarea id="offer_description" name="offer_description" required></textarea>
+
+                <label for="start_date">Start Date:</label>
+                <input type="date" id="start_date" name="start_date" required>
+
+                <label for="end_date">End Date:</label>
+                <input type="date" id="end_date" name="end_date" required>
+
+                <label for="image_url">Image:</label>
+                <input type="file" id="image_url" name="image_url" accept="image/*" required>
+
+                <button type="submit">Add Offer</button>
+            </form>
+        </div>
+
+
 
         <!-- Add an empty list with id "newsList" where the news will be displayed -->
         <ul id="newsList"></ul>

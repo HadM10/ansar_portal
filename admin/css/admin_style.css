@@ -1,155 +1,154 @@
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f5f5f5;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  font-family: "Arial", sans-serif;
+  background-color: #f5f5f5;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 .container {
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    border-radius: 5px;
-    width: 300px;
-    text-align: center;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-radius: 5px;
+  width: 300px;
+  text-align: center;
 }
 
 .container h2 {
-    color: #333;
+  color: #333;
 }
 
 form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 label {
-    margin: 10px 0;
-    color: #555;
+  margin: 10px 0;
+  color: #555;
 }
 
 input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    box-sizing: border-box;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  box-sizing: border-box;
 }
 
 button {
-    background-color: #3498db;
-    color: #fff;
-    padding: 10px;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
+  background-color: #3498db;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
 }
 
 button:hover {
-    background-color: #2980b9;
+  background-color: #2980b9;
 }
 
 .register-link {
-    margin-top: 20px;
-    text-align: center;
+  margin-top: 20px;
+  text-align: center;
 }
 
 .register-link a {
-    color: #3498db;
-    text-decoration: none;
+  color: #3498db;
+  text-decoration: none;
 }
 
 .register-link a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 /* ADMIN SIDEBAR */
 
 .sidebar {
-    height: 100%;
-    width: 250px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: #333;
-    padding-top: 20px;
+  height: 100%;
+  width: 250px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #333;
+  padding-top: 20px;
 }
 
 .sidebar h1 {
-    color: #fff;
-    text-align: center;
+  color: #fff;
+  text-align: center;
 }
 
 .sidebar ul {
-    list-style-type: none;
-    padding: 0;
+  list-style-type: none;
+  padding: 0;
 }
 
 .sidebar a {
-    display: block;
-    color: #fff;
-    text-decoration: none;
-    padding: 10px 20px;
-    font-size: 16px;
+  display: block;
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 20px;
+  font-size: 16px;
 }
 
 .sidebar a:hover {
-    background-color: #555;
+  background-color: #555;
 }
 
 /* Sub-navigation styles */
 .sidebar ul ul {
-    display: none;
-    padding-left: 20px;
+  display: none;
+  padding-left: 20px;
 }
 
 .sidebar li:hover ul {
-    display: block;
+  display: block;
 }
 
 .sidebar ul ul li {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 .content {
-    margin-left: 250px;
-    padding: 20px;
+  margin-left: 250px;
+  padding: 20px;
 }
 
 #logoutBtn {
-    background-color: #ff6347;
-    color: #fff;
-    padding: 10px 20px;
-    text-decoration: none;
-    display: block;
-    margin-top: 20px;
+  background-color: #ff6347;
+  color: #fff;
+  padding: 10px 20px;
+  text-decoration: none;
+  display: block;
+  margin-top: 20px;
 }
 
 #logoutBtn:hover {
-    background-color: #ff4500;
+  background-color: #ff4500;
 }
 
 /* STORES */
 
 .store-container {
-    border: 1px solid #ccc;
-    padding: 15px;
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .store-name {
-    font-size: 1.5em;
-    margin-bottom: 10px;
+  font-size: 1.5em;
+  margin-bottom: 10px;
 }
 
 .store-category,
@@ -157,232 +156,323 @@ button:hover {
 .store-phone,
 .store-likes,
 .store-images {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .store-images img {
-    width: 200px;
-    height: auto;
-    margin-right: 10px;
-    margin-bottom: 10px;
+  width: 200px;
+  height: auto;
+  margin-right: 10px;
+  margin-bottom: 10px;
 }
 
 /* Add Store Form Styles */
 
 #addStoreFormContainer {
-    background-color: #333;
-    color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    margin-top: 20px;
-    display: none;
-    width: 300px;
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  display: none;
+  width: 300px;
 }
 
 #addStoreFormContainer h2 {
-    text-align: center;
+  text-align: center;
 }
 
 #addStoreForm h2 {
-    color: #ff4500;
-    margin-bottom: 20px;
-    text-align: center;
+  color: #ff4500;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 #addStoreForm label {
-    display: block;
-    margin-bottom: 8px;
-    color: #fff;
+  display: block;
+  margin-bottom: 8px;
+  color: #fff;
 }
 
 #addStoreForm input,
 #addStoreForm textarea,
 #addStoreForm select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    box-sizing: border-box;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
 }
 
 #addStoreForm button {
-    background-color: #ff4500;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  background-color: #ff4500;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 #addStoreForm button:hover {
-    background-color: #d43f00;
+  background-color: #d43f00;
 }
 
 /* ADD CATEGORIES */
 
 /* Style for the form container */
 #addCategoryFormContainer {
-    background-color: #333;
-    color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    margin-top: 20px;
-    display: none;
-    width: 300px;
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  display: none;
+  width: 300px;
 }
 
 /* Style for form elements */
 #addCategoryForm {
-    max-width: 400px;
-    margin: 0 auto;
+  max-width: 400px;
+  margin: 0 auto;
 }
 
 #addCategoryForm h2 {
-    color: #ff4500;
-    margin-bottom: 20px;
-    text-align: center;
+  color: #ff4500;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 #addCategoryForm label {
-    display: block;
-    margin-bottom: 8px;
-    color: #fff;
+  display: block;
+  margin-bottom: 8px;
+  color: #fff;
 }
 
 #addCategoryForm input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    box-sizing: border-box;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
 }
 
 #addCategoryForm button {
-    background-color: #ff4500;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  background-color: #ff4500;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 #addCategoryForm button:hover {
-    background-color: #d43f00;
+  background-color: #d43f00;
 }
 
 /* VIEW CATEGORIES */
 
 /* Style for category name */
 span.category-name {
-    font-size: 18px;
-    font-weight: bold;
-    margin-right: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 10px;
 }
 
 /* Style for category image */
 img.category-image {
-    width: 300px;
-    height: auto;
-    border-radius: 5px;
-    margin-right: 10px;
+  width: 300px;
+  height: auto;
+  border-radius: 5px;
+  margin-right: 10px;
 }
 
 /* Style for the Edit button */
 button.edit-button {
-    background-color: #4CAF50; /* Green */
-    color: white;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  background-color: #4caf50; /* Green */
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 /* Hover effect for the Edit button */
 button.edit-button:hover {
-    background-color: #45a049;
+  background-color: #45a049;
 }
 
+/* OFFERS */
 
+#addOfferFormContainer {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  display: none;
+  width: 300px;
+}
 
+#addOfferFormContainer h2 {
+  text-align: center;
+}
 
+#addOfferForm h2 {
+  color: #ff4500;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+#addOfferForm label {
+  display: block;
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+#addOfferForm input,
+#addOfferForm textarea,
+#addOfferForm select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+#addOfferForm button {
+  background-color: #ff4500;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#addOfferForm button:hover {
+  background-color: #d43f00;
+}
+
+/* VIEW OFFERS */
+
+/* Add this CSS to your stylesheet or in a <style> tag in your HTML file */
+
+/* Style for the container of each offer */
+.offer-container {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin: 10px;
+  max-width: 300px;
+}
+
+/* Style for the offer image */
+.offer-image {
+  width: 300px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+/* Style for the offer title */
+.offer-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* Style for the offer description */
+.offer-description {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+/* Style for the offer dates */
+.offer-dates {
+  font-size: 12px;
+  color: #888;
+}
+
+/* Style for the section containing all offers */
+#offerList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
 
 /* ADD NEWS */
 
 #addNewsFormContainer {
-    background-color: #333;
-    color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    margin-top: 20px;
-    display: none;
-    width: 300px;
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  display: none;
+  width: 300px;
 }
 
 #addNewsFormContainer h2 {
-    text-align: center;
+  text-align: center;
 }
 
 #addNewsForm h2 {
-    color: #ff4500;
-    margin-bottom: 20px;
-    text-align: center;
+  color: #ff4500;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 #addNewsForm label {
-    display: block;
-    margin-bottom: 8px;
-    color: #fff;
+  display: block;
+  margin-bottom: 8px;
+  color: #fff;
 }
 
 #addNewsForm input,
 #addNewsForm textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    box-sizing: border-box;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
 }
 
 #addNewsForm button {
-    background-color: #ff4500;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  background-color: #ff4500;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 #addNewsForm button:hover {
-    background-color: #d43f00;
+  background-color: #d43f00;
 }
 
 /* NEWS */
 
 .news-container {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
 }
 
 .news-title {
-    color: #333;
-    font-size: 20px;
-    margin-bottom: 10px;
+  color: #333;
+  font-size: 20px;
+  margin-bottom: 10px;
 }
 
 .news-content {
-    color: #555;
-    font-size: 16px;
-    margin-bottom: 15px;
+  color: #555;
+  font-size: 16px;
+  margin-bottom: 15px;
 }
 
 .news-image {
-    width: 300px;
-    height: auto;
-    border-radius: 8px;
-    margin-bottom: 15px;
+  width: 300px;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 15px;
 }
 
 .news-publication-date {
-    color: #777;
-    font-size: 14px;
+  color: #777;
+  font-size: 14px;
 }

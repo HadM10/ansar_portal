@@ -985,7 +985,7 @@ function createEditOfferForm(offerId, offerDetails) {
     .getElementById("offerList")
     .querySelector(`[data-offer-id="${offerId}"]`);
 
-    var existingOfferContainer = document.getElementById("offerList")
+    var existingOfferContainer = document.getElementById("offerList");
 
   // If the existing offer container is found, replace its content with the edit form
 

@@ -10,6 +10,8 @@ const addNews = document.getElementById("addNewsFormContainer");
 const newsList = document.getElementById("newsList");
 const offerList = document.getElementById("offerList");
 const addOffers = document.getElementById("addOfferFormContainer");
+const uploadedImagesList = document.getElementById("uploadedImagesList"); 
+const uploadImagesForm = document.getElementById("uploadImagesForm"); 
 
 // CONTENT NAV-LINKS
 const viewStoresBtn = document.getElementById("viewStoresBtn");
@@ -20,6 +22,8 @@ const addNewsBtn = document.getElementById("addNewsBtn");
 const viewNewsBtn = document.getElementById("viewNewsBtn");
 const viewOffersBtn = document.getElementById("viewOffersBtn");
 const addOffersBtn = document.getElementById("addOffersBtn");
+const viewImagesBtn = document.getElementById("viewImagesBtn"); 
+const uploadImagesLink = document.getElementById("uploadImagesLink");
 
 function hideAllSections() {
   storeList.style.display = "none";
@@ -31,6 +35,8 @@ function hideAllSections() {
   newsList.style.display = "none";
   offerList.style.display = "none";
   addOffers.style.display = "none";
+  uploadedImagesList.style.display = "none"; 
+  uploadImagesForm.style.display = "none";
 }
 
 // LOGIN
@@ -1025,6 +1031,7 @@ function fetchAndPopulateStoresDropdown(selectElement, selectedStoreId) {
   xhr.send();
 
 
+
 }
 
 
@@ -1181,5 +1188,143 @@ viewNewsBtn.addEventListener("click", function () {
   fetchAndDisplayNews();
   newsList.style.display = "flex";
 });
+
+
+
+  // UPLOAD AND DISPLAY IMAGES
+
+// Add event listener for the link
+uploadImagesLink.addEventListener("click", function () {
+  // Fetch and display stores when uploading images
+  hideAllSections();
+  fetchAndPopulateStoresDropdown(document.getElementById("storeSelect"), null);
+  uploadImagesForm.style.display = "block"; // Assuming you have an element with ID "uploadImagesForm"
+});
+
+// Fetch and populate stores for the upload form
+fetchAndPopulateStoresDropdown(document.getElementById("storeSelect"), null);
+
+// Add event listener to the form for submitting images
+document.getElementById("uploadImagesForm").addEventListener("submit", function (event) {
+  event.preventDefault(); // Prevent the default form submission
+
+  var storeId = document.getElementById("storeSelect").value;
+  var imageFiles = document.getElementById("imageFiles").files;
+
+  if (storeId && imageFiles.length > 0) {
+    var formData = new FormData();
+    formData.append("store_id", storeId);
+
+    for (var i = 0; i < imageFiles.length; i++) {
+      formData.append("imageFiles[]", imageFiles[i]);
+    }
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "php/upload_images.php", true);
+
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        console.log(xhr.responseText);
+        try {
+          var response = JSON.parse(xhr.responseText);
+          if (response.status === "success") {
+            alert(response.message);
+            // Optionally, you may update the uploaded images list
+            fetchAndDisplayAllImages();
+          } else {
+            alert(response.message);
+          }
+        } catch (error) {
+          console.error("Error parsing JSON:", error);
+        }
+      }
+    };
+
+    xhr.send(formData);
+  } else {
+    alert("Please select a store and at least one image file");
+  }
+});
+
+// Function to fetch and display uploaded images
+function fetchAndDisplayAllImages() {
+  var xhr = new XMLHttpRequest();
+
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      try {
+        console.log(xhr.responseText);
+        var imagesData = JSON.parse(xhr.responseText);
+        displayUploadedImages(imagesData);
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
+      }
+    }
+  };
+
+  xhr.open("GET", "php/view_images.php", true);
+  xhr.send();
+}
+
+// Function to display uploaded images
+function displayUploadedImages(imagesData) {
+  uploadedImagesList.innerHTML = ""; // Clear previous content
+
+  imagesData.forEach(function (image) {
+    var imageItem = document.createElement("li");
+    imageItem.innerHTML = `
+      <img src="${image.image_url}" alt="Uploaded Image">
+      <p>Store: ${image.store_name}</p>
+      <button onclick="confirmDeleteImage(${image.image_id}, ${image.store_id})">Delete</button>
+    `;
+    uploadedImagesList.appendChild(imageItem);
+  });
+}
+
+
+// Function to confirm deletion and delete the image
+function confirmDeleteImage(imageId, storeId, imageUrl) {
+  var confirmation = confirm("Are you sure you want to delete this image?");
+  if (confirmation) {
+    deleteImage(imageId, storeId, imageUrl);
+  }
+}
+
+// Function to delete the image
+function deleteImage(imageId, storeId, imageUrl) {
+  var xhr = new XMLHttpRequest();
+
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      try {
+        console.log(xhr.responseText);
+        var response = JSON.parse(xhr.responseText);
+        if (response.status === "success") {
+          alert(response.message);
+          // Refresh the images list or update the UI
+          fetchAndDisplayAllImages();
+        } else {
+          alert(response.message);
+        }
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
+      }
+    }
+  };
+
+  xhr.open("POST", "php/delete_image.php", true);
+  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  xhr.send("image_id=" + imageId + "&store_id=" + storeId);
+}
+
+
+// Add event listener for the link
+viewImagesBtn.addEventListener("click", function () {
+  // Fetch and display stores when uploading images
+  hideAllSections();
+  fetchAndDisplayAllImages();
+  uploadedImagesList.style.display = "block"; // Assuming you have an element with ID "uploadImagesForm"
+});
+
 
 }

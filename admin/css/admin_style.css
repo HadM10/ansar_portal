@@ -476,3 +476,58 @@ button.edit-button:hover {
   color: #777;
   font-size: 14px;
 }
+
+/* IMAGES */
+
+#uploadImagesForm {
+  display: none;
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #333; /* Dark background */
+  border: 1px solid #ddd; /* Light gray border */
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Light shadow */
+}
+
+#uploadImagesForm label {
+  display: block;
+  margin-bottom: 8px;
+  color: #fff; /* White label text */
+}
+
+#uploadImagesForm select,
+#uploadImagesForm input,
+#uploadImagesForm button {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+#uploadImagesForm button {
+  background-color: #ff4500; /* Orange button background */
+  color: #fff; /* White button text */
+  cursor: pointer;
+}
+
+#uploadImagesForm button:hover {
+  background-color: #d43f00; /* Darker orange on hover */
+}
+
+#uploadedImagesList {
+  margin-top: 20px;
+  list-style: none;
+  padding: 0;
+}
+
+#uploadedImagesList li {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+#uploadedImagesList img {
+  max-width: 100px;
+  max-height: 100px;
+  border-radius: 4px;
+}

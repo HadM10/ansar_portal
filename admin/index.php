@@ -70,8 +70,8 @@ if (!isset($_SESSION['user_id']) || (time() - $_SESSION['login_time'] > 1800)) {
             </li>
             <li><a href="#">Images</a>
                 <ul>
-                    <li><a href="../admin/php/upload_image.php">Upload Image</a></li>
-                    <li><a href="../admin/php/delete_image.php">Delete Image</a></li>
+                    <li><a href="#" id="viewImagesBtn">View Images</a></li>
+                    <li><a href="#" id="uploadImagesLink">Upload Image</a></li>
                 </ul>
             </li>
             <li><a href="#" id="logoutBtn">Logout</a></li>
@@ -176,6 +176,24 @@ if (!isset($_SESSION['user_id']) || (time() - $_SESSION['login_time'] > 1800)) {
             </form>
 
         </div>
+
+        <!-- Upload image -->
+
+        <form id="uploadImagesForm" enctype="multipart/form-data" method="post">
+            <div>
+                <label for="storeSelect">Select Store:</label>
+                <select id="storeSelect" required></select>
+            </div>
+
+            <div>
+                <label for="imageFiles">Upload Images:</label>
+                <input type="file" id="imageFiles" name="imageFiles[]" multiple accept="image/*" required>
+            </div>
+
+            <button type="submit" id="uploadImagesBtn">Upload Images</button>
+        </form>
+        <ul id="uploadedImagesList"></ul>
+
 
     </div>
 

@@ -5,13 +5,13 @@ include('db_connection.php');
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Retrieve data from the form
+    $image_id = $_POST['image_id'];
     $store_id = $_POST['store_id'];
-    $image_url = $_POST['image_url'];
 
     // Sanitize and validate data (Add your validation logic here)
 
     // Delete image from the database
-    $deleteQuery = "DELETE FROM images WHERE store_id = '$store_id' AND image_url = '$image_url'";
+    $deleteQuery = "DELETE FROM storeimages WHERE image_id = '$image_id' AND store_id = '$store_id'";
 
     if ($conn->query($deleteQuery) === TRUE) {
         // Success message
@@ -30,7 +30,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 } else {
     // If the form is not submitted, redirect or handle accordingly
     // (e.g., show an error message, redirect to the form page)
-    header("Location: /path/to/image_delete_form.php");
+
     exit();
 }
+
 ?>

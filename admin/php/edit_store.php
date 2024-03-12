@@ -9,9 +9,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $newStoreName = $_POST["new_store_name"];
     $newCategory = $_POST["new_category"];
     $newDescription = $_POST["new_description"];
+    $newPhoneNumber = $_POST["new_phone_number"];
 
     // Update store information in the 'stores' table
-    $updateQuery = "UPDATE stores SET store_name = '$newStoreName', category_id = '$newCategory', store_description = '$newDescription' WHERE store_id = $storeId";
+    $updateQuery = "UPDATE stores SET store_name = '$newStoreName', category_id = '$newCategory', store_description = '$newDescription', phone_number = '$newPhoneNumber' WHERE store_id = $storeId";
 
     if ($conn->query($updateQuery) === TRUE) {
         $response = array("status" => "success", "message" => "Store updated successfully");

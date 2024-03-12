@@ -240,6 +240,7 @@ function saveChanges(storeId, updatedData) {
   formData.append("new_store_name", updatedData.name);
   formData.append("new_category", updatedData.category);
   formData.append("new_description", updatedData.description);
+  formData.append("new_phone_number", updatedData.phone);
 
   // Make an AJAX request to save the changes
   var xhr = new XMLHttpRequest();
@@ -338,13 +339,16 @@ function getUpdatedData() {
 }
 
 // Function to display stores
-function displayStores(storesData) {
+function displayStores(storesData, categories) {
   var storeList = document.getElementById("storeList");
 
   // Clear existing content
   storeList.innerHTML = "";
 
   storesData.forEach(function (store) {
+    // Find the category name based on the category ID
+    var categoryName = categories.find(category => category.category_id === store.category)?.category_name;
+
     // Create a list item for each store
     var listItem = document.createElement("li");
     listItem.setAttribute("data-store-id", store.store_id); // Set a unique identifier
@@ -361,10 +365,10 @@ function displayStores(storesData) {
                           .join("")}
                     </ul>
                 </div>
-                <h2 class="store-name">${store.store_name}</h2>
-                <p class="store-category">${store.category}</p>
-                <p class="store-description">${store.description}</p>
-                <p class="store-phone">${store.phone_number}</p>
+                <h2 class="store-name"><strong>Name: </strong>${store.store_name}</h2>
+                <p class="store-category"><strong>Category: </strong>${categoryName}</p>
+                <p class="store-description"><strong>Description: </strong>${store.description}</p>
+                <p class="store-phone"><strong>Phone Number: </strong>${store.phone_number}</p>
                 <p class="store-likes"><strong>Total Likes:</strong> ${
                   store.total_likes
                 }</p>
@@ -384,6 +388,7 @@ function displayStores(storesData) {
   });
 }
 
+
 // VIEW STORES
 
 // Function to fetch and display stores using AJAX
@@ -394,8 +399,8 @@ function fetchAndDisplayStores() {
     if (xhr.readyState === 4 && xhr.status === 200) {
       try {
         var storesData = JSON.parse(xhr.responseText);
-        console.log(xhr.responseText);
-        displayStores(storesData);
+        // Assuming you have already fetched categories and stored them in the categoryList variable
+        fetchStoreCategories(storesData);
       } catch (error) {
         console.error("Error parsing JSON:", error);
       }
@@ -404,14 +409,26 @@ function fetchAndDisplayStores() {
 
   xhr.open("GET", "php/view_stores.php", true);
   xhr.send();
+}
 
-  // const storeDropdown = document.getElementById("store_id");
-  // storesData.forEach(store => {
-  //     const option = document.createElement("option");
-  //     option.value = store.store_id;
-  //     option.textContent = store.store_name; // Assuming you have a 'store_name' field
-  //     storeDropdown.appendChild(option);
-  // });
+// Function to fetch categories
+function fetchStoreCategories(storesData) {
+  var xhr = new XMLHttpRequest();
+
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      try {
+        var categories = JSON.parse(xhr.responseText);
+        console.log(xhr.responseText);
+        displayStores(storesData, categories);
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
+      }
+    }
+  };
+
+  xhr.open("GET", "php/view_categories.php", true);
+  xhr.send();
 }
 
 
@@ -530,14 +547,16 @@ function displayCategories(categoriesData) {
   categoriesData.forEach(function (category) {
     var categoryItem = document.createElement("li");
     categoryItem.setAttribute("data-category-id", category.category_id);
-    categoryItem.innerHTML = `
-          <span>${category.category_name}</span>
+    categoryItem.classList.add("category-item"); // Add class for styling
+    categoryItem.innerHTML = ` 
           <img src="ansar_portal/${category.category_image}" alt="${category.category_name} Image" class="category-image">
-          <button onclick="editCategory(${category.category_id})">Edit</button>
+          <span><Strong> Category Name: </Strong> ${category.category_name}</span>
+          <button class="edit-button" onclick="editCategory(${category.category_id})">Edit</button>
       `;
     categoryList.appendChild(categoryItem);
   });
 }
+
 
 viewCategoriesBtn.addEventListener("click", function () {
   // Fetch and display categories

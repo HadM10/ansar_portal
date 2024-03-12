@@ -1,3 +1,10 @@
+:root {
+  --main-orange: #ff6347; 
+  --second-orange: #ff4500; 
+  --main-gray: #333;
+}
+
+
 body {
   font-family: "Arial", sans-serif;
   background-color: #f5f5f5;
@@ -122,7 +129,7 @@ button:hover {
 }
 
 #logoutBtn {
-  background-color: #ff6347;
+  background-color: var(--main-orange);
   color: #fff;
   padding: 10px 20px;
   text-decoration: none;
@@ -131,22 +138,54 @@ button:hover {
 }
 
 #logoutBtn:hover {
-  background-color: #ff4500;
+  background-color: var(--second-orange);
 }
 
 /* STORES */
 
+#storeList{
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
 .store-container {
   border: 1px solid #ccc;
-  padding: 15px;
+  padding: 20px;
   margin-bottom: 20px;
+  border-radius: 10px;
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
+  background-color: #fff; /* Background color */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow */
+  width: 300px;
+}
+
+.store-images {
+  margin-bottom: 20px;
+}
+
+.store-images ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.store-images li {
+  margin-right: 10px;
+}
+
+.store-images img {
+  width: 200px;
+  height: 200px;
+  border-radius: 5px;
 }
 
 .store-name {
+  color: #333; /* Store name color */
   font-size: 1.5em;
   margin-bottom: 10px;
 }
@@ -154,17 +193,79 @@ button:hover {
 .store-category,
 .store-description,
 .store-phone,
-.store-likes,
-.store-images {
+.store-likes {
+  color: #555; /* Text color */
   margin-bottom: 10px;
 }
 
-.store-images img {
-  width: 200px;
-  height: auto;
-  margin-right: 10px;
-  margin-bottom: 10px;
+.store-actions {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px;
 }
+
+.edit-btn,
+.delete-btn {
+  background-color: var(--main-orange); /* Button background color */
+  color: #fff; /* Button text color */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.edit-btn:hover,
+.delete-btn:hover {
+  background-color: var(--second-orange); /* Button hover background color */
+}
+
+/* EDIT STORE */
+
+#editStoreForm {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  width: 300px;
+}
+
+#editStoreForm h2 {
+  text-align: center;
+  color: var(--second-orange);
+  margin-bottom: 20px;
+}
+
+#editStoreForm label {
+  display: block;
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+#editStoreForm input,
+#editStoreForm textarea,
+#editStoreForm select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+#editStoreForm button {
+  background-color: var(--second-orange);
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#editStoreForm button:hover {
+  background-color: #d43f00;
+}
+
+
+
 
 /* Add Store Form Styles */
 
@@ -183,7 +284,7 @@ button:hover {
 }
 
 #addStoreForm h2 {
-  color: #ff4500;
+  color: var(--second-orange);
   margin-bottom: 20px;
   text-align: center;
 }
@@ -204,7 +305,7 @@ button:hover {
 }
 
 #addStoreForm button {
-  background-color: #ff4500;
+  background-color: var(--second-orange);
   color: #fff;
   padding: 10px 20px;
   border: none;
@@ -236,7 +337,7 @@ button:hover {
 }
 
 #addCategoryForm h2 {
-  color: #ff4500;
+  color: var(--second-orange);
   margin-bottom: 20px;
   text-align: center;
 }
@@ -255,7 +356,7 @@ button:hover {
 }
 
 #addCategoryForm button {
-  background-color: #ff4500;
+  background-color: var(--second-orange);
   color: #fff;
   padding: 10px 20px;
   border: none;
@@ -269,35 +370,62 @@ button:hover {
 
 /* VIEW CATEGORIES */
 
+/* Style for category list */
+#categoryList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0;
+  gap: 20px;
+  list-style: none;
+}
+
+#categoryList li{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Style for category item */
+.category-item {
+  width: calc(33.33% - 10px); /* Adjust as needed for responsiveness */
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
 /* Style for category name */
-span.category-name {
-  font-size: 18px;
+.category-name {
   font-weight: bold;
-  margin-right: 10px;
+  margin-bottom: 5px;
 }
 
 /* Style for category image */
-img.category-image {
-  width: 300px;
+.category-image {
+  width: 100%;
   height: auto;
   border-radius: 5px;
-  margin-right: 10px;
+  margin-bottom: 5px;
 }
 
-/* Style for the Edit button */
-button.edit-button {
-  background-color: #4caf50; /* Green */
-  color: white;
-  padding: 8px 12px;
+/* Style for edit button */
+.edit-button {
+  background-color: var(--second-orange); /* Use your color variable */
+  color: #fff;
   border: none;
-  border-radius: 5px;
+  padding: 5px 10px;
+  border-radius: 3px;
   cursor: pointer;
+  height: 40px;
 }
 
-/* Hover effect for the Edit button */
-button.edit-button:hover {
-  background-color: #45a049;
+.edit-button:hover {
+  background-color: #d43f00; /* Darker shade of your color */
 }
+
 
 /* OFFERS */
 
@@ -316,7 +444,7 @@ button.edit-button:hover {
 }
 
 #addOfferForm h2 {
-  color: #ff4500;
+  color: var(--second-orange);
   margin-bottom: 20px;
   text-align: center;
 }
@@ -337,7 +465,7 @@ button.edit-button:hover {
 }
 
 #addOfferForm button {
-  background-color: #ff4500;
+  background-color: var(--second-orange);
   color: #fff;
   padding: 10px 20px;
   border: none;
@@ -411,7 +539,7 @@ button.edit-button:hover {
 }
 
 #addNewsForm h2 {
-  color: #ff4500;
+  color: var(--second-orange);
   margin-bottom: 20px;
   text-align: center;
 }
@@ -431,7 +559,7 @@ button.edit-button:hover {
 }
 
 #addNewsForm button {
-  background-color: #ff4500;
+  background-color: var(--second-orange);
   color: #fff;
   padding: 10px 20px;
   border: none;
@@ -506,7 +634,7 @@ button.edit-button:hover {
 }
 
 #uploadImagesForm button {
-  background-color: #ff4500; /* Orange button background */
+  background-color: var(--second-orange); /* Orange button background */
   color: #fff; /* White button text */
   cursor: pointer;
 }

@@ -3,7 +3,7 @@
 include('db_connection.php');
 
 // Retrieve stores with associated images
-$selectQuery = "SELECT s.store_id, s.store_name, s.category_id, s.store_description, s.phone_number, GROUP_CONCAT(i.image_url) as images
+$selectQuery = "SELECT s.store_id, s.store_name, s.category_id, s.store_description, s.phone_number, s.total_likes, GROUP_CONCAT(i.image_url) as images
                 FROM stores s
                 LEFT JOIN storeimages i ON s.store_id = i.store_id
                 GROUP BY s.store_id";
@@ -18,6 +18,7 @@ while ($row = $result->fetch_assoc()) {
         "category" => $row["category_id"],
         "description" => $row["store_description"],
         "phone_number" => $row["phone_number"],
+        "total_likes" => $row["total_likes"],
         "images" => explode(",", $row["images"]) // Convert comma-separated images to an array
     );
 }

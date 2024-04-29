@@ -12,6 +12,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+ 
+}
+
+.sign-in-body{
   height: 100vh;
 }
 
@@ -143,81 +147,103 @@ button:hover {
 
 /* STORES */
 
-#storeList{
+#storeList {
   list-style: none;
   display: flex;
+  flex-wrap: wrap; /* Adjust this if you don't want them to wrap */
   gap: 20px;
 }
+
+.store-actions{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.store-actions button {
+    background-color: var(--second-orange);
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .store-actions button:hover {
+    background-color: #d43f00;
+  }
 
 .store-container {
   border: 1px solid #ccc;
   padding: 20px;
   margin-bottom: 20px;
   border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 300px; /* Fixed width */
   display: flex;
   flex-direction: column;
-  background-color: #fff; /* Background color */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow */
-  width: 300px;
 }
 
 .store-images {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
   margin-bottom: 20px;
+  margin-left: -20px; /* Spacing below the slider */
 }
 
-.store-images ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.slides {
   display: flex;
-  flex-wrap: wrap;
+  transition: transform 0.5s ease;
+}
+
+.slide {
+  min-width: 100%;
+  list-style-type: none; /* Ensure list bullets are not shown */
+}
+
+.slide img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.slider-btn{
+  display: flex;
   justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-top: 20px;
+  margin-left: 20px;
 }
 
-.store-images li {
-  margin-right: 10px;
-}
-
-.store-images img {
-  width: 200px;
-  height: 200px;
-  border-radius: 5px;
-}
-
-.store-name {
-  color: #333; /* Store name color */
-  font-size: 1.5em;
-  margin-bottom: 10px;
-}
-
-.store-category,
-.store-description,
-.store-phone,
-.store-likes {
-  color: #555; /* Text color */
-  margin-bottom: 10px;
-}
-
-.store-actions {
-  display: flex;
-  justify-content: space-between;
-  margin: 20px;
-}
-
-.edit-btn,
-.delete-btn {
-  background-color: var(--main-orange); /* Button background color */
-  color: #fff; /* Button text color */
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
+.slide-btn {
   cursor: pointer;
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  color: white;
+  padding: 10px;
+  z-index: 10;
+  background-color: var(--main-orange);
 }
 
-.edit-btn:hover,
-.delete-btn:hover {
-  background-color: var(--second-orange); /* Button hover background color */
+.slide-btn:hover{
+  background-color: var(--second-orange);
 }
+
+.prev {
+  left: 10px;
+}
+
+.next {
+  right: 10px;
+}
+
+
 
 /* EDIT STORE */
 

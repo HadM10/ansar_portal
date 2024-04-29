@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../css/admin_style.css">
 </head>
 
-<body>
+<body class="sign-in-body">
     <div class="container">
         <form id="loginForm" action="" method="post">
             <h2>Sign In</h2>

@@ -338,7 +338,6 @@ function getUpdatedData() {
   return updatedData;
 }
 
-// Function to display stores
 function displayStores(storesData, categories) {
   var storeList = document.getElementById("storeList");
 
@@ -354,39 +353,91 @@ function displayStores(storesData, categories) {
     listItem.setAttribute("data-store-id", store.store_id); // Set a unique identifier
 
     listItem.innerHTML = `
-            <div class="store-container">
-                <div class="store-images">
-                    <ul>
-                        ${store.images
-                          .map(
-                            (image) =>
-                              `<li><img src="${image}" alt="Store Image"></li>`
-                          )
-                          .join("")}
+        <div class="store-container">
+            <div class="store-images">
+                <div class="slider">
+                    <ul class="slides">
+                        ${store.images.map(image => 
+                            `<li class="slide"><img src="${image}" alt="Store Image"></li>`
+                        ).join('')}
                     </ul>
                 </div>
-                <h2 class="store-name"><strong>Name: </strong>${store.store_name}</h2>
-                <p class="store-category"><strong>Category: </strong>${categoryName}</p>
-                <p class="store-description"><strong>Description: </strong>${store.description}</p>
-                <p class="store-phone"><strong>Phone Number: </strong>${store.phone_number}</p>
-                <p class="store-likes"><strong>Total Likes:</strong> ${
-                  store.total_likes
-                }</p>
-                <div class="store-actions">
-                    <button class="edit-btn" onclick="editStore(${
-                      store.store_id
-                    })">Edit</button>
-                    <button class="delete-btn" onclick="confirmDelete(${
-                      store.store_id
-                    })">Delete</button>
+                <div class="slider-btn">
+                <button class="slide-btn prev">❮</button>
+                <button class="slide-btn next">❯</button>
                 </div>
             </div>
-        `;
+            <h2 class="store-name"><strong>Name: </strong>${store.store_name}</h2>
+            <p class="store-category"><strong>Category: </strong>${categoryName}</p>
+            <p class="store-description"><strong>Description: </strong>${store.description}</p>
+            <p class="store-phone"><strong>Phone Number: </strong>${store.phone_number}</p>
+            <p class="store-likes"><strong>Total Likes:</strong> ${store.total_likes}</p>
+            <div class="store-actions">
+                <button class="edit-btn" onclick="editStore(${store.store_id})">Edit</button>
+                <button class="delete-btn" onclick="confirmDelete(${store.store_id})">Delete</button>
+            </div>
+        </div>
+    `;
 
     // Append the list item to the store list
     storeList.appendChild(listItem);
+
+    // Get the store container
+    var storeContainer = listItem.querySelector(".store-container");
+
+    // Add event listeners to the prev and next buttons to move the slide
+    var prevButton = storeContainer.querySelector(".slide-btn.prev");
+    var nextButton = storeContainer.querySelector(".slide-btn.next");
+
+    prevButton.addEventListener("click", function() {
+      moveSlide(storeContainer, -1); // Move the slide to the previous one
+    });
+
+    nextButton.addEventListener("click", function() {
+      moveSlide(storeContainer, 1); // Move the slide to the next one
+    });
   });
 }
+
+
+function moveSlide(storeContainer, n) {
+  console.log("moveSlide function is called with n =", n);
+  const slides = storeContainer.querySelectorAll('.slide');
+  console.log("Number of slides found:", slides.length);
+  let slideIndex = 0;
+
+  // Find the currently active slide
+  slides.forEach((slide, index) => {
+    if (slide.classList.contains('active')) {
+      slideIndex = index;
+    }
+  });
+
+  // Calculate the index of the next slide
+  let nextSlideIndex = slideIndex + n;
+
+  // Ensure the next slide index stays within bounds
+  if (nextSlideIndex < 0) {
+    nextSlideIndex = slides.length - 1;
+  } else if (nextSlideIndex >= slides.length) {
+    nextSlideIndex = 0;
+  }
+
+  // Remove active class from all slides
+  slides.forEach((slide) => {
+    slide.classList.remove('active');
+    slide.style.display = 'none'; // Hide all slides
+  });
+
+  // Add active class to the next slide and display it
+  slides[nextSlideIndex].classList.add('active');
+  slides[nextSlideIndex].style.display = 'block';
+}
+
+
+
+
+
 
 
 // VIEW STORES

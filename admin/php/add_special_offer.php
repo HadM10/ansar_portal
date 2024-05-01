@@ -1,6 +1,6 @@
 <?php
 // admin/php/add_special_offer.php
-include('db_connection.php');
+include ('db_connection.php');
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -9,8 +9,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $store_id = $_POST['store_id'];
         $offer_title = $_POST['offer_title'];
         $offer_description = $_POST['offer_description'];
-        $start_date = $_POST['start_date'];
-        $end_date = $_POST['end_date'];
+        $startDate = date('d-m-Y', strtotime($_POST['start_date']));
+        $endDate = date('d-m-Y', strtotime($_POST['end_date']));
 
         // Handle file upload
         if (isset($_FILES['image_url']) && $_FILES['image_url']['error'] === UPLOAD_ERR_OK) {

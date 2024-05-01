@@ -202,7 +202,7 @@ function editStore(storeId) {
         var storeDetails = JSON.parse(xhr.responseText);
 
         // Fetch categories for the dropdown
-        fetchCategories(storeId, storeDetails);
+        fetchCategories(storeId);
       } catch (error) {
         console.error("Error parsing JSON:", error);
       }
@@ -212,7 +212,7 @@ function editStore(storeId) {
 }
 
 // Function to fetch categories and then call createEditForm
-function fetchCategories(storeId, storeDetails) {
+function fetchCategories(storeId) {
   var xhr = new XMLHttpRequest();
   xhr.open("GET", "php/view_categories.php", true);
   xhr.onreadystatechange = function () {
@@ -221,7 +221,7 @@ function fetchCategories(storeId, storeDetails) {
         var categories = JSON.parse(xhr.responseText);
 
         // Create a dynamic form with fields filled with store details
-        createEditForm(storeId, storeDetails, categories);
+        createEditForm(storeId, categories);
       } catch (error) {
         console.error("Error parsing JSON:", error);
       }
@@ -268,62 +268,59 @@ function saveChanges(storeId, updatedData) {
 }
 
 // Function to create an edit form dynamically
-function createEditForm(storeId, storeDetailsArray, categories) {
-  // Access the first element of the array
-  var storeDetails = storeDetailsArray[0];
+function createEditForm(storeId, categories) {
+  // Fetch store details using AJAX
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "php/view_store_details.php?store_id=" + storeId, true);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      try {
+        var storeDetails = JSON.parse(xhr.responseText);
+        console.log(storeDetails);
 
-  console.log("storeDetails:", storeDetails);
+        // Create the form container and populate it with store details
+        var formContainer = document.createElement("div");
+        formContainer.innerHTML = `
+            <form id="editStoreForm">
+                <label for="editStoreName">Store Name:</label>
+                <input type="text" id="editStoreName" value="${storeDetails.store_name}" required>
 
-  // Rest of the function remains the same...
-  var formContainer = document.createElement("div");
-  formContainer.innerHTML = `
-      <form id="editStoreForm">
-          <label for="editStoreName">Store Name:</label>
-          <input type="text" id="editStoreName" required>
+                <label for="editStoreCategory">Category:</label>
+                <select id="editStoreCategory" required>
+                    ${categories
+                      .map(
+                        (category) =>
+                          `<option value="${category.category_id}">${category.category_name}</option>`
+                      )
+                      .join("")}
+                </select>
 
-          <label for="editStoreCategory">Category:</label>
-          <select id="editStoreCategory" required>
-              ${categories
-                .map(
-                  (category) =>
-                    `<option value="${category.category_id}">${category.category_name}</option>`
-                )
-                .join("")}
-          </select>
+                <label for="editStoreDescription">Description:</label>
+                <textarea id="editStoreDescription" required>${storeDetails.store_description}</textarea>
 
-          <label for="editStoreDescription">Description:</label>
-          <textarea id="editStoreDescription" required></textarea>
+                <label for="editStorePhone">Phone Number:</label>
+                <input type="text" id="editStorePhone" value="${storeDetails.phone_number}" required>
 
-          <label for="editStorePhone">Phone Number:</label>
-          <input type="text" id="editStorePhone" required>
+                <button type="button" onclick="saveChanges(${storeId}, getUpdatedData())">Save Changes</button>
+            </form>
+        `;
 
-          <button type="button" onclick="saveChanges(${storeId}, getUpdatedData())">Save Changes</button>
-      </form>
-  `;
+        // Set the selected category in the dropdown
+        var editStoreCategorySelect = formContainer.querySelector("#editStoreCategory");
+        editStoreCategorySelect.value = storeDetails.category_id;
 
-  // Set the values in the form fields
-  var editStoreNameInput = formContainer.querySelector("#editStoreName");
-  var editStoreCategorySelect =
-    formContainer.querySelector("#editStoreCategory");
-  var editStoreDescriptionTextarea = formContainer.querySelector(
-    "#editStoreDescription"
-  );
-  var editStorePhoneInput = formContainer.querySelector("#editStorePhone");
-
-  editStoreNameInput.value = storeDetails.store_name;
-  editStoreDescriptionTextarea.value = storeDetails.description;
-  editStorePhoneInput.value = storeDetails.phone_number;
-
-  // Set the selected category in the dropdown
-  editStoreCategorySelect.value = storeDetails.category;
-
-  // Replace the existing store container with the edit form
-  var existingStoreContainer = document
-    .getElementById("storeList")
-    .querySelector(`[data-store-id="${storeId}"]`);
-  existingStoreContainer.innerHTML = "";
-  existingStoreContainer.appendChild(formContainer);
+        // Replace the existing store container with the edit form
+        var existingStoreContainer = document.getElementById("storeList").querySelector(`[data-store-id="${storeId}"]`);
+        existingStoreContainer.innerHTML = "";
+        existingStoreContainer.appendChild(formContainer);
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
+      }
+    }
+  };
+  xhr.send();
 }
+
 
 // Function to get updated data from the edit form
 function getUpdatedData() {
@@ -770,21 +767,23 @@ function displayOffers(offersData) {
   offerList.innerHTML = ""; // Clear the previous content
 
   offersData.forEach(function (offer) {
-    var offerItem = document.createElement("li");
-    offerItem.innerHTML = `
-    <h3>${offer.offer_title}</h3>
-    <p>${offer.offer_description}</p>
-    <p>Start Date: ${offer.start_date}</p>
-    <p>End Date: ${offer.end_date}</p>
+    var offerContainer = document.createElement("div");
+    offerContainer.classList.add("offer-container");
+  
+    offerContainer.innerHTML = `
     <img src="${offer.image_url}" alt="${offer.offer_title} Image" class="offer-image">
-    <div>
-        <button onclick="editOffer(${offer.offer_id})">Edit</button>
-        <button onclick="deleteOffer(${offer.offer_id})">Delete</button>
-    </div>
-`;
-
-
-    offerList.appendChild(offerItem);
+      <h3 class="offer-name"><Strong>Name: </Strong>${offer.offer_title}</h3>
+      <p><Strong>Description:</Strong> ${offer.offer_description}</p>
+      <p><Strong>Start Date:</Strong> ${offer.start_date}</p>
+      <p><Strong>End Date:</Strong> ${offer.end_date}</p>
+      <p> <Strong>Store:</Strong> ${offer.store_name}</p>
+      <div class="offer-actions">
+          <button onclick="editOffer(${offer.offer_id})">Edit</button>
+          <button onclick="deleteOffer(${offer.offer_id})">Delete</button>
+      </div>
+    `;
+  
+    offerList.appendChild(offerContainer);
   });
 }
 
@@ -1240,7 +1239,7 @@ function displayNews(newsData) {
     var listItem = document.createElement("li");
     listItem.innerHTML = `
             <div class="news-container">
-                <img class="news-image" src="ansar_portal/${news.image_url}" alt="News Image">
+                <img class="news-image" src="${news.image_url}" alt="News Image">
                 <h2 class="news-title">${news.title}</h2>
                 <p class="news-content">${news.content}</p>
                 <p class="news-publication-date"><strong>Publication Date:</strong> ${news.publication_date}</p>

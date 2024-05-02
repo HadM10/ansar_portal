@@ -763,15 +763,15 @@ function fetchAndDisplayOffers() {
 
 // Function to display offers
 function displayOffers(offersData) {
-  
   offerList.innerHTML = ""; // Clear the previous content
 
   offersData.forEach(function (offer) {
     var offerContainer = document.createElement("div");
     offerContainer.classList.add("offer-container");
-  
+    offerContainer.setAttribute("data-offer-id", offer.offer_id); // Add data-offer-id attribute
+
     offerContainer.innerHTML = `
-    <img src="${offer.image_url}" alt="${offer.offer_title} Image" class="offer-image">
+      <img src="${offer.image_url}" alt="${offer.offer_title} Image" class="offer-image">
       <h3 class="offer-name"><Strong>Name: </Strong>${offer.offer_title}</h3>
       <p><Strong>Description:</Strong> ${offer.offer_description}</p>
       <p><Strong>Start Date:</Strong> ${offer.start_date}</p>
@@ -782,10 +782,11 @@ function displayOffers(offersData) {
           <button onclick="deleteOffer(${offer.offer_id})">Delete</button>
       </div>
     `;
-  
+
     offerList.appendChild(offerContainer);
   });
 }
+
 
 // Example usage:
 // Assuming you have an element with ID "viewOffersBtn" for triggering the display
@@ -794,7 +795,7 @@ viewOffersBtn.addEventListener("click", function () {
   // Fetch and display offers
   hideAllSections(); // Assuming you have a function to hide other sections
   fetchAndDisplayOffers();
-  offerList.style.display = "block"; // Assuming you have an element with ID "offerList"
+  offerList.style.display = "flex"; // Assuming you have an element with ID "offerList"
 });
 
 // Add Offer Form Submission
@@ -924,27 +925,6 @@ function deleteOffer(offerId) {
   }
 }
 
-// Function to get updated offer data from the edit form
-function getUpdatedOfferData() {
-  var updatedData = {
-    store_id: document.getElementById("editStoreId").value,
-    offer_title: document.getElementById("editOfferTitle").value,
-    offer_description: document.getElementById("editOfferDescription").value,
-    start_date: document.getElementById("editStartDate").value,
-    end_date: document.getElementById("editEndDate").value,
-  };
-
-  // Handle file input
-  var editImageInput = document.getElementById("editImage");
-  if (editImageInput.files.length > 0) {
-    updatedData.image_file = editImageInput.files[0];
-  }
-
-  // Add more fields as needed
-
-  return updatedData;
-}
-
 
 // Function to edit an offer
 function editOffer(offerId) {
@@ -957,7 +937,27 @@ function editOffer(offerId) {
         var offerDetails = JSON.parse(xhr.responseText);
 
         // Create a dynamic form with fields filled with offer details
-        createEditOfferForm(offerId, offerDetails);
+        fetchStoresForEditOffer(offerId);
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
+      }
+    }
+  };
+  xhr.send();
+}
+
+// Function to fetch stores and then call createEditOfferForm
+function fetchStoresForEditOffer(offerId) {
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "php/view_stores.php", true);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      try {
+        var storesData = JSON.parse(xhr.responseText);
+        console.log(storesData);
+
+        // Call createEditOfferForm with the fetched stores data
+        createEditOfferForm(offerId, storesData);
       } catch (error) {
         console.error("Error parsing JSON:", error);
       }
@@ -1009,66 +1009,6 @@ function saveOfferChanges(offerId, updatedData) {
   xhr.send(formData);
 }
 
-// Function to create an edit offer form dynamically
-function createEditOfferForm(offerId, offerDetails) {
-  // Access the first element of the array
-  var offerDetails = offerDetails[0];
-
-  // Rest of the function remains the same...
-  var formContainer = document.createElement("div");
-  formContainer.innerHTML = `
-      <form id="editOfferForm" enctype="multipart/form-data">
-          <label for="editStoreId">Store:</label>
-          <select id="editStoreId" required></select>
-
-          <label for="editOfferTitle">Offer Title:</label>
-          <input type="text" id="editOfferTitle" required>
-
-          <label for="editOfferDescription">Offer Description:</label>
-          <textarea id="editOfferDescription" required></textarea>
-
-          <label for="editStartDate">Start Date:</label>
-          <input type="date" id="editStartDate" required>
-
-          <label for="editEndDate">End Date:</label>
-          <input type="date" id="editEndDate" required>
-
-          <label for="editImage">Image:</label>
-          <input type="file" id="editImage" accept="image/*">
-
-          <button type="button" onclick="saveOfferChanges(${offerId}, getUpdatedOfferData())">Save Changes</button>
-      </form>
-  `;
-
-  // Set the values in the form fields
-  var editStoreIdInput = formContainer.querySelector("#editStoreId");
-  var editOfferTitleInput = formContainer.querySelector("#editOfferTitle");
-  var editOfferDescriptionInput = formContainer.querySelector("#editOfferDescription");
-  var editStartDateInput = formContainer.querySelector("#editStartDate");
-  var editEndDateInput = formContainer.querySelector("#editEndDate");
-
-  editOfferTitleInput.value = offerDetails.offer_title;
-  editOfferDescriptionInput.value = offerDetails.offer_description;
-  editStartDateInput.value = offerDetails.start_date;
-  editEndDateInput.value = offerDetails.end_date;
-
-  // Fetch and populate the store dropdown
-  fetchAndPopulateStoresDropdown(editStoreIdInput, offerDetails.store_id);
-
-  // Get the existing offer container
-  var existingOfferContainer = document
-    .getElementById("offerList")
-    .querySelector(`[data-offer-id="${offerId}"]`);
-
-    var existingOfferContainer = document.getElementById("offerList");
-
-  // If the existing offer container is found, replace its content with the edit form
-
-    existingOfferContainer.innerHTML = "";
-    existingOfferContainer.appendChild(formContainer);
-
-}
-
 
 // Function to fetch and populate the store dropdown in the edit form
 function fetchAndPopulateStoresDropdown(selectElement, selectedStoreId) {
@@ -1086,7 +1026,7 @@ function fetchAndPopulateStoresDropdown(selectElement, selectedStoreId) {
           selectElement.appendChild(option);
         });
 
-        // Set the selected store
+        // Set the selected store based on selectedStoreId
         if (selectedStoreId) {
           selectElement.value = selectedStoreId;
         }
@@ -1098,9 +1038,89 @@ function fetchAndPopulateStoresDropdown(selectElement, selectedStoreId) {
 
   xhr.open("GET", "php/view_stores.php", true);
   xhr.send();
+}
 
 
 
+
+// Function to create an edit offer form dynamically
+function createEditOfferForm(offerId, storesData) {
+  // Fetch offer details using AJAX
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "php/view_offer_details.php?offer_id=" + offerId, true);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      try {
+        var offerDetails = JSON.parse(xhr.responseText);
+
+        // Create the form container and populate it with offer details
+        var formContainer = document.createElement("div");
+        formContainer.innerHTML = `
+          <form id="editOfferForm" enctype="multipart/form-data">
+              <label for="editStoreId">Store:</label>
+              <select id="editStoreId" required>
+                ${storesData
+                  .map(
+                    (store) =>
+                      `<option value="${store.store_id}">${store.store_name}</option>`
+                  )
+                  .join("")}
+              </select>
+
+              <label for="editOfferTitle">Offer Title:</label>
+              <input type="text" id="editOfferTitle" value="${offerDetails.offer_title}" required>
+
+              <label for="editOfferDescription">Offer Description:</label>
+              <textarea id="editOfferDescription" required>${offerDetails.offer_description}</textarea>
+
+              <label for="editStartDate">Start Date:</label>
+              <input type="date" id="editStartDate" value="${offerDetails.start_date}" required>
+
+              <label for="editEndDate">End Date:</label>
+              <input type="date" id="editEndDate" value="${offerDetails.end_date}" required>
+
+              <label for="editImage">Image:</label>
+              <input type="file" id="editImage" accept="image/*">
+
+              <button type="button" onclick="saveOfferChanges(${offerId}, getUpdatedOfferData())">Save Changes</button>
+          </form>
+        `;
+
+          // Set the selected category in the dropdown
+          var editStoreNameSelect = formContainer.querySelector("#editStoreId");
+          editStoreNameSelect.value = offerDetails.store_id;
+
+        // Replace the existing offer container with the edit form
+        var existingOfferContainer = document.getElementById("offerList").querySelector(`[data-offer-id="${offerId}"]`);
+          existingOfferContainer.innerHTML = "";
+          existingOfferContainer.appendChild(formContainer);
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
+      }
+    }
+  };
+  xhr.send();
+}
+
+// Function to get updated offer data from the edit form
+function getUpdatedOfferData() {
+  var updatedData = {
+    store_id: document.getElementById("editStoreId").value,
+    offer_title: document.getElementById("editOfferTitle").value,
+    offer_description: document.getElementById("editOfferDescription").value,
+    start_date: document.getElementById("editStartDate").value,
+    end_date: document.getElementById("editEndDate").value,
+  };
+
+  // Handle file input
+  var editImageInput = document.getElementById("editImage");
+  if (editImageInput.files.length > 0) {
+    updatedData.image_file = editImageInput.files[0];
+  }
+
+  // Add more fields as needed
+
+  return updatedData;
 }
 
 
@@ -1341,9 +1361,10 @@ function displayUploadedImages(imagesData) {
 
   imagesData.forEach(function (image) {
     var imageItem = document.createElement("li");
+    imageItem.classList.add("image-item");
     imageItem.innerHTML = `
       <img src="${image.image_url}" alt="Uploaded Image">
-      <p>Store: ${image.store_name}</p>
+      <p><Strong>Store:</Strong> ${image.store_name}</p>
       <button onclick="confirmDeleteImage(${image.image_id}, ${image.store_id})">Delete</button>
     `;
     uploadedImagesList.appendChild(imageItem);
@@ -1392,7 +1413,7 @@ viewImagesBtn.addEventListener("click", function () {
   // Fetch and display stores when uploading images
   hideAllSections();
   fetchAndDisplayAllImages();
-  uploadedImagesList.style.display = "block"; // Assuming you have an element with ID "uploadImagesForm"
+  uploadedImagesList.style.display = "flex"; // Assuming you have an element with ID "uploadImagesForm"
 });
 
 

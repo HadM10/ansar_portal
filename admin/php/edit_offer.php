@@ -1,12 +1,13 @@
 <?php
 // admin/php/edit_special_offer.php
-include('db_connection.php');
+include ('db_connection.php');
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    if (isset($_POST["offer_id"]) && isset($_POST["offer_title"]) && isset($_POST["offer_description"]) && isset($_POST["start_date"]) && isset($_POST["end_date"])) {
+    if (isset($_POST["offer_id"]) && isset($_POST["store_id"]) && isset($_POST["offer_title"]) && isset($_POST["offer_description"]) && isset($_POST["start_date"]) && isset($_POST["end_date"])) {
         // Retrieve offer data from the form
         $offer_id = $_POST['offer_id'];
+        $storeId = $_POST["store_id"];
         $offer_title = $_POST['offer_title'];
         $offer_description = $_POST['offer_description'];
         $start_date = $_POST['start_date'];
@@ -26,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $image_url = '../assets/images/offers/' . $image_name;
 
                 // Update special offer in the database
-                $updateQuery = "UPDATE offers SET offer_title = '$offer_title', offer_description = '$offer_description', 
+                $updateQuery = "UPDATE offers SET store_id = '$storeId', offer_title = '$offer_title', offer_description = '$offer_description', 
                                 start_date = '$start_date', end_date = '$end_date', image_url = '$image_url' WHERE offer_id = '$offer_id'";
 
                 if ($conn->query($updateQuery) === TRUE) {
@@ -42,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
         } else {
             // No new image file uploaded, update other fields in the database
-            $updateQuery = "UPDATE offers SET offer_title = '$offer_title', offer_description = '$offer_description', 
+            $updateQuery = "UPDATE offers SET store_id = '$storeId', offer_title = '$offer_title', offer_description = '$offer_description', 
                             start_date = '$start_date', end_date = '$end_date' WHERE offer_id = '$offer_id'";
 
             if ($conn->query($updateQuery) === TRUE) {

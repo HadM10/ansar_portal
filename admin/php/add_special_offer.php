@@ -9,8 +9,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $store_id = $_POST['store_id'];
         $offer_title = $_POST['offer_title'];
         $offer_description = $_POST['offer_description'];
-        $startDate = date('d-m-Y', strtotime($_POST['start_date']));
-        $endDate = date('d-m-Y', strtotime($_POST['end_date']));
+        $startDate = date('Y-m-d', strtotime($_POST['start_date']));
+        $endDate = date('Y-m-d', strtotime($_POST['end_date']));
 
         // Handle file upload
         if (isset($_FILES['image_url']) && $_FILES['image_url']['error'] === UPLOAD_ERR_OK) {
@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 // Insert special offer into the database
                 $insertQuery = "INSERT INTO offers (store_id, offer_title, offer_description, start_date, end_date, image_url) 
-                            VALUES ('$store_id', '$offer_title', '$offer_description', '$start_date', '$end_date', '$image_url')";
+                            VALUES ('$store_id', '$offer_title', '$offer_description', '$startDate', '$endDate', '$image_url')";
 
                 if ($conn->query($insertQuery) === TRUE) {
                     // Success message

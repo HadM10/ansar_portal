@@ -10,6 +10,7 @@ const addNews = document.getElementById("addNewsFormContainer");
 const newsList = document.getElementById("newsList");
 const offerList = document.getElementById("offerList");
 const addOffers = document.getElementById("addOfferFormContainer");
+const usersList = document.getElementById("usersList");
 const uploadedImagesList = document.getElementById("uploadedImagesList"); 
 const uploadImagesForm = document.getElementById("uploadImagesForm"); 
 
@@ -22,6 +23,7 @@ const addNewsBtn = document.getElementById("addNewsBtn");
 const viewNewsBtn = document.getElementById("viewNewsBtn");
 const viewOffersBtn = document.getElementById("viewOffersBtn");
 const addOffersBtn = document.getElementById("addOffersBtn");
+const viewUsersBtn = document.getElementById("viewUsersBtn"); 
 const viewImagesBtn = document.getElementById("viewImagesBtn"); 
 const uploadImagesLink = document.getElementById("uploadImagesLink");
 
@@ -37,6 +39,7 @@ function hideAllSections() {
   addOffers.style.display = "none";
   uploadedImagesList.style.display = "none"; 
   uploadImagesForm.style.display = "none";
+  usersList.style.display = "none";
 }
 
 // LOGIN
@@ -1125,64 +1128,6 @@ function getUpdatedOfferData() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Add News Form Submission
 
 document
@@ -1415,6 +1360,64 @@ viewImagesBtn.addEventListener("click", function () {
   fetchAndDisplayAllImages();
   uploadedImagesList.style.display = "flex"; // Assuming you have an element with ID "uploadImagesForm"
 });
+
+// DISPLAY USERS 
+
+// Function to fetch and display users using AJAX
+function fetchAndDisplayUsers() {
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "php/view_all_users.php", true);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      try {
+        var usersData = JSON.parse(xhr.responseText);
+        displayUsers(usersData);
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
+      }
+    }
+  };
+  xhr.send();
+}
+
+// Function to display users on the webpage
+function displayUsers(usersData) {
+  usersList.innerHTML = ""; // Clear previous content
+
+  usersData.forEach(function (user) {
+    var userCard = document.createElement("div");
+    userCard.classList.add("user-card");
+
+    userCard.innerHTML = `
+    <div class="user-info">
+      <h3>User ID: <span class="highlight">${user.user_id}</span></h3>
+      <p><span class="label">Username:</span> <span class="value">${user.username || "N/A"}</span></p>
+      <p><span class="label">Email:</span> <span class="value">${user.email}</span></p>
+      <p><span class="label">Google Id:</span> <span class="value">${user.google_id || "N/A"}</span></p>
+      <p><span class="label">Created At:</span> <span class="value">${user.created_at}</span></p>
+  </div>
+  
+    `;
+
+    usersList.appendChild(userCard);
+  });
+}
+
+// Call the fetchAndDisplayUsers
+viewUsersBtn.addEventListener("click", function () {
+  // Fetch and display users
+  hideAllSections();
+  fetchAndDisplayUsers();
+  usersList.style.display = "flex"; // Assuming you have an element with ID "uploadImagesForm"
+});
+
+
+
+
+
+
+
+
 
 
 }

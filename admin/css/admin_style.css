@@ -28,6 +28,14 @@ body {
   height: 100vh;
 }
 
+#loginForm button{
+  background-color: var(--second-orange);
+}
+
+#loginForm button:hover{
+  background-color: var(--main-orange);
+}
+
 .container {
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -80,7 +88,7 @@ button:hover {
 }
 
 .register-link a {
-  color: #3498db;
+  color: var(--second-orange);
   text-decoration: none;
 }
 
@@ -799,4 +807,36 @@ button:hover {
   background-color: #d43f00;
 }
 
+/* CSS Styles for User Cards */
+
+#usersList{
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.user-card {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.user-info h3 {
+  color: var(--main-gray); /* Orange */
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.user-info .label {
+  color: var(--second-orange); /* Orange */
+  font-weight: bold;
+}
+
+.user-info .value {
+  color: #000; /* Black */
+}
 

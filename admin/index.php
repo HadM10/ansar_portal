@@ -59,8 +59,8 @@ if (!isset($_SESSION['user_id']) || (time() - $_SESSION['login_time'] > 1800)) {
             </li>
             <li><a href="#">Users</a>
                 <ul>
-                    <li><a href="../admin/php/view_users.php">View Users</a></li>
-                    <li><a href="../admin/php/view_user_likes.php">View User Likes</a></li>
+                    <li><a href="#" id="viewUsersBtn">View Users</a></li>
+                    <li><a href="#">View User Likes</a></li>
                 </ul>
             </li>
             <li><a href="#">Payments</a>
@@ -176,6 +176,9 @@ if (!isset($_SESSION['user_id']) || (time() - $_SESSION['login_time'] > 1800)) {
             </form>
 
         </div>
+
+        <!-- Add an empty list with id "usersList" where the users will be displayed -->
+        <ul id="usersList"></ul>
 
         <!-- Upload image -->
 

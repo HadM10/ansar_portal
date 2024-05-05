@@ -16,16 +16,25 @@ if ($result->num_rows > 0) {
         $start_date = date('d-m-Y', strtotime($row["start_date"]));
         $end_date = date('d-m-Y', strtotime($row["end_date"]));
 
-        $offers[] = array(
-            "offer_id" => $row["offer_id"],
-            "store_id" => $row["store_id"],
-            "store_name" => $row["store_name"], // Include store name
-            "offer_title" => $row["offer_title"],
-            "offer_description" => $row["offer_description"],
-            "start_date" => $start_date,
-            "end_date" => $end_date,
-            "image_url" => $row["image_url"]
-        );
+        // Check if the end date is today's date
+        $today_date = date('d-m-Y');
+        if ($end_date == $today_date) {
+            // Delete the offer from the database
+            $offer_id = $row["offer_id"];
+            $deleteQuery = "DELETE FROM offers WHERE offer_id = $offer_id";
+            $conn->query($deleteQuery);
+        } else {
+            $offers[] = array(
+                "offer_id" => $row["offer_id"],
+                "store_id" => $row["store_id"],
+                "store_name" => $row["store_name"], // Include store name
+                "offer_title" => $row["offer_title"],
+                "offer_description" => $row["offer_description"],
+                "start_date" => $start_date,
+                "end_date" => $end_date,
+                "image_url" => $row["image_url"]
+            );
+        }
     }
 }
 

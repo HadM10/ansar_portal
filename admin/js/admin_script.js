@@ -244,6 +244,11 @@ function saveChanges(storeId, updatedData) {
   formData.append("new_category", updatedData.category);
   formData.append("new_description", updatedData.description);
   formData.append("new_phone_number", updatedData.phone);
+  formData.append("new_instagram_url", updatedData.instagram_url);
+  formData.append("new_facebook_url", updatedData.facebook_url);
+  formData.append("new_tiktok_url", updatedData.tiktok_url);
+  formData.append("new_whatsapp_number", updatedData.whatsapp_number);
+  formData.append("new_location", updatedData.location);
 
   // Make an AJAX request to save the changes
   var xhr = new XMLHttpRequest();
@@ -304,6 +309,21 @@ function createEditForm(storeId, categories) {
                 <label for="editStorePhone">Phone Number:</label>
                 <input type="text" id="editStorePhone" value="${storeDetails.phone_number}" required>
 
+                <label for="editStoreInstagram">Instagram:</label>
+                <input type="text" id="editStoreInstagram" value="${storeDetails.instagram_url}" required>
+
+                <label for="editStoreFacebook">Facebook:</label>
+                <input type="text" id="editStoreFacebook" value="${storeDetails.facebook_url}" required>
+
+                <label for="editStoreTiktok">Tiktok:</label>
+                <input type="text" id="editStoreTiktok" value="${storeDetails.tiktok_url}" required>
+
+                <label for="editStoreWhatsapp">Whatsapp:</label>
+                <input type="text" id="editStoreWhatsapp" value="${storeDetails.whatsapp_number}" required>
+
+                <label for="editStoreLocation">Location:</label>
+                <input type="text" id="editStoreLocation" value="${storeDetails.location}" required>                
+
                 <button type="button" onclick="saveChanges(${storeId}, getUpdatedData())">Save Changes</button>
             </form>
         `;
@@ -332,6 +352,11 @@ function getUpdatedData() {
     category: document.getElementById("editStoreCategory").value,
     description: document.getElementById("editStoreDescription").value,
     phone: document.getElementById("editStorePhone").value,
+    instagram_url: document.getElementById("editStoreInstagram").value,
+    facebook_url: document.getElementById("editStoreFacebook").value,
+    tiktok_url: document.getElementById("editStoreTiktok").value,
+    whatsapp_number: document.getElementById("editStoreWhatsapp").value,
+    location: document.getElementById("editStoreLocation").value,
     // Add more fields as needed
   };
 
@@ -372,6 +397,11 @@ function displayStores(storesData, categories) {
             <p class="store-description"><strong>Description: </strong>${store.description}</p>
             <p class="store-phone"><strong>Phone Number: </strong>${store.phone_number}</p>
             <p class="store-likes"><strong>Total Likes:</strong> ${store.total_likes}</p>
+            <p class="store-socials"><strong>Instagram:</strong> ${store.instagram_url !== 'null' ? store.instagram_url : "N/A"}</p>
+            <p class="store-socials"><strong>Facebook:</strong> ${store.facebook_url !== 'null' ? store.facebook_url : "N/A"}</p>
+            <p class="store-socials"><strong>Tiktok:</strong> ${store.tiktok_url !== 'null' ? store.tiktok_url : "N/A"}</p>
+            <p class="store-socials"><strong>Whatsapp:</strong> ${store.whatsapp_number !== 'null' ? store.whatsapp_number : "N/A"}</p>
+            <p class="store-location"><strong>Location:</strong> ${store.location}</p>
             <div class="store-actions">
                 <button class="edit-btn" onclick="editStore(${store.store_id})">Edit</button>
                 <button class="delete-btn" onclick="confirmDelete(${store.store_id})">Delete</button>
@@ -504,6 +534,13 @@ document
     var category = document.getElementById("category_id").value;
     var description = document.getElementById("store_description").value;
     var phone = document.getElementById("phone_number").value;
+    var instagram = document.getElementById("instagram").value;
+    var facebook = document.getElementById("facebook").value;
+    var tiktok = document.getElementById("tiktok").value;
+    var whatsapp = document.getElementById("whatsapp").value;
+    var location = document.getElementById("location").value;
+
+    console.log(instagram, facebook, tiktok, whatsapp, location);
 
     // Create XMLHttpRequest object (or use fetch API)
     var xhr = new XMLHttpRequest();
@@ -518,7 +555,6 @@ document
         console.log(xhr.responseText);
         try {
           var response = JSON.parse(xhr.responseText);
-
           if (response.status === "success") {
             alert(response.message);
             // You may perform additional actions on successful store addition
@@ -540,7 +576,17 @@ document
         "&store_description=" +
         description +
         "&phone_number=" +
-        phone
+        phone +
+        "&tiktok=" +
+        tiktok +
+        "&facebook=" +
+        facebook +
+        "&whatsapp=" +
+        whatsapp +
+        "&instagram=" +
+        instagram +
+        "&location=" +
+        location
     );
   });
 

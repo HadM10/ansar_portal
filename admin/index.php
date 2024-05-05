@@ -102,6 +102,23 @@ if (!isset($_SESSION['user_id']) || (time() - $_SESSION['login_time'] > 1800)) {
                 <label for="phone_number">Phone Number:</label>
                 <input type="text" id="phone_number" name="phone_number" required>
 
+                <label for="instagram">Instagram:</label>
+                <input type="text" id="instagram" name="instagram" required>
+
+                <label for="facebook">Facebook:</label>
+                <input type="text" id="facebook" name="facebook" required>
+
+                <label for="tiktok">Tiktok:</label>
+                <input type="text" id="tiktok" name="tiktok" required>
+
+                <label for="whatsapp">Whatsapp:</label>
+                <input type="text" id="whatsapp" name="whatsapp" required>
+
+                <label for="location">Location:</label>
+                <input type="text" id="location" name="location" required>
+
+
+
                 <button type="submit">Add Store</button>
             </form>
         </div>

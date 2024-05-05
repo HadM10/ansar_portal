@@ -12,7 +12,7 @@ if (isset($_GET['store_id'])) {
     $storeId = $_GET['store_id'];
     // Retrieve store details with associated category name, images, and social media URLs
     $selectQuery = "SELECT s.store_id, s.store_name, c.category_name, s.store_description, s.phone_number, s.total_likes, GROUP_CONCAT(i.image_url) as images,
-                    s.facebook_url, s.instagram_url, s.whatsapp_number, s.tiktok_url
+                    s.facebook_url, s.instagram_url, s.whatsapp_number, s.tiktok_url, s.location
                     FROM stores s
                     LEFT JOIN storeimages i ON s.store_id = i.store_id
                     LEFT JOIN categories c ON s.category_id = c.category_id
@@ -33,7 +33,8 @@ if (isset($_GET['store_id'])) {
             "facebook_url" => $row["facebook_url"],
             "instagram_url" => $row["instagram_url"],
             "whatsapp_number" => $row["whatsapp_number"],
-            "tiktok_url" => $row["tiktok_url"]
+            "tiktok_url" => $row["tiktok_url"],
+            "location" => $row["location"]
         );
         header('Content-Type: application/json');
         echo json_encode($storeDetails);

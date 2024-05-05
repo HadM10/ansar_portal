@@ -7,7 +7,7 @@ if (isset($_GET['store_id'])) {
     $storeId = $_GET['store_id'];
 
     // Query to fetch store details
-    $storeQuery = "SELECT store_id, store_name, store_description, category_id, phone_number FROM stores WHERE store_id = ?";
+    $storeQuery = "SELECT store_id, store_name, store_description, category_id, phone_number, tiktok_url, facebook_url, whatsapp_number, instagram_url, location FROM stores WHERE store_id = ?";
 
     // Prepare and execute the query
     $stmt = $conn->prepare($storeQuery);
@@ -15,16 +15,21 @@ if (isset($_GET['store_id'])) {
     $stmt->execute();
 
     // Bind result variables
-    $stmt->bind_result($storeId, $storeName, $storeDescription, $category_id, $phoneNumber);
+    $stmt->bind_result($storeId, $storeName, $storeDescription, $categoryId, $phoneNumber, $tiktokUrl, $facebookUrl, $whatsappNumber, $instagramUrl, $location);
 
     // Fetch store details
     if ($stmt->fetch()) {
         $storeDetails = [
             'store_id' => $storeId,
             'store_name' => $storeName,
-            "category_id" => $category_id,
+            'category_id' => $categoryId,
             'store_description' => $storeDescription,
-            'phone_number' => $phoneNumber
+            'phone_number' => $phoneNumber,
+            'tiktok_url' => $tiktokUrl,
+            'facebook_url' => $facebookUrl,
+            'whatsapp_number' => $whatsappNumber,
+            'instagram_url' => $instagramUrl,
+            'location' => $location
         ];
         // Encode the array as JSON and output
         echo json_encode($storeDetails);

@@ -22,7 +22,7 @@
         </form>
 
         <div class="register-link">
-            <p>Don't have an account? <a href="register.html">Register here</a></p>
+            <p>Don't have an account? <a href="register.php">Register here</a></p>
         </div>
     </div>
     <script src="../js/admin_script.js"></script>

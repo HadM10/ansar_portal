@@ -33,6 +33,9 @@ if (!isset($_SESSION['user_id']) || (time() - $_SESSION['login_time'] > 1800)) {
     <aside class="sidebar">
         <h1>Admin Panel</h1>
         <ul>
+
+            <li><a href="#" id="dashboardBtn">Dashboard</a></li>
+
             <li><a href="#">Stores</a>
                 <ul>
                     <li><a href="#" id="viewStoresBtn">View Stores</a></li>
@@ -63,12 +66,9 @@ if (!isset($_SESSION['user_id']) || (time() - $_SESSION['login_time'] > 1800)) {
                     <li><a href="#">View User Likes</a></li>
                 </ul>
             </li>
-            <li><a href="#">Payments</a>
-                <ul>
-                    <li><a href="../admin/php/view_payments.php">View Payments</a></li>
-                </ul>
-            </li>
-            <li><a href="#">Images</a>
+            <li><a href="#" id="paymentBtn">View Payments</a></li>
+
+            <li><a href=" #">Images</a>
                 <ul>
                     <li><a href="#" id="viewImagesBtn">View Images</a></li>
                     <li><a href="#" id="uploadImagesLink">Upload Image</a></li>
@@ -80,6 +80,16 @@ if (!isset($_SESSION['user_id']) || (time() - $_SESSION['login_time'] > 1800)) {
 
     <div class="content">
         <h1 id="admin-welcome">Welcome to the Admin Panel</h1>
+
+        <!-- Dashboard Section -->
+        <section id="dashboardSection" style="display: none">
+            <div class="dashboard-title">
+                <h2>Dashboard</h2>
+                <p id='total-admins'>
+                </p>
+            </div>
+            <div id="dashboardStats"></div>
+        </section>
 
         <!-- Add an empty list with id "storeList" where the stores will be displayed -->
         <ul id="storeList"></ul>
@@ -214,6 +224,9 @@ if (!isset($_SESSION['user_id']) || (time() - $_SESSION['login_time'] > 1800)) {
         </form>
         <ul id="uploadedImagesList"></ul>
 
+        <div id="paymentSection">
+            <!-- This section will be populated dynamically using JavaScript -->
+        </div>
 
     </div>
 

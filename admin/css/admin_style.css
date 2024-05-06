@@ -24,15 +24,15 @@ body {
  
 }
 
-.sign-in-body{
+.sign-in-body, .register-body{
   height: 100vh;
 }
 
-#loginForm button{
+#loginForm button, #registerForm button{
   background-color: var(--second-orange);
 }
 
-#loginForm button:hover{
+#loginForm button:hover, #registerForm button:hover{
   background-color: var(--main-orange);
 }
 
@@ -82,17 +82,17 @@ button:hover {
   background-color: #2980b9;
 }
 
-.register-link {
+.register-link, .login-link {
   margin-top: 20px;
   text-align: center;
 }
 
-.register-link a {
+.register-link a, .login-link a {
   color: var(--second-orange);
   text-decoration: none;
 }
 
-.register-link a:hover {
+.register-link a:hover, .login-link a:hover {
   text-decoration: underline;
 }
 
@@ -840,3 +840,81 @@ button:hover {
   color: #000; /* Black */
 }
 
+/* DASHBOARD */
+
+/* Dashboard container styling */
+
+#dashboardStats{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+#dashboardSection h2{
+  text-align: center;
+  margin-bottom: 10%;
+  margin-right: auto;
+}
+
+.dashboard {
+  padding: 20px; /* Add padding around the dashboard */
+  background-color: #f8f9fa; /* Set background color */
+}
+
+.dashboard-title{
+  display: flex;
+  align-items: center;
+}
+
+.dashboard-title p{
+  margin-bottom: 10%;
+ float: left;
+ margin-right: 0;
+}
+
+
+/* Dashboard statistics styling */
+.dashboard-stat {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: #fff; /* Set background color for each statistic */
+  border-radius: 8px; /* Add border radius for rounded corners */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Add box shadow for depth */
+}
+
+.stat-icon {
+  width: 60px; /* Adjust icon container width */
+  height: 60px; /* Adjust icon container height */
+  background-color: var(--second-orange); /* Background color for the icon container */
+  border-top-left-radius: 8px; /* Add rounded corners only to the top left */
+  border-bottom-left-radius: 8px; /* Add rounded corners only to the bottom left */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.stat-icon i {
+  color: #fff; /* Icon color */
+  font-size: 30px; /* Icon size */
+}
+
+.stat-info {
+  flex-grow: 1; /* Expand to fill remaining space */
+  padding: 20px; /* Add padding around statistic info */
+}
+
+.stat-label {
+  margin-bottom: 5px; /* Adjust margin between label and value */
+  font-size: 15px; /* Adjust font size of label */
+  color: #495057; /* Label color */
+}
+
+.stat-value {
+  font-size: 20px; /* Adjust font size of value */
+  font-weight: bold; /* Make value bold */
+  color: #343a40; /* Value color */
+}

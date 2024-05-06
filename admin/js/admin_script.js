@@ -13,6 +13,9 @@ const addOffers = document.getElementById("addOfferFormContainer");
 const usersList = document.getElementById("usersList");
 const uploadedImagesList = document.getElementById("uploadedImagesList"); 
 const uploadImagesForm = document.getElementById("uploadImagesForm"); 
+const dashboardSection = document.getElementById('dashboardSection');
+const dashboardStats = document.getElementById('dashboardStats');
+const paymentSection = document.getElementById('paymentSection');
 
 // CONTENT NAV-LINKS
 const viewStoresBtn = document.getElementById("viewStoresBtn");
@@ -26,6 +29,8 @@ const addOffersBtn = document.getElementById("addOffersBtn");
 const viewUsersBtn = document.getElementById("viewUsersBtn"); 
 const viewImagesBtn = document.getElementById("viewImagesBtn"); 
 const uploadImagesLink = document.getElementById("uploadImagesLink");
+const dashboardBtn = document.getElementById('dashboardBtn');
+const paymentBtn = document.getElementById('paymentBtn');
 
 function hideAllSections() {
   storeList.style.display = "none";
@@ -40,6 +45,8 @@ function hideAllSections() {
   uploadedImagesList.style.display = "none"; 
   uploadImagesForm.style.display = "none";
   usersList.style.display = "none";
+  dashboardSection.style.display = "none";
+  paymentSection.style.display = "none";
 }
 
 // LOGIN
@@ -88,39 +95,40 @@ if (window.location.pathname.includes("login.php")) {
 // REGISTER
 
 if (window.location.pathname.includes("register.php")) {
-  document
-    .getElementById("registerForm")
-    .addEventListener("submit", function (event) {
-      event.preventDefault();
+  document.getElementById("registerForm").addEventListener("submit", function (event) {
+    event.preventDefault();
 
-      // Gather form data
-      var username = document.getElementById("username").value;
-      var password = document.getElementById("password").value;
+    var registrationCode = document.getElementById("registration_code").value;
+    var username = document.getElementById("username").value;
+    var password = document.getElementById("password").value;
 
-      // Create XMLHttpRequest object
-      var xhr = new XMLHttpRequest();
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "register_admin.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-      // Configure the request
-      xhr.open("POST", "register_admin.php", true);
-      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-      // Define the callback function
-      xhr.onload = function () {
-        var response = JSON.parse(xhr.responseText);
-        if (response.message) {
-          alert(response.message);
-          window.location.href = "login.php";
-          // Redirect to the login page or perform any other action on successful registration
-        } else {
-          alert(response.error);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                try {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.message) {
+                        alert(response.message);
+                        window.location.href = "/ansar_portal/admin/php/login.php";
+                    } else if (response.error) {
+                        alert(response.error);
+                    }
+                } catch (error) {
+                    console.error("Error parsing JSON:", error);
+                }
+            } else {
+                console.error("Request failed with status:", xhr.status);
+            }
         }
-      };
+    };
 
-      // Send the request with form data
-      xhr.send("username=" + username + "&password=" + password);
-    });
+    xhr.send("registration_code=" + registrationCode + "&username=" + username + "&password=" + password);
+});
 }
-
 // LOGOUT
 
 if (window.location.pathname.includes("index.php")) {
@@ -1456,6 +1464,159 @@ viewUsersBtn.addEventListener("click", function () {
   fetchAndDisplayUsers();
   usersList.style.display = "flex"; // Assuming you have an element with ID "uploadImagesForm"
 });
+
+// DASHBOARD
+
+// Function to fetch dashboard statistics from the server
+function fetchDashboardStats() {
+  fetch('php/dashboard.php')
+      .then(response => response.json())
+      .then(data => {
+          // Display the dashboard statistics on the page
+          const dashboardStats = document.getElementById('dashboardStats');
+          const totalAdmins = document.getElementById('total-admins');
+          totalAdmins.innerHTML = ` 
+          <p ><Strong>Total Admins:</Strong> ${data.total_admins}</p>
+          `
+          dashboardStats.innerHTML = ` 
+          <div class="dashboard-stat">
+              <div class="stat-icon">
+                  <i class="fas fa-users"></i>
+              </div>
+              <div class="stat-info">
+                  <p class="stat-label">Total Users:</p>
+                  <p class="stat-value">${data.total_users}</p>
+              </div>
+          </div>
+          <div class="dashboard-stat">
+              <div class="stat-icon">
+                  <i class="fas fa-store"></i>
+              </div>
+              <div class="stat-info">
+                  <p class="stat-label">Total Stores:</p>
+                  <p class="stat-value">${data.total_stores}</p>
+              </div>
+          </div>
+          <div class="dashboard-stat">
+              <div class="stat-icon">
+                  <i class="fas fa-tags"></i>
+              </div>
+              <div class="stat-info">
+                  <p class="stat-label">Total Offers:</p>
+                  <p class="stat-value">${data.total_offers}</p>
+              </div>
+          </div>
+          <div class="dashboard-stat">
+              <div class="stat-icon">
+                  <i class="fas fa-newspaper"></i>
+              </div>
+              <div class="stat-info">
+                  <p class="stat-label">Total News:</p>
+                  <p class="stat-value">${data.total_news}</p>
+              </div>
+          </div>
+          <div class="dashboard-stat">
+              <div class="stat-icon">
+                  <i class="fas fa-list"></i>
+              </div>
+              <div class="stat-info">
+                  <p class="stat-label">Total Categories:</p>
+                  <p class="stat-value">${data.total_categories}</p>
+              </div>
+          </div>
+          <!-- Add more statistics as needed -->
+      `;
+      })
+      .catch(error => {
+          console.error('Error fetching dashboard stats:', error);
+      });
+}
+// Call the fetchAndDisplayUsers
+dashboardBtn.addEventListener("click", function () {
+  // Fetch and display users
+  hideAllSections();
+  fetchDashboardStats();
+  dashboardSection.style.display = "block"; // Assuming you have an element with ID "uploadImagesForm"
+});
+
+
+
+
+
+// PAYMENTS
+
+// // Function to fetch and display stores with payment status using AJAX
+// function fetchAndDisplayStoresWithPaymentStatus() {
+//   var xhr = new XMLHttpRequest();
+//   xhr.open("GET", "php/view_stores.php", true);
+//   xhr.onreadystatechange = function () {
+//     if (xhr.readyState === 4 && xhr.status === 200) {
+//       try {
+//         var storesData = JSON.parse(xhr.responseText);
+//         displayStoresWithPaymentStatus(storesData);
+//       } catch (error) {
+//         console.error("Error parsing JSON:", error);
+//       }
+//     }
+//   };
+//   xhr.send();
+// }
+
+// // Function to display stores with payment status
+// function displayStoresWithPaymentStatus(storesData) {
+//   paymentSection.innerHTML = ""; // Clear previous content
+
+//   storesData.forEach(function(store) {
+//     var storeElement = document.createElement("div");
+//     storeElement.classList.add("store");
+
+//     // Display store name
+//     var storeName = document.createElement("p");
+//     storeName.textContent = store.store_name;
+//     storeElement.appendChild(storeName);
+
+//     // Create button for payment status
+//     var paymentButton = document.createElement("button");
+//     paymentButton.textContent = "Unpaid"; // Default status
+//     paymentButton.dataset.storeId = store.store_id; // Store ID as data attribute
+//     paymentButton.addEventListener("click", togglePaymentStatus);
+//     storeElement.appendChild(paymentButton);
+
+//     paymentSection.appendChild(storeElement);
+//   });
+// }
+
+
+// // Function to toggle payment status
+// function togglePaymentStatus(event) {
+//   var storeId = event.target.dataset.storeId;
+//   var paymentDate = new Date().toISOString().slice(0, 10); // Get current date
+  
+//   var xhr = new XMLHttpRequest();
+//   xhr.open("POST", "php/view_payments.php", true);
+//   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+//   xhr.onreadystatechange = function () {
+//     if (xhr.readyState === 4 && xhr.status === 200) {
+//       // Update button text based on response
+//       if (xhr.responseText === "Payment submitted successfully.") {
+//         event.target.textContent = "Paid";
+//         event.target.disabled = true; // Disable button after payment
+//       } else {
+//         console.error("Error submitting payment:", xhr.responseText);
+//       }
+//     }
+//   };
+//   xhr.send("store_id=" + storeId + "&payment_date=" + paymentDate);
+// }
+
+// // Call the fetchAndDisplayUsers
+// paymentBtn.addEventListener("click", function () {
+//   // Fetch and display users
+//   hideAllSections();
+//   // Call the function to fetch and display stores with payment status
+//   fetchAndDisplayStoresWithPaymentStatus();
+//   paymentSection.style.display = "block"; // Assuming you have an element with ID "uploadImagesForm"
+// });
 
 
 

@@ -1,28 +1,43 @@
 <?php
-// admin/php/view_payments.php
-include('db_connection.php');
+// Include database connection
+include ('db_connection.php');
 
-// Retrieve payment information from the database
-$selectQuery = "SELECT store_id, amount, payment_date
-                FROM payments";
-$result = $conn->query($selectQuery);
+// Function to handle payment submission
+function submitPayment($conn, $store_id, $payment_date)
+{
+    // Validate input data
+    if (empty($store_id) || empty($payment_date)) {
+        return "Please provide all required fields.";
+    }
 
-$payments = array();
+    // Set constant amount
+    $amount = 10;
 
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $payments[] = array(
-            "store_id" => $row["store_id"],
-            "amount" => $row["amount"],
-            "payment_date" => $row["payment_date"]
-        );
+    // SQL query to insert payment into payments table
+    $sql = "INSERT INTO payments (store_id, amount, payment_date) VALUES ('$store_id', '$amount', '$payment_date')";
+
+    if ($conn->query($sql) === TRUE) {
+        return "Payment submitted successfully.";
+    } else {
+        return "Error: " . $sql . "<br>" . $conn->error;
     }
 }
 
-// Close the database connection
-$conn->close();
+// Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Retrieve form data
+    $store_id = $_POST["store_id"];
+    $payment_date = $_POST["payment_date"];
 
-// Output JSON response
-header('Content-Type: application/json');
-echo json_encode($payments);
+    // Submit payment
+    $result = submitPayment($conn, $store_id, $payment_date);
+
+    // Output result
+    echo $result;
+} else {
+    echo "Invalid request."; // Handle if request method is not POST
+}
+
+// Close database connection
+$conn->close();
 ?>

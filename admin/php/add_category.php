@@ -1,6 +1,6 @@
 <?php
 // admin/php/add_category.php
-include('db_connection.php');
+include ('db_connection.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Assuming you receive category data including the image file from the request
@@ -17,18 +17,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($conn->query($insertQuery)) {
             // Respond with success message
-            echo json_encode(["message" => "Category added successfully"]);
+            echo json_encode(["status" => "success", "message" => "Category added successfully"]);
         } else {
             // Respond with database error message
-            echo json_encode(["error" => "Database error"]);
+            echo json_encode(["status" => "error", "message" => "Database error"]);
         }
     } else {
         // Respond with error message for missing category_name or category_image
-        echo json_encode(["error" => "Missing category_name or category_image"]);
+        echo json_encode(["status" => "error", "message" => "Missing category_name or category_image"]);
     }
 } else {
     // Respond with error for invalid request method
-    echo json_encode(["error" => "Invalid request method"]);
+    echo json_encode(["status" => "error", "message" => "Invalid request method"]);
 }
 
 // Close the database connection

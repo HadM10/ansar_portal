@@ -40,6 +40,7 @@ if (!isset($_SESSION['user_id']) || (time() - $_SESSION['login_time'] > 1800)) {
                 <ul>
                     <li><a href="#" id="viewStoresBtn">View Stores</a></li>
                     <li><a href="#" id="addStoresBtn">Add Store</a></li>
+                    <li><a href="#" id="archivedStoresBtn">Archived Stores</a></li>
                 </ul>
             </li>
             <li><a href="#">Categories</a>
@@ -132,6 +133,8 @@ if (!isset($_SESSION['user_id']) || (time() - $_SESSION['login_time'] > 1800)) {
                 <button type="submit">Add Store</button>
             </form>
         </div>
+
+        <ul id="archivedStoreList"></ul>
 
         <!-- Add an empty list with id "categoryList" where the categories will be displayed -->
         <ul id="categoryList"></ul>

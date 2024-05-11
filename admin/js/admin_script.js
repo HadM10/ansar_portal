@@ -16,6 +16,7 @@ const uploadImagesForm = document.getElementById("uploadImagesForm");
 const dashboardSection = document.getElementById('dashboardSection');
 const dashboardStats = document.getElementById('dashboardStats');
 const paymentSection = document.getElementById('paymentSection');
+const archivedStoresList = document.getElementById('archivedStoreList');
 
 // CONTENT NAV-LINKS
 const viewStoresBtn = document.getElementById("viewStoresBtn");
@@ -31,6 +32,7 @@ const viewImagesBtn = document.getElementById("viewImagesBtn");
 const uploadImagesLink = document.getElementById("uploadImagesLink");
 const dashboardBtn = document.getElementById('dashboardBtn');
 const paymentBtn = document.getElementById('paymentBtn');
+const archivedStoresBtn = document.getElementById("archivedStoresBtn");
 
 function hideAllSections() {
   storeList.style.display = "none";
@@ -47,6 +49,7 @@ function hideAllSections() {
   usersList.style.display = "none";
   dashboardSection.style.display = "none";
   paymentSection.style.display = "none";
+  archivedStoresList.style.display = "none";
 }
 
 // LOGIN
@@ -162,6 +165,118 @@ if (window.location.pathname.includes("index.php")) {
     // Send the request
     xhr.send();
   });
+
+
+// ARCHIVE STORES
+
+function archiveStore(storeId) {
+  // Confirm if the user wants to archive the store
+  var confirmArchive = confirm("Are you sure you want to archive this store?");
+
+  if (confirmArchive) {
+      // Make an AJAX request to update the store's archived status
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "php/archive_store.php", true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+              // Check if the archive operation was successful
+              var response = JSON.parse(xhr.responseText);
+              if (response.status === "success") {
+                  // Refresh the store list to reflect changes
+                  fetchAndDisplayStores();
+              } else {
+                  alert("Failed to archive store: " + response.message);
+              }
+          }
+      };
+      // Send the store ID in the request body
+      xhr.send("store_id=" + storeId);
+  }
+}
+
+// VIEW ARCHIVED STORES 
+
+// Function to fetch and display archived stores using AJAX
+function fetchAndDisplayArchivedStores() {
+  var xhr = new XMLHttpRequest();
+
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      try {
+        var storesData = JSON.parse(xhr.responseText);
+        // Filter archived stores
+        var archivedStores = storesData.filter(store => store.archived);
+        displayArchivedStores(archivedStores);
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
+      }
+    }
+  };
+
+  xhr.open("GET", "php/view_stores.php", true);
+  xhr.send();
+}
+
+// Function to display archived stores
+function displayArchivedStores(archivedStores) {
+  var archivedStoresList = document.getElementById("archivedStoreList");
+
+  // Clear existing content
+  archivedStoresList.innerHTML = "";
+
+  archivedStores.forEach(function(store) {
+    // Create a list item for each archived store
+    var listItem = document.createElement("li");
+    listItem.setAttribute("data-store-id", store.store_id); // Set a unique identifier
+
+    listItem.innerHTML = `
+      <div class="store-container">
+          <img src="${store.images[0]}" alt="Store Image" class="store-image">
+          <h2 class="store-name">${store.store_name}</h2>
+          <p class="store-description">${store.description}</p>
+          <div class="store-actions">
+              <button class="restore-btn" onclick="restoreStore(${store.store_id})">Restore</button>
+          </div>
+      </div>
+    `;
+
+    // Append the list item to the archived stores list
+    archivedStoresList.appendChild(listItem);
+  });
+}
+
+
+
+// Call the fetchAndDisplayArchivedStores function when the archivedStoresBtn is clicked
+archivedStoresBtn.addEventListener("click", function () {
+  hideAllSections(); // Hide other sections
+  fetchAndDisplayArchivedStores(); // Fetch and display archived stores
+  archivedStoresList.style.display = "flex"; // Display the archived stores section
+});
+
+function restoreStore(storeId) {
+  // Send an AJAX request to your server to restore the store
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+              // Store restored successfully, you can update the UI or take further actions if needed
+              alert("Store restored successfully!");
+              // Refresh the archived stores list
+              fetchAndDisplayArchivedStores();
+          } else {
+              // Error handling if the request fails
+              alert("Error restoring store: " + xhr.statusText);
+          }
+      }
+  };
+  xhr.open("POST", "php/restore_store.php", true);
+  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhr.send("store_id=" + storeId);
+}
+
+
 
 
 // EDIT AND DELETE STORES
@@ -377,65 +492,70 @@ function displayStores(storesData, categories) {
   // Clear existing content
   storeList.innerHTML = "";
 
-  storesData.forEach(function (store) {
-    // Find the category name based on the category ID
-    var categoryName = categories.find(category => category.category_id === store.category)?.category_name;
+  // Filter out archived stores
+  var activeStores = storesData.filter(store => !store.archived);
 
-    // Create a list item for each store
-    var listItem = document.createElement("li");
-    listItem.setAttribute("data-store-id", store.store_id); // Set a unique identifier
+  activeStores.forEach(function(store) {
+      // Find the category name based on the category ID
+      var categoryName = categories.find(category => category.category_id === store.category)?.category_name;
 
-    listItem.innerHTML = `
-        <div class="store-container">
-            <div class="store-images">
-                <div class="slider">
-                    <ul class="slides">
-                        ${store.images.map(image => 
-                            `<li class="slide"><img src="${image}" alt="Store Image"></li>`
-                        ).join('')}
-                    </ul>
-                </div>
-                <div class="slider-btn">
-                <button class="slide-btn prev">❮</button>
-                <button class="slide-btn next">❯</button>
-                </div>
-            </div>
-            <h2 class="store-name"><strong>Name: </strong>${store.store_name}</h2>
-            <p class="store-category"><strong>Category: </strong>${categoryName}</p>
-            <p class="store-description"><strong>Description: </strong>${store.description}</p>
-            <p class="store-phone"><strong>Phone Number: </strong>${store.phone_number}</p>
-            <p class="store-likes"><strong>Total Likes:</strong> ${store.total_likes}</p>
-            <p class="store-socials"><strong>Instagram:</strong> ${store.instagram_url !== 'null' ? store.instagram_url : "N/A"}</p>
-            <p class="store-socials"><strong>Facebook:</strong> ${store.facebook_url !== 'null' ? store.facebook_url : "N/A"}</p>
-            <p class="store-socials"><strong>Tiktok:</strong> ${store.tiktok_url !== 'null' ? store.tiktok_url : "N/A"}</p>
-            <p class="store-socials"><strong>Whatsapp:</strong> ${store.whatsapp_number !== 'null' ? store.whatsapp_number : "N/A"}</p>
-            <p class="store-location"><strong>Location:</strong> ${store.location}</p>
-            <div class="store-actions">
-                <button class="edit-btn" onclick="editStore(${store.store_id})">Edit</button>
-                <button class="delete-btn" onclick="confirmDelete(${store.store_id})">Delete</button>
-            </div>
-        </div>
-    `;
+      // Create a list item for each store
+      var listItem = document.createElement("li");
+      listItem.setAttribute("data-store-id", store.store_id); // Set a unique identifier
 
-    // Append the list item to the store list
-    storeList.appendChild(listItem);
+      listItem.innerHTML = `
+          <div class="store-container">
+              <div class="store-images">
+                  <div class="slider">
+                      <ul class="slides">
+                          ${store.images.map(image =>
+                              `<li class="slide"><img src="${image}" alt="Store Image"></li>`
+                          ).join('')}
+                      </ul>
+                  </div>
+                  <div class="slider-btn">
+                  <button class="slide-btn prev">❮</button>
+                  <button class="slide-btn next">❯</button>
+                  </div>
+              </div>
+              <h2 class="store-name"><strong>Name: </strong>${store.store_name}</h2>
+              <p class="store-category"><strong>Category: </strong>${categoryName}</p>
+              <p class="store-description"><strong>Description: </strong>${store.description}</p>
+              <p class="store-phone"><strong>Phone Number: </strong>${store.phone_number}</p>
+              <p class="store-likes"><strong>Total Likes:</strong> ${store.total_likes}</p>
+              <p class="store-socials"><strong>Instagram:</strong> ${store.instagram_url !== 'null' ? store.instagram_url : "N/A"}</p>
+              <p class="store-socials"><strong>Facebook:</strong> ${store.facebook_url !== 'null' ? store.facebook_url : "N/A"}</p>
+              <p class="store-socials"><strong>Tiktok:</strong> ${store.tiktok_url !== 'null' ? store.tiktok_url : "N/A"}</p>
+              <p class="store-socials"><strong>Whatsapp:</strong> ${store.whatsapp_number !== 'null' ? store.whatsapp_number : "N/A"}</p>
+              <p class="store-location"><strong>Location:</strong> ${store.location}</p>
+              <div class="store-actions">
+                  <button class="edit-btn" onclick="editStore(${store.store_id})">Edit</button>
+                  <button class="delete-btn" onclick="confirmDelete(${store.store_id})">Delete</button>
+                  <button class="archive-btn" onclick="archiveStore(${store.store_id})">Archive</button>
+              </div>
+          </div>
+      `;
 
-    // Get the store container
-    var storeContainer = listItem.querySelector(".store-container");
+      // Append the list item to the store list
+      storeList.appendChild(listItem);
 
-    // Add event listeners to the prev and next buttons to move the slide
-    var prevButton = storeContainer.querySelector(".slide-btn.prev");
-    var nextButton = storeContainer.querySelector(".slide-btn.next");
+      // Get the store container
+      var storeContainer = listItem.querySelector(".store-container");
 
-    prevButton.addEventListener("click", function() {
-      moveSlide(storeContainer, -1); // Move the slide to the previous one
-    });
+      // Add event listeners to the prev and next buttons to move the slide
+      var prevButton = storeContainer.querySelector(".slide-btn.prev");
+      var nextButton = storeContainer.querySelector(".slide-btn.next");
 
-    nextButton.addEventListener("click", function() {
-      moveSlide(storeContainer, 1); // Move the slide to the next one
-    });
+      prevButton.addEventListener("click", function() {
+          moveSlide(storeContainer, -1); // Move the slide to the previous one
+      });
+
+      nextButton.addEventListener("click", function() {
+          moveSlide(storeContainer, 1); // Move the slide to the next one
+      });
   });
 }
+
 
 
 function moveSlide(storeContainer, n) {
@@ -565,6 +685,9 @@ document
           var response = JSON.parse(xhr.responseText);
           if (response.status === "success") {
             alert(response.message);
+            addStore.style.display = "none";
+            storeList.style.display = "flex"
+            fetchAndDisplayStores();
             // You may perform additional actions on successful store addition
           } else {
             alert(response.message);
@@ -773,9 +896,15 @@ document.getElementById("addCategoryForm").addEventListener("submit", function (
           console.log(xhr.responseText);
           try {
               const response = JSON.parse(xhr.responseText);
+              console.log(response.status);
               if (response.status === "success") {
-                  alert("Category added successfully.");
-                  // You may perform additional actions on successful category addition
+                alert("Category added successfully.");
+          // Hide Add Category section
+         addCategory.style.display = "none";
+          // Show View Categories section
+          categoryList.style.display = "flex";
+          // Fetch and display categories
+          fetchAndDisplayCategories();
               } else {
                   alert("Error: " + response.error);
               }
@@ -895,6 +1024,9 @@ document.getElementById("addOfferForm").addEventListener("submit", function (eve
 
                   if (response.status === "success") {
                       alert(response.message);
+                      addOffers.style.display = "none";
+                      offerList.style.display = "flex"
+                      fetchAndDisplayOffers();
                       // You may perform additional actions on successful offer addition
                   } else {
                       alert(response.message);
@@ -1202,6 +1334,9 @@ document
           const response = JSON.parse(xhr.responseText);
           if (response.status === "success") {
             alert("News added successfully.");
+            addNews.style.display = "none";
+            newsList.style.display = "flex"
+            fetchAndDisplayNews();
           } else {
             alert("Error: " + response.message);
           }
@@ -1317,6 +1452,9 @@ document.getElementById("uploadImagesForm").addEventListener("submit", function 
           var response = JSON.parse(xhr.responseText);
           if (response.status === "success") {
             alert(response.message);
+            uploadImagesForm.style.display = "none";
+            uploadedImagesList.style.display = "flex"
+            
             // Optionally, you may update the uploaded images list
             fetchAndDisplayAllImages();
           } else {

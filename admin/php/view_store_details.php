@@ -6,8 +6,8 @@ include_once "db_connection.php";
 if (isset($_GET['store_id'])) {
     $storeId = $_GET['store_id'];
 
-    // Query to fetch store details
-    $storeQuery = "SELECT store_id, store_name, store_description, category_id, phone_number, tiktok_url, facebook_url, whatsapp_number, instagram_url, location FROM stores WHERE store_id = ?";
+    // Query to fetch store details, including the "archived" column
+    $storeQuery = "SELECT store_id, store_name, store_description, category_id, phone_number, tiktok_url, facebook_url, whatsapp_number, instagram_url, location, archived FROM stores WHERE store_id = ?";
 
     // Prepare and execute the query
     $stmt = $conn->prepare($storeQuery);
@@ -15,7 +15,7 @@ if (isset($_GET['store_id'])) {
     $stmt->execute();
 
     // Bind result variables
-    $stmt->bind_result($storeId, $storeName, $storeDescription, $categoryId, $phoneNumber, $tiktokUrl, $facebookUrl, $whatsappNumber, $instagramUrl, $location);
+    $stmt->bind_result($storeId, $storeName, $storeDescription, $categoryId, $phoneNumber, $tiktokUrl, $facebookUrl, $whatsappNumber, $instagramUrl, $location, $archived);
 
     // Fetch store details
     if ($stmt->fetch()) {
@@ -29,7 +29,8 @@ if (isset($_GET['store_id'])) {
             'facebook_url' => $facebookUrl,
             'whatsapp_number' => $whatsappNumber,
             'instagram_url' => $instagramUrl,
-            'location' => $location
+            'location' => $location,
+            'archived' => (bool) $archived // Convert to boolean
         ];
         // Encode the array as JSON and output
         echo json_encode($storeDetails);

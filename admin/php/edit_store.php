@@ -15,15 +15,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $newWhatsappNumber = $_POST["new_whatsapp_number"];
     $newInstagramUrl = $_POST["new_instagram_url"];
     $newLocation = $_POST["new_location"];
+    $newArchived = $_POST["new_archived"]; // New archived status
 
     // Update store information in the 'stores' table
-    $updateQuery = "UPDATE stores SET store_name = '$newStoreName', category_id = '$newCategory', store_description = '$newDescription', phone_number = '$newPhoneNumber', tiktok_url = '$newTiktokUrl', facebook_url = '$newFacebookUrl', whatsapp_number = '$newWhatsappNumber', instagram_url = '$newInstagramUrl', location = '$newLocation' WHERE store_id = $storeId";
+    $updateQuery = "UPDATE stores 
+                    SET store_name = ?, 
+                        category_id = ?, 
+                        store_description = ?, 
+                        phone_number = ?, 
+                        tiktok_url = ?, 
+                        facebook_url = ?, 
+                        whatsapp_number = ?, 
+                        instagram_url = ?, 
+                        location = ?, 
+                        archived = ? 
+                    WHERE store_id = ?";
 
-    if ($conn->query($updateQuery) === TRUE) {
+    // Prepare the update query
+    $stmt = $conn->prepare($updateQuery);
+
+    // Bind parameters
+    $stmt->bind_param("sisssssssii", $newStoreName, $newCategory, $newDescription, $newPhoneNumber, $newTiktokUrl, $newFacebookUrl, $newWhatsappNumber, $newInstagramUrl, $newLocation, $newArchived, $storeId);
+
+    // Execute the update query
+    if ($stmt->execute()) {
         $response = array("status" => "success", "message" => "Store updated successfully");
     } else {
-        $response = array("status" => "error", "message" => "Error updating store: " . $conn->error);
+        $response = array("status" => "error", "message" => "Error updating store: " . $stmt->error);
     }
+
+    // Close the prepared statement
+    $stmt->close();
 
     header('Content-Type: application/json');
     echo json_encode($response);

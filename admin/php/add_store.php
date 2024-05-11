@@ -16,15 +16,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $instagramUrl = $_POST["instagram"];
         $location = $_POST["location"];
 
+        // Set archived status to not archived (0) by default
+        $archived = 0;
+
         // Perform data validation and database insertion
         // Example: Insert data into the 'stores' table
-        $insertQuery = "INSERT INTO stores (store_name, store_description, category_id, phone_number, tiktok_url, facebook_url, whatsapp_number, instagram_url, location) VALUES ('$storeName', '$description', '$category', '$phone', '$tiktokUrl', '$facebookUrl', '$whatsappNumber', '$instagramUrl', '$location')";
+        $insertQuery = "INSERT INTO stores (store_name, store_description, category_id, phone_number, tiktok_url, facebook_url, whatsapp_number, instagram_url, location, archived) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        if ($conn->query($insertQuery) === TRUE) {
+        // Prepare the insert query
+        $stmt = $conn->prepare($insertQuery);
+
+        // Bind parameters
+        $stmt->bind_param("ssissssssi", $storeName, $description, $category, $phone, $tiktokUrl, $facebookUrl, $whatsappNumber, $instagramUrl, $location, $archived);
+
+        // Execute the insert query
+        if ($stmt->execute()) {
             $response = array("status" => "success", "message" => "Store added successfully");
         } else {
-            $response = array("status" => "error", "message" => "Error adding store: " . $conn->error);
+            $response = array("status" => "error", "message" => "Error adding store: " . $stmt->error);
         }
+
+        // Close the prepared statement
+        $stmt->close();
 
         echo json_encode($response);
         exit();

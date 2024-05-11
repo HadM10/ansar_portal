@@ -7,11 +7,11 @@ header("Access-Control-Allow-Origin: *"); // Replace * with your allowed origins
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
-// Retrieve stores with associated images and categories
-$selectQuery = "SELECT s.store_id, s.store_name, s.category_id, s.store_description, s.phone_number, s.total_likes, GROUP_CONCAT(i.image_url) as images, GROUP_CONCAT(c.category_name) as categories
+
+// Retrieve stores with associated images
+$selectQuery = "SELECT s.store_id, s.store_name, s.category_id, s.store_description, s.phone_number, s.total_likes, s.tiktok_url, s.facebook_url, s.whatsapp_number, s.instagram_url, s.location, s.archived, GROUP_CONCAT(i.image_url) as images
                 FROM stores s
                 LEFT JOIN storeimages i ON s.store_id = i.store_id
-                LEFT JOIN categories c ON s.category_id = c.category_id
                 GROUP BY s.store_id";
 $result = $conn->query($selectQuery);
 
@@ -25,8 +25,13 @@ while ($row = $result->fetch_assoc()) {
         "description" => $row["store_description"],
         "phone_number" => $row["phone_number"],
         "total_likes" => $row["total_likes"],
-        "images" => explode(",", $row["images"]), // Convert comma-separated images to an array
-        "categories" => explode(",", $row["categories"]) // Convert comma-separated categories to an array
+        "tiktok_url" => $row["tiktok_url"],
+        "facebook_url" => $row["facebook_url"],
+        "whatsapp_number" => $row["whatsapp_number"],
+        "instagram_url" => $row["instagram_url"],
+        "location" => $row["location"],
+        "archived" => (bool) $row["archived"], // Convert to boolean
+        "images" => explode(",", $row["images"]) // Convert comma-separated images to an array
     );
 }
 

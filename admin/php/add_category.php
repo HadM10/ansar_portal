@@ -9,18 +9,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $categoryImage = $_FILES['category_image']['name'];
 
         // Move the uploaded image file to a desired location (you may want to add error handling)
-        $uploadPath = 'https://ansarportal-deaa9ded50c7.herokuapp.com/assets/images/categories/' . $categoryImage;
+        $targetDirectory = "../../assets/images/categories/";
+        $uploadPath = $targetDirectory . $categoryImage;
         move_uploaded_file($_FILES['category_image']['tmp_name'], $uploadPath);
 
-        // Insert the new category into the database with the correct image path
-        $insertQuery = "INSERT INTO categories (category_name, category_image) VALUES ('$categoryName', '$uploadPath')";
+        // Construct the URL for the uploaded image
+        $baseUrl = "https://ansarportal-deaa9ded50c7.herokuapp.com/";
+        $imageRelativePath = str_replace("../../", "", $uploadPath);
+        $imageUrl = $baseUrl . $imageRelativePath;
 
-        if ($conn->query($insertQuery)) {
-            // Respond with success message
-            echo json_encode(["status" => "success", "message" => "Category added successfully"]);
+        // Insert the new category into the database with the correct image path
+        $insertQuery = "INSERT INTO categories (category_name, category_image) VALUES (?, ?)";
+        if ($stmt = $conn->prepare($insertQuery)) {
+            $stmt->bind_param("ss", $categoryName, $imageUrl);
+            if ($stmt->execute()) {
+                // Respond with success message
+                echo json_encode(["status" => "success", "message" => "Category added successfully"]);
+            } else {
+                // Respond with database error message
+                echo json_encode(["status" => "error", "message" => $stmt->error]);
+            }
         } else {
             // Respond with database error message
-            echo json_encode(["status" => "error", "message" => "Database error"]);
+            echo json_encode(["status" => "error", "message" => $conn->error]);
         }
     } else {
         // Respond with error message for missing category_name or category_image

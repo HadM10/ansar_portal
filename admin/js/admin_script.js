@@ -80,7 +80,7 @@ if (window.location.pathname.includes("login.php")) {
 
             if (response.message) {
               // Redirect to the admin panel or perform any other action on successful login
-              window.location.href = "index.php";
+              window.location.href = "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/index.php";
             } else {
               alert(response.error);
             }

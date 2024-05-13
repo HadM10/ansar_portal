@@ -80,7 +80,7 @@ if (window.location.pathname.includes("login.php")) {
 
             if (response.message) {
               // Redirect to the admin panel or perform any other action on successful login
-              window.location.href = "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/index.php";
+              window.location.href = "admin/index.php";
             } else {
               alert(response.error);
             }
@@ -777,7 +777,7 @@ function displayCategories(categoriesData) {
     categoryItem.setAttribute("data-category-id", category.category_id);
     categoryItem.classList.add("category-item"); // Add class for styling
     categoryItem.innerHTML = ` 
-          <img src="ansar_portal/${category.category_image}" alt="${category.category_name} Image" class="category-image">
+          <img src="${category.category_image}" alt="${category.category_name} Image" class="category-image">
           <span><Strong> Category Name: </Strong> ${category.category_name}</span>
           <button class="edit-button" onclick="editCategory(${category.category_id})">Edit</button>
       `;

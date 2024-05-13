@@ -68,7 +68,7 @@ if (window.location.pathname.includes("login.php")) {
       var xhr = new XMLHttpRequest();
 
       // Configure the request
-      xhr.open("POST", "login_admin.php", true);
+      xhr.open("POST", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/login_admin.php", true);
       xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
       // Define the callback function
@@ -80,7 +80,7 @@ if (window.location.pathname.includes("login.php")) {
 
             if (response.message) {
               // Redirect to the admin panel or perform any other action on successful login
-              window.location.href = "/ansar_portal/admin/index.php";
+              window.location.href = "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/index.php";
             } else {
               alert(response.error);
             }
@@ -106,7 +106,7 @@ if (window.location.pathname.includes("register.php")) {
     var password = document.getElementById("password").value;
 
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "register_admin.php", true);
+    xhr.open("POST", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/register_admin.php", true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
     xhr.onreadystatechange = function () {
@@ -116,7 +116,7 @@ if (window.location.pathname.includes("register.php")) {
                     var response = JSON.parse(xhr.responseText);
                     if (response.message) {
                         alert(response.message);
-                        window.location.href = "/ansar_portal/admin/php/login.php";
+                        window.location.href = "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/login.php";
                     } else if (response.error) {
                         alert(response.error);
                     }
@@ -141,7 +141,7 @@ if (window.location.pathname.includes("index.php")) {
     var xhr = new XMLHttpRequest();
 
     // Configure the request
-    xhr.open("GET", "php/logout.php", true);
+    xhr.open("GET", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/logout.php", true);
 
     // Define the callback function
     xhr.onreadystatechange = function () {
@@ -152,7 +152,7 @@ if (window.location.pathname.includes("index.php")) {
 
           if (response.success) {
             // Logout successful
-            window.location.href = "php/login.php";
+            window.location.href = "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/login.php";
           } else {
             console.error("Logout failed:", response.error);
           }
@@ -176,7 +176,7 @@ function archiveStore(storeId) {
   if (confirmArchive) {
       // Make an AJAX request to update the store's archived status
       var xhr = new XMLHttpRequest();
-      xhr.open("POST", "php/archive_store.php", true);
+      xhr.open("POST", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/archive_store.php", true);
       xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
       xhr.onreadystatechange = function() {
           if (xhr.readyState === 4 && xhr.status === 200) {
@@ -214,7 +214,7 @@ function fetchAndDisplayArchivedStores() {
     }
   };
 
-  xhr.open("GET", "php/view_stores.php", true);
+  xhr.open("GET", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/view_stores.php", true);
   xhr.send();
 }
 
@@ -271,7 +271,7 @@ function restoreStore(storeId) {
           }
       }
   };
-  xhr.open("POST", "php/restore_store.php", true);
+  xhr.open("POST", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/restore_store.php", true);
   xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhr.send("store_id=" + storeId);
 }
@@ -285,7 +285,7 @@ function restoreStore(storeId) {
 function deleteStore(storeId) {
   // Make an AJAX request to delete the store
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "php/delete_store.php", true);
+  xhr.open("POST", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/delete_store.php", true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4) {
@@ -321,7 +321,7 @@ function confirmDelete(storeId) {
 function editStore(storeId) {
   // Fetch store details using AJAX and create a dynamic form for editing
   var xhr = new XMLHttpRequest();
-  xhr.open("GET", "php/view_stores.php?store_id=" + storeId, true);
+  xhr.open("GET", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/view_stores.php?store_id=" + storeId, true);
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4 && xhr.status === 200) {
       try {
@@ -340,7 +340,7 @@ function editStore(storeId) {
 // Function to fetch categories and then call createEditForm
 function fetchCategories(storeId) {
   var xhr = new XMLHttpRequest();
-  xhr.open("GET", "php/view_categories.php", true);
+  xhr.open("GET", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/view_categories.php", true);
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4 && xhr.status === 200) {
       try {
@@ -375,7 +375,7 @@ function saveChanges(storeId, updatedData) {
 
   // Make an AJAX request to save the changes
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "php/edit_store.php", true);
+  xhr.open("POST", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/edit_store.php", true);
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4) {
       console.log(xhr.responseText);
@@ -402,7 +402,7 @@ function saveChanges(storeId, updatedData) {
 function createEditForm(storeId, categories) {
   // Fetch store details using AJAX
   var xhr = new XMLHttpRequest();
-  xhr.open("GET", "php/view_store_details.php?store_id=" + storeId, true);
+  xhr.open("GET", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/view_store_details.php?store_id=" + storeId, true);
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4 && xhr.status === 200) {
       try {
@@ -616,7 +616,7 @@ function fetchAndDisplayStores() {
     }
   };
 
-  xhr.open("GET", "php/view_stores.php", true);
+  xhr.open("GET", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/view_stores.php", true);
   xhr.send();
 }
 
@@ -636,7 +636,7 @@ function fetchStoreCategories(storesData) {
     }
   };
 
-  xhr.open("GET", "php/view_categories.php", true);
+  xhr.open("GET", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/view_categories.php", true);
   xhr.send();
 }
 
@@ -674,7 +674,7 @@ document
     var xhr = new XMLHttpRequest();
 
     // Configure the request
-    xhr.open("POST", "php/add_store.php", true);
+    xhr.open("POST", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/add_store.php", true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
     // Define the callback function
@@ -727,7 +727,7 @@ addStoresBtn.addEventListener("click", function () {
   hideAllSections();
 
   // Fetch Categories
-  fetch("php/view_categories.php")
+  fetch("https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/view_categories.php")
     .then((response) => response.json())
     .then((categories) => {
       // Populate the select dropdown with categories
@@ -763,7 +763,7 @@ function fetchAndDisplayCategories() {
     }
   };
 
-  xhr.open("GET", "php/view_categories.php", true);
+  xhr.open("GET", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/view_categories.php", true);
   xhr.send();
 }
 
@@ -797,7 +797,7 @@ viewCategoriesBtn.addEventListener("click", function () {
 function editCategory(categoryId) {
   // Fetch category details using AJAX and create a dynamic form for editing
   var xhr = new XMLHttpRequest();
-  xhr.open("GET", "php/view_categories.php?category_id=" + categoryId, true);
+  xhr.open("GET", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/view_categories.php?category_id=" + categoryId, true);
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4 && xhr.status === 200) {
       try {
@@ -822,7 +822,7 @@ function saveCategoryChanges(categoryId, updatedData) {
 
   // Make an AJAX request to save the changes
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "php/edit_category.php", true);
+  xhr.open("POST", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/edit_category.php", true);
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4) {
       try {
@@ -890,7 +890,7 @@ document.getElementById("addCategoryForm").addEventListener("submit", function (
 
   // Make an AJAX request to send the form data to your PHP script
   const xhr = new XMLHttpRequest();
-  xhr.open("POST", "php/add_category.php", true);
+  xhr.open("POST", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/add_category.php", true);
   xhr.onreadystatechange = function () {
       if (xhr.readyState === 4) {
           console.log(xhr.responseText);
@@ -943,7 +943,7 @@ function fetchAndDisplayOffers() {
     }
   };
 
-  xhr.open("GET", "php/view_offers.php", true);
+  xhr.open("GET", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/view_offers.php", true);
   xhr.send();
 }
 
@@ -1013,7 +1013,7 @@ document.getElementById("addOfferForm").addEventListener("submit", function (eve
       var xhr = new XMLHttpRequest();
 
       // Configure the request
-      xhr.open("POST", "php/add_special_offer.php", true);
+      xhr.open("POST", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/add_special_offer.php", true);
 
       // Define the callback function
       xhr.onreadystatechange = function () {
@@ -1078,7 +1078,7 @@ function fetchAndDisplayStoresForOffer() {
       }
   };
 
-  xhr.open("GET", "php/view_stores.php", true);
+  xhr.open("GET", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/view_stores.php", true);
   xhr.send();
 }
 
@@ -1089,7 +1089,7 @@ function deleteOffer(offerId) {
   var confirmation = confirm("Are you sure you want to delete this offer?");
   if (confirmation) {
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "php/delete_offer.php", true);
+    xhr.open("POST", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/delete_offer.php", true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4) {
@@ -1119,7 +1119,7 @@ function deleteOffer(offerId) {
 function editOffer(offerId) {
   // Fetch offer details using AJAX and create a dynamic form for editing
   var xhr = new XMLHttpRequest();
-  xhr.open("GET", "php/view_offers.php?offer_id=" + offerId, true);
+  xhr.open("GET", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/view_offers.php?offer_id=" + offerId, true);
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4 && xhr.status === 200) {
       try {
@@ -1138,7 +1138,7 @@ function editOffer(offerId) {
 // Function to fetch stores and then call createEditOfferForm
 function fetchStoresForEditOffer(offerId) {
   var xhr = new XMLHttpRequest();
-  xhr.open("GET", "php/view_stores.php", true);
+  xhr.open("GET", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/view_stores.php", true);
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4 && xhr.status === 200) {
       try {
@@ -1175,7 +1175,7 @@ function saveOfferChanges(offerId, updatedData) {
 
   // Make an AJAX request to save the changes
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "php/edit_offer.php", true);
+  xhr.open("POST", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/edit_offer.php", true);
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4) {
       console.log(xhr.responseText);
@@ -1225,7 +1225,7 @@ function fetchAndPopulateStoresDropdown(selectElement, selectedStoreId) {
     }
   };
 
-  xhr.open("GET", "php/view_stores.php", true);
+  xhr.open("GET", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/view_stores.php", true);
   xhr.send();
 }
 
@@ -1236,7 +1236,7 @@ function fetchAndPopulateStoresDropdown(selectElement, selectedStoreId) {
 function createEditOfferForm(offerId, storesData) {
   // Fetch offer details using AJAX
   var xhr = new XMLHttpRequest();
-  xhr.open("GET", "php/view_offer_details.php?offer_id=" + offerId, true);
+  xhr.open("GET", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/view_offer_details.php?offer_id=" + offerId, true);
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4 && xhr.status === 200) {
       try {
@@ -1325,7 +1325,7 @@ document
 
     // Make an AJAX request to send the form data to your PHP script
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", "php/add_news.php", true);
+    xhr.open("POST", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/add_news.php", true);
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4 && xhr.status === 200) {
         console.log(xhr.responseText);
@@ -1379,7 +1379,7 @@ function fetchAndDisplayNews() {
     }
   };
 
-  xhr.open("GET", "php/view_news.php", true);
+  xhr.open("GET", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/view_news.php", true);
   xhr.send();
 }
 
@@ -1443,7 +1443,7 @@ document.getElementById("uploadImagesForm").addEventListener("submit", function 
     }
 
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "php/upload_images.php", true);
+    xhr.open("POST", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/upload_images.php", true);
 
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4) {
@@ -1488,7 +1488,7 @@ function fetchAndDisplayAllImages() {
     }
   };
 
-  xhr.open("GET", "php/view_images.php", true);
+  xhr.open("GET", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/view_images.php", true);
   xhr.send();
 }
 
@@ -1539,7 +1539,7 @@ function deleteImage(imageId, storeId, imageUrl) {
     }
   };
 
-  xhr.open("POST", "php/delete_image.php", true);
+  xhr.open("POST", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/delete_image.php", true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   xhr.send("image_id=" + imageId + "&store_id=" + storeId);
 }
@@ -1558,7 +1558,7 @@ viewImagesBtn.addEventListener("click", function () {
 // Function to fetch and display users using AJAX
 function fetchAndDisplayUsers() {
   var xhr = new XMLHttpRequest();
-  xhr.open("GET", "php/view_all_users.php", true);
+  xhr.open("GET", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/view_all_users.php", true);
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4 && xhr.status === 200) {
       try {
@@ -1607,7 +1607,7 @@ viewUsersBtn.addEventListener("click", function () {
 
 // Function to fetch dashboard statistics from the server
 function fetchDashboardStats() {
-  fetch('php/dashboard.php')
+  fetch('https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/dashboard.php')
       .then(response => response.json())
       .then(data => {
           // Display the dashboard statistics on the page

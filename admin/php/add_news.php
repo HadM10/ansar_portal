@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_FILES["image"])) {
     $targetDirectory = "../../assets/images/news/";
     $image_name = basename($_FILES['image']['name']);
     $upload_path = '../../assets/images/news/' . $image_name;
-    $targetFile = 'http://localhost/ansar_portal/assets/images/news/' . $image_name;
+    $targetFile = 'https://ansarportal-deaa9ded50c7.herokuapp.com/assets/images/news/' . $image_name;
 
     if (move_uploaded_file($_FILES['image']['tmp_name'], $upload_path)) {
         // Image uploaded successfully

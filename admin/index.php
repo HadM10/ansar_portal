@@ -1,6 +1,4 @@
 <?php
-// require __DIR__ . '/../vendor/autoload.php';
-// Dotenv\Dotenv::createImmutable(__DIR__ . '/..')->load();
 
 // Start or resume the session
 session_start();

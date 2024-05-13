@@ -1,6 +1,6 @@
 <?php
 // admin/php/db_connection.php
-include('../../config/database_config.php');  // Adjust the path based on your project structure
+include ('https://ansarportal-deaa9ded50c7.herokuapp.com/config/database_config.php');  // Adjust the path based on your project structure
 
 $conn = new mysqli($host, $username, $password, $database);
 

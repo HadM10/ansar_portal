@@ -6,7 +6,7 @@
 
 @font-face {
   font-family: 'kuro';
-  src: url('../../assets/fonts/Kuro-Regular.otf'),
+  src: url('https://ansarportal-deaa9ded50c7.herokuapp.com/assets/fonts/Kuro-Regular.otf'),
 }
 
 *{

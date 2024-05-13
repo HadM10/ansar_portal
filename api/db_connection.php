@@ -1,6 +1,6 @@
 <?php
 // admin/php/db_connection.php
-include ('../config/database_config.php');  // Adjust the path based on your project structure
+include ('https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/config/database_config.php');  // Adjust the path based on your project structure
 
 // Add CORS headers
 header("Access-Control-Allow-Origin: *"); // Replace * with your allowed origins

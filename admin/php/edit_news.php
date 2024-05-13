@@ -1,6 +1,6 @@
 <?php
 // admin/php/edit_news.php
-include('db_connection.php');
+include ('db_connection.php');
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -31,8 +31,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $conn->close();
 } else {
     // If the form is not submitted, redirect or handle accordingly
-    // (e.g., show an error message, redirect to the form page)
-    header("Location: /path/to/news_edit_form.php");
     exit();
 }
 ?>

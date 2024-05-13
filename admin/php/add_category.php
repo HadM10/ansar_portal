@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $categoryImage = $_FILES['category_image']['name'];
 
         // Move the uploaded image file to a desired location (you may want to add error handling)
-        $uploadPath = '../../assets/images/categories/' . $categoryImage;
+        $uploadPath = 'https://ansarportal-deaa9ded50c7.herokuapp.com/assets/images/categories/' . $categoryImage;
         move_uploaded_file($_FILES['category_image']['tmp_name'], $uploadPath);
 
         // Insert the new category into the database with the correct image path

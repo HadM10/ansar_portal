@@ -8,8 +8,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["store_id"]) && isset(
 
     foreach ($_FILES["imageFiles"]["tmp_name"] as $index => $tmp_name) {
         $image_name = basename($_FILES["imageFiles"]["name"][$index]);
-        $upload_path = '../../assets/images/stores/' . $image_name;
-        $image_url = 'http://localhost/ansar_portal/assets/images/stores/' . $image_name; // Change this to your actual server URL
+        $upload_path = 'https://ansarportal-deaa9ded50c7.herokuapp.com/assets/images/stores/' . $image_name;
+        $image_url = 'https://ansarportal-deaa9ded50c7.herokuapp.com/assets/images/stores/' . $image_name; // Change this to your actual server URL
 
         if (move_uploaded_file($tmp_name, $upload_path)) {
 

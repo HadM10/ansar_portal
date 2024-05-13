@@ -19,12 +19,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $image_name = basename($_FILES['image_file']['name']);
 
             // Set the desired upload directory
-            $upload_dir = '../../assets/images/offers/';
+            $upload_dir = 'https://ansarportal-deaa9ded50c7.herokuapp.com/assets/images/offers/';
             $upload_path = $upload_dir . $image_name;
 
             if (move_uploaded_file($image_tmp_name, $upload_path)) {
                 // File upload successful, update the database with the new image URL
-                $image_url = '../assets/images/offers/' . $image_name;
+                $image_url = 'https://ansarportal-deaa9ded50c7.herokuapp.com/assets/images/offers/' . $image_name;
 
                 // Update special offer in the database
                 $updateQuery = "UPDATE offers SET store_id = '$storeId', offer_title = '$offer_title', offer_description = '$offer_description', 

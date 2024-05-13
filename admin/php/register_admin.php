@@ -1,12 +1,9 @@
 <?php
 include ('db_connection.php');
 
-// Load environment variables
-require __DIR__ . '/../../vendor/autoload.php';
-Dotenv\Dotenv::createImmutable(__DIR__ . '/../..')->load();
 
 // Retrieve the registration code from the environment variables
-$registrationCode = $_ENV['REGISTRATION_CODE'];
+$registrationCode = getenv('REGISTRATION_CODE');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Check if the registration code is correct

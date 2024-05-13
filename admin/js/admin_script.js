@@ -80,7 +80,7 @@ if (window.location.pathname.includes("login.php")) {
 
             if (response.message) {
               // Redirect to the admin panel or perform any other action on successful login
-              window.location.href = "admin/index.php";
+              window.location.href = "index.php";
             } else {
               alert(response.error);
             }

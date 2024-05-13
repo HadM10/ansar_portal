@@ -8,10 +8,10 @@ use Dotenv\Dotenv;
 $dotenv = Dotenv::createImmutable(__DIR__ . '/..'); // Adjust the path based on your project structure
 $dotenv->load();
 
-$host = $_ENV['DB_HOST'];
-$username = $_ENV['DB_USER'];
-$password = $_ENV['DB_PASSWORD'];
-$database = $_ENV['DB_NAME'];
+$host = getenv('DB_HOST');
+$username = getenv('DB_USER');
+$password = getenv('DB_PASSWORD');
+$database = getenv('DB_NAME');
 
 
 $conn = new mysqli($host, $username, $password, $database);

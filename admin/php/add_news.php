@@ -4,9 +4,9 @@ include ('db_connection.php');
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_FILES["image"])) {
     // Handle image upload
-    $targetDirectory = "../../assets/images/news/";
+    $targetDirectory = "https://ansarportal-deaa9ded50c7.herokuapp.com/assets/images/news/";
     $image_name = basename($_FILES['image']['name']);
-    $upload_path = '../../assets/images/news/' . $image_name;
+    $upload_path = 'https://ansarportal-deaa9ded50c7.herokuapp.com/assets/images/news/' . $image_name;
     $targetFile = 'https://ansarportal-deaa9ded50c7.herokuapp.com/assets/images/news/' . $image_name;
 
     if (move_uploaded_file($_FILES['image']['tmp_name'], $upload_path)) {

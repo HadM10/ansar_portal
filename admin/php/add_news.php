@@ -4,7 +4,7 @@ include ('db_connection.php');
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_FILES["image"])) {
     // Handle image upload
-    $targetDirectory = "https://ansarportal-deaa9ded50c7.herokuapp.com/assets/images/news/";
+    $targetDirectory = "../../assets/images/news/";
     $image_name = basename($_FILES['image']['name']);
     $upload_path = '../../assets/images/news/' . $image_name;
     $targetFile = 'https://ansarportal-deaa9ded50c7.herokuapp.com/assets/images/news/' . $image_name;

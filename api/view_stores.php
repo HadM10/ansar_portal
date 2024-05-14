@@ -21,7 +21,7 @@ while ($row = $result->fetch_assoc()) {
     $stores[] = array(
         "store_id" => $row["store_id"],
         "store_name" => $row["store_name"],
-        "category" => $row["category_name"], // Use category name instead of category ID
+        "categories" => array($row["category_name"]), // Change field name to "categories" and wrap the category name in an array
         "description" => $row["store_description"],
         "phone_number" => $row["phone_number"],
         "total_likes" => $row["total_likes"],
@@ -30,10 +30,11 @@ while ($row = $result->fetch_assoc()) {
         "whatsapp_number" => $row["whatsapp_number"],
         "instagram_url" => $row["instagram_url"],
         "location" => $row["location"],
-        "archived" => (bool) $row["archived"], // Convert to boolean
-        "images" => explode(",", $row["images"]) // Convert comma-separated images to an array
+        "archived" => (bool) $row["archived"],
+        "images" => explode(",", $row["images"])
     );
 }
+
 
 header('Content-Type: application/json');
 echo json_encode($stores);

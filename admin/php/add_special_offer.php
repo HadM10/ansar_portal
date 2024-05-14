@@ -18,23 +18,31 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $image_name = basename($_FILES['image_url']['name']);
 
             // Set the desired upload directory
-            $upload_dir = 'https://ansarportal-deaa9ded50c7.herokuapp.com/assets/images/offers/';
-            $upload_path = $upload_dir . $image_name;
+            $targetDirectory = "../../assets/images/offers/";
+            $uploadPath = $targetDirectory . $image_name;
 
-            if (move_uploaded_file($image_tmp_name, $upload_path)) {
-                // File upload successful, insert into the database
-                $image_url = 'https://ansarportal-deaa9ded50c7.herokuapp.com/assets/images/offers/' . $image_name;
+            if (move_uploaded_file($image_tmp_name, $uploadPath)) {
+                // Construct the URL for the uploaded image
+                $baseUrl = "https://ansarportal-deaa9ded50c7.herokuapp.com/";
+                $imageRelativePath = str_replace("../../", "", $uploadPath);
+                $imageUrl = $baseUrl . $imageRelativePath;
 
                 // Insert special offer into the database
                 $insertQuery = "INSERT INTO offers (store_id, offer_title, offer_description, start_date, end_date, image_url) 
-                            VALUES ('$store_id', '$offer_title', '$offer_description', '$startDate', '$endDate', '$image_url')";
+                            VALUES (?, ?, ?, ?, ?, ?)";
 
-                if ($conn->query($insertQuery) === TRUE) {
-                    // Success message
-                    $response = array('status' => 'success', 'message' => 'Special offer added successfully');
+                if ($stmt = $conn->prepare($insertQuery)) {
+                    $stmt->bind_param("isssss", $store_id, $offer_title, $offer_description, $startDate, $endDate, $imageUrl);
+                    if ($stmt->execute()) {
+                        // Success message
+                        $response = array('status' => 'success', 'message' => 'Special offer added successfully');
+                    } else {
+                        // Error message
+                        $response = array('status' => 'error', 'message' => 'Error adding special offer: ' . $stmt->error);
+                    }
                 } else {
                     // Error message
-                    $response = array('status' => 'error', 'message' => 'Error adding special offer: ' . $conn->error);
+                    $response = array('status' => 'error', 'message' => 'Error preparing statement: ' . $conn->error);
                 }
             } else {
                 // Error moving the uploaded file

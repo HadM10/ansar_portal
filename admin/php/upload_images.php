@@ -8,11 +8,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["store_id"]) && isset(
 
     foreach ($_FILES["imageFiles"]["tmp_name"] as $index => $tmp_name) {
         $image_name = basename($_FILES["imageFiles"]["name"][$index]);
-        $upload_path = 'https://ansarportal-deaa9ded50c7.herokuapp.com/assets/images/stores/' . $image_name;
-        $image_url = 'https://ansarportal-deaa9ded50c7.herokuapp.com/assets/images/stores/' . $image_name; // Change this to your actual server URL
+        $targetDirectory = "../../assets/images/stores/";
+        $uploadPath = $targetDirectory . $image_name;
 
-        if (move_uploaded_file($tmp_name, $upload_path)) {
+        // Construct the URL for the uploaded image
+        $baseUrl = "https://ansarportal-deaa9ded50c7.herokuapp.com/";
+        $imageRelativePath = str_replace("../../", "", $uploadPath);
+        $image_url = $baseUrl . $imageRelativePath;
 
+        if (move_uploaded_file($tmp_name, $uploadPath)) {
             $insertQuery = "INSERT INTO storeimages (store_id, image_url) VALUES (?, ?)";
             $stmt = $conn->prepare($insertQuery);
             $stmt->bind_param("ss", $store_id, $image_url);

@@ -10,8 +10,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $storeId = $_POST["store_id"];
         $offer_title = $_POST['offer_title'];
         $offer_description = $_POST['offer_description'];
-        $start_date = $_POST['start_date'];
-        $end_date = $_POST['end_date'];
+        $start_date = date('Y-m-d', strtotime($_POST['start_date']));
+        $end_date = date('Y-m-d', strtotime($_POST['end_date']));
 
         // Check if an image file is uploaded
         if (isset($_FILES['image_file']) && $_FILES['image_file']['error'] === UPLOAD_ERR_OK) {
@@ -19,23 +19,30 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $image_name = basename($_FILES['image_file']['name']);
 
             // Set the desired upload directory
-            $upload_dir = 'https://ansarportal-deaa9ded50c7.herokuapp.com/assets/images/offers/';
-            $upload_path = $upload_dir . $image_name;
+            $targetDirectory = "../../assets/images/offers/";
+            $uploadPath = $targetDirectory . $image_name;
 
-            if (move_uploaded_file($image_tmp_name, $upload_path)) {
-                // File upload successful, update the database with the new image URL
-                $image_url = 'https://ansarportal-deaa9ded50c7.herokuapp.com/assets/images/offers/' . $image_name;
+            if (move_uploaded_file($image_tmp_name, $uploadPath)) {
+                // Construct the URL for the uploaded image
+                $baseUrl = "https://ansarportal-deaa9ded50c7.herokuapp.com/";
+                $imageRelativePath = str_replace("../../", "", $uploadPath);
+                $imageUrl = $baseUrl . $imageRelativePath;
 
-                // Update special offer in the database
-                $updateQuery = "UPDATE offers SET store_id = '$storeId', offer_title = '$offer_title', offer_description = '$offer_description', 
-                                start_date = '$start_date', end_date = '$end_date', image_url = '$image_url' WHERE offer_id = '$offer_id'";
+                // Update special offer in the database with the new image URL
+                $updateQuery = "UPDATE offers SET store_id = ?, offer_title = ?, offer_description = ?, start_date = ?, end_date = ?, image_url = ? WHERE offer_id = ?";
 
-                if ($conn->query($updateQuery) === TRUE) {
-                    // Success message
-                    $response = array('status' => 'success', 'message' => 'Special offer updated successfully');
+                if ($stmt = $conn->prepare($updateQuery)) {
+                    $stmt->bind_param("isssssi", $storeId, $offer_title, $offer_description, $start_date, $end_date, $imageUrl, $offer_id);
+                    if ($stmt->execute()) {
+                        // Success message
+                        $response = array('status' => 'success', 'message' => 'Special offer updated successfully');
+                    } else {
+                        // Error message
+                        $response = array('status' => 'error', 'message' => 'Error updating special offer: ' . $stmt->error);
+                    }
                 } else {
                     // Error message
-                    $response = array('status' => 'error', 'message' => 'Error updating special offer: ' . $conn->error);
+                    $response = array('status' => 'error', 'message' => 'Error preparing statement: ' . $conn->error);
                 }
             } else {
                 // Error moving the uploaded file
@@ -43,15 +50,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
         } else {
             // No new image file uploaded, update other fields in the database
-            $updateQuery = "UPDATE offers SET store_id = '$storeId', offer_title = '$offer_title', offer_description = '$offer_description', 
-                            start_date = '$start_date', end_date = '$end_date' WHERE offer_id = '$offer_id'";
+            $updateQuery = "UPDATE offers SET store_id = ?, offer_title = ?, offer_description = ?, start_date = ?, end_date = ? WHERE offer_id = ?";
 
-            if ($conn->query($updateQuery) === TRUE) {
-                // Success message
-                $response = array('status' => 'success', 'message' => 'Special offer updated successfully');
+            if ($stmt = $conn->prepare($updateQuery)) {
+                $stmt->bind_param("issssi", $storeId, $offer_title, $offer_description, $start_date, $end_date, $offer_id);
+                if ($stmt->execute()) {
+                    // Success message
+                    $response = array('status' => 'success', 'message' => 'Special offer updated successfully');
+                } else {
+                    // Error message
+                    $response = array('status' => 'error', 'message' => 'Error updating special offer: ' . $stmt->error);
+                }
             } else {
                 // Error message
-                $response = array('status' => 'error', 'message' => 'Error updating special offer: ' . $conn->error);
+                $response = array('status' => 'error', 'message' => 'Error preparing statement: ' . $conn->error);
             }
         }
 

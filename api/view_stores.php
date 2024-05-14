@@ -7,11 +7,11 @@ header("Access-Control-Allow-Origin: *"); // Replace * with your allowed origins
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
-
-// Retrieve stores with associated images
-$selectQuery = "SELECT s.store_id, s.store_name, s.category_id, s.store_description, s.phone_number, s.total_likes, s.tiktok_url, s.facebook_url, s.whatsapp_number, s.instagram_url, s.location, s.archived, GROUP_CONCAT(i.image_url) as images
+// Retrieve stores with associated images and category names
+$selectQuery = "SELECT s.store_id, s.store_name, c.category_name, s.store_description, s.phone_number, s.total_likes, s.tiktok_url, s.facebook_url, s.whatsapp_number, s.instagram_url, s.location, s.archived, GROUP_CONCAT(i.image_url) as images
                 FROM stores s
                 LEFT JOIN storeimages i ON s.store_id = i.store_id
+                LEFT JOIN categories c ON s.category_id = c.category_id
                 GROUP BY s.store_id";
 $result = $conn->query($selectQuery);
 
@@ -21,7 +21,7 @@ while ($row = $result->fetch_assoc()) {
     $stores[] = array(
         "store_id" => $row["store_id"],
         "store_name" => $row["store_name"],
-        "category" => $row["category_id"],
+        "category" => $row["category_name"], // Use category name instead of category ID
         "description" => $row["store_description"],
         "phone_number" => $row["phone_number"],
         "total_likes" => $row["total_likes"],
@@ -38,4 +38,5 @@ while ($row = $result->fetch_assoc()) {
 header('Content-Type: application/json');
 echo json_encode($stores);
 $conn->close();
+
 ?>

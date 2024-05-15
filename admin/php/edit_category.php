@@ -1,6 +1,12 @@
 <?php
+
+// Add CORS headers
+header("Access-Control-Allow-Origin: *"); // Replace * with your allowed origins
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
 // admin/php/edit_category.php
-include('db_connection.php');
+include ('db_connection.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Assuming you receive category data from the request

@@ -1,6 +1,11 @@
 <?php
+// Add CORS headers
+header("Access-Control-Allow-Origin: *"); // Replace * with your allowed origins
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
 // view_uploaded_images.php
-include('db_connection.php');
+include ('db_connection.php');
 
 if ($_SERVER["REQUEST_METHOD"] === "GET") {
     // Fetch all uploaded images along with store information from the storeimages and stores tables

@@ -1,6 +1,10 @@
 <?php
 include ('db_connection.php');
 
+// Add CORS headers
+header("Access-Control-Allow-Origin: *"); // Replace * with your allowed origins
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
 // Retrieve the registration code from the environment variables
 $registrationCode = getenv('REGISTRATION_CODE');

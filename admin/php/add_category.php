@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $blobClient->createBlockBlob($containerName, $blobName, $content, $options);
 
             // Construct the URL for the uploaded image
-            $imageUrl = "https://<your_account_name>.blob.core.windows.net/$containerName/$blobName";
+            $imageUrl = "https://ansarportal.blob.core.windows.net/$containerName/$blobName";
 
             // Insert the new category into the database with the correct image path
             $insertQuery = "INSERT INTO categories (category_name, category_image) VALUES (?, ?)";

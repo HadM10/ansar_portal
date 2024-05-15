@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id']) || (time() - $_SESSION['login_time'] > 1800)) {
     session_destroy();
 
     // Redirect to the login page
-    header("Location: php/login.php");
+    header("Location: admin/php/login.php");
     exit();
 }
 

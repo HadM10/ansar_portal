@@ -23,7 +23,7 @@ if (!isset($_SESSION['user_id']) || (time() - $_SESSION['login_time'] > 1800)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - Ansar Portal</title>
-    <link rel="stylesheet" href="css/admin_style.css">
+    <link rel="stylesheet" href="admin/css/admin_style.css">
 </head>
 
 <body>
@@ -233,7 +233,7 @@ if (!isset($_SESSION['user_id']) || (time() - $_SESSION['login_time'] > 1800)) {
 
     <!-- Your admin panel content goes here -->
 
-    <script src="js/admin_script.js"></script>
+    <script src="admin/js/admin_script.js"></script>
 </body>
 
 </html>

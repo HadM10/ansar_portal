@@ -5,7 +5,12 @@ header("Access-Control-Allow-Origin: *"); // Replace * with your allowed origins
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
-// admin/php/edit_special_offer.php
+require __DIR__ . '/../../vendor/autoload.php';
+
+use MicrosoftAzure\Storage\Blob\BlobRestProxy;
+use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;
+use MicrosoftAzure\Storage\Blob\Models\CreateBlockBlobOptions;
+
 include ('db_connection.php');
 
 // Check if the form is submitted
@@ -24,15 +29,32 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $image_tmp_name = $_FILES['image_file']['tmp_name'];
             $image_name = basename($_FILES['image_file']['name']);
 
-            // Set the desired upload directory
-            $targetDirectory = "../../assets/images/offers/";
-            $uploadPath = $targetDirectory . $image_name;
+            // Retrieve the Azure Storage account connection string from environment variables
+            $connectionString = getenv('AZURE_STORAGE_CONNECTION_STRING');
+            if (!$connectionString) {
+                echo json_encode(["status" => "error", "message" => "Azure Storage connection string is not set."]);
+                exit;
+            }
 
-            if (move_uploaded_file($image_tmp_name, $uploadPath)) {
+            // Create blob client.
+            $blobClient = BlobRestProxy::createBlobService($connectionString);
+
+            // Set the container name
+            $containerName = "images"; // Make sure this container exists in your Azure storage
+
+            // Set the blob name
+            $blobName = "offers/" . basename($image_name);
+
+            // Upload file as a block blob
+            try {
+                $content = fopen($image_tmp_name, "r");
+                $options = new CreateBlockBlobOptions();
+                $options->setContentType($_FILES['image_file']['type']);
+
+                $blobClient->createBlockBlob($containerName, $blobName, $content, $options);
+
                 // Construct the URL for the uploaded image
-                $baseUrl = "https://ansarportal-deaa9ded50c7.herokuapp.com/";
-                $imageRelativePath = str_replace("../../", "", $uploadPath);
-                $imageUrl = $baseUrl . $imageRelativePath;
+                $imageUrl = "https://ansarportal.blob.core.windows.net/$containerName/$blobName";
 
                 // Update special offer in the database with the new image URL
                 $updateQuery = "UPDATE offers SET store_id = ?, offer_title = ?, offer_description = ?, start_date = ?, end_date = ?, image_url = ? WHERE offer_id = ?";
@@ -50,9 +72,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     // Error message
                     $response = array('status' => 'error', 'message' => 'Error preparing statement: ' . $conn->error);
                 }
-            } else {
-                // Error moving the uploaded file
-                $response = array('status' => 'error', 'message' => 'Error moving uploaded file');
+            } catch (ServiceException $e) {
+                $response = array('status' => 'error', 'message' => $e->getMessage());
             }
         } else {
             // No new image file uploaded, update other fields in the database

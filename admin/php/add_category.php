@@ -4,6 +4,8 @@ header("Access-Control-Allow-Origin: *"); // Replace * with your allowed origins
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
+require __DIR__ . '/../../vendor/autoload.php';
+
 
 use MicrosoftAzure\Storage\Blob\BlobRestProxy;
 use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;

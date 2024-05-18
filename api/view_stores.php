@@ -2,10 +2,7 @@
 // admin/php/view_stores.php
 include ('db_connection.php');
 
-// Add CORS headers
-header("Access-Control-Allow-Origin: *"); // Replace * with your allowed origins
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
+include ('headers.php');
 
 // Retrieve stores with associated images and category names
 $selectQuery = "SELECT s.store_id, s.store_name, c.category_name, s.store_description, s.phone_number, s.total_likes, s.tiktok_url, s.facebook_url, s.whatsapp_number, s.instagram_url, s.location, s.archived, GROUP_CONCAT(i.image_url) as images

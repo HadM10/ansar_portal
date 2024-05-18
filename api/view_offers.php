@@ -2,11 +2,7 @@
 // admin/php/view_offers.php
 include ('db_connection.php');
 
-// Add CORS headers
-header("Access-Control-Allow-Origin: *"); // Replace * with your allowed origins
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
-
+include ('headers.php');
 // Retrieve special offers information from the database
 $selectQuery = "SELECT o.offer_id, o.store_id, o.offer_title, o.offer_description, o.start_date, o.end_date, o.image_url, s.store_name
                 FROM offers o

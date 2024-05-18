@@ -1,9 +1,5 @@
 <?php
-
-// Add CORS headers
-header("Access-Control-Allow-Origin: *"); // Replace * with your allowed origins
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
+include ('headers.php');
 
 // admin/php/delete_offer.php
 include ('db_connection.php');

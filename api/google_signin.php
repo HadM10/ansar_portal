@@ -4,10 +4,7 @@ require_once 'db_connection.php';
 
 session_start(); // Start the session
 
-// Add CORS headers
-header("Access-Control-Allow-Origin: *"); // Replace * with your allowed origins
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
+include ('headers.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $googleId = $_POST['google_id'];

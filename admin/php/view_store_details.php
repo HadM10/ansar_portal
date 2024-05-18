@@ -1,8 +1,5 @@
 <?php
-// Add CORS headers
-header("Access-Control-Allow-Origin: *"); // Replace * with your allowed origins
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
+include ('headers.php');
 
 // Include your database connection file
 include_once "db_connection.php";

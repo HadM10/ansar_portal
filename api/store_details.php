@@ -2,10 +2,7 @@
 // admin/php/store_details.php
 include ('db_connection.php');
 
-// Add CORS headers
-header("Access-Control-Allow-Origin: *"); // Replace * with your allowed origins
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
+include ('headers.php');
 
 // Check if store_id is provided in the request
 if (isset($_GET['store_id'])) {

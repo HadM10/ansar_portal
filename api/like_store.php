@@ -1,11 +1,7 @@
 <?php
 // like_store.php
 include ('db_connection.php');
-
-// Add CORS headers
-header("Access-Control-Allow-Origin: *"); // Replace * with your allowed origins
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
+include ('headers.php');
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["user_id"]) && isset($_POST["store_id"]) && isset($_POST["action"])) {
     $user_id = $_POST["user_id"];

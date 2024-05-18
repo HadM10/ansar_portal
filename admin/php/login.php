@@ -6,11 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In</title>
     <link rel="stylesheet" href="https://ansarportal-deaa9ded50c7.herokuapp.com/admin/css/admin_style.css">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' https://ansarportal-deaa9ded50c7.herokuapp.com; style-src 'self' https://ansarportal-deaa9ded50c7.herokuapp.com;">
 </head>
 
 <body class="sign-in-body">
     <div class="container">
-        <form id="loginForm" action="" method="post">
+        <form id="loginForm" action="https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/login_admin.php"
+            method="post">
             <h2>Sign In</h2>
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>

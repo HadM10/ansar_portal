@@ -180,7 +180,7 @@ button:hover {
     transform: translateX(0);
   }
 
-  .sidebar.open .hamburger{
+.hamburger.open{
   color: #fff;
   }
 
@@ -191,7 +191,7 @@ button:hover {
     border: none;
     color: #333;
     position: fixed;
-    top: 10px;
+    top: 25px;
     left: 10px;
     cursor: pointer;
     z-index: 1000;

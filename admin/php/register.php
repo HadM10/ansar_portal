@@ -12,7 +12,8 @@
 
 <body class="register-body">
     <div class="container">
-        <form id="registerForm" action="#" method="post">
+        <form id="registerForm" action="https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/register_admin.php"
+            method="post">
             <h2>Register</h2>
             <label for="registration_code">Registration Code:</label>
             <input type="text" id="registration_code" name="registration_code" required>

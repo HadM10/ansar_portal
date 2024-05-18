@@ -6,14 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration</title>
     <link rel="stylesheet" href="https://ansarportal-deaa9ded50c7.herokuapp.com/admin/css/admin_style.css">
-    <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self' https://ansarportal-deaa9ded50c7.herokuapp.com; style-src 'self' https://ansarportal-deaa9ded50c7.herokuapp.com;">
 </head>
 
 <body class="register-body">
     <div class="container">
-        <form id="registerForm" action="https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/register_admin.php"
-            method="post">
+        <form id="registerForm" action="" method="post">
             <h2>Register</h2>
             <label for="registration_code">Registration Code:</label>
             <input type="text" id="registration_code" name="registration_code" required>

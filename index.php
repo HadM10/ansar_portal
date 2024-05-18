@@ -27,8 +27,6 @@ if (!isset($_SESSION['user_id']) || (time() - $_SESSION['login_time'] > 1800)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - Ansar Portal</title>
     <link rel="stylesheet" href="https://ansarportal-deaa9ded50c7.herokuapp.com/admin/css/admin_style.css">
-    <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self' https://ansarportal-deaa9ded50c7.herokuapp.com; style-src 'self' https://ansarportal-deaa9ded50c7.herokuapp.com;">
 </head>
 
 <body>

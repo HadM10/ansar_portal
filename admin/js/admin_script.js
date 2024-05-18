@@ -144,6 +144,7 @@ if (window.location.pathname.includes("index.php")) {
 
     hamburgerBtn.addEventListener("click", function() {
         sidebar.classList.toggle("open");
+        hamburgerBtn.classList.toggle("open");
     });
 });
 

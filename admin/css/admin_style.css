@@ -107,6 +107,7 @@ button:hover {
   background-color: #333;
   padding-top: 20px;
   transition: transform 0.3s ease;
+  z-index: 900;
   transform: translateX(0);
 }
 
@@ -164,6 +165,11 @@ button:hover {
   background-color: var(--second-orange);
 }
 
+.hamburger {
+  display: none;
+}
+
+
 /* Small screen styling */
 @media (max-width: 768px) {
   .sidebar {
@@ -172,6 +178,10 @@ button:hover {
 
   .sidebar.open {
     transform: translateX(0);
+  }
+
+  .sidebar.open .hamburger{
+  color: #fff;
   }
 
   .hamburger {
@@ -185,6 +195,10 @@ button:hover {
     left: 10px;
     cursor: pointer;
     z-index: 1000;
+  }
+
+  .hamburger:hover{
+    background-color: var(--second-orange);
   }
 
   .content {

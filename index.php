@@ -12,7 +12,7 @@ if (!isset($_SESSION['user_id']) || (time() - $_SESSION['login_time'] > 1800)) {
     session_destroy();
 
     // Redirect to the login page
-    header("Location: admin/php/login.php");
+    header("Location: https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/login.php");
     exit();
 }
 
@@ -26,7 +26,7 @@ if (!isset($_SESSION['user_id']) || (time() - $_SESSION['login_time'] > 1800)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - Ansar Portal</title>
-    <link rel="stylesheet" href="admin/css/admin_style.css">
+    <link rel="stylesheet" href="https://ansarportal-deaa9ded50c7.herokuapp.com/admin/css/admin_style.css">
 </head>
 
 <body>
@@ -236,7 +236,7 @@ if (!isset($_SESSION['user_id']) || (time() - $_SESSION['login_time'] > 1800)) {
 
     <!-- Your admin panel content goes here -->
 
-    <script src="admin/js/admin_script.js"></script>
+    <script src="https://ansarportal-deaa9ded50c7.herokuapp.com/admin/js/admin_script.js"></script>
 </body>
 
 </html>

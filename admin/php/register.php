@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration</title>
-    <link rel="stylesheet" href="../css/admin_style.css">
+    <link rel="stylesheet" href="https://ansarportal-deaa9ded50c7.herokuapp.com/admin/css/admim_style.css">
 </head>
 
 <body class="register-body">
@@ -25,7 +25,7 @@
             <p>Already have an account? <a href="login.php">Login here</a></p>
         </div>
     </div>
-    <script src="../js/admin_script.js"></script>
+    <script src="https://ansarportal-deaa9ded50c7.herokuapp.com/admin/js/admin_script.js"></script>
 </body>
 
 </html>

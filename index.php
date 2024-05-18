@@ -31,6 +31,9 @@ if (!isset($_SESSION['user_id']) || (time() - $_SESSION['login_time'] > 1800)) {
 
 <body>
 
+    <!-- Hamburger Menu -->
+    <button class="hamburger" id="hamburgerBtn">&#9776;</button>
+
     <aside class="sidebar">
         <h1>Admin Panel</h1>
         <ul>

@@ -135,6 +135,18 @@ if (window.location.pathname.includes("register.php")) {
 // LOGOUT
 
 if (window.location.pathname.includes("index.php")) {
+
+  // Hamburger menu
+
+  document.addEventListener("DOMContentLoaded", function() {
+    const hamburgerBtn = document.getElementById("hamburgerBtn");
+    const sidebar = document.getElementById("sidebar");
+
+    hamburgerBtn.addEventListener("click", function() {
+        sidebar.classList.toggle("open");
+    });
+});
+
   // Add event listener to the logout button
   document.getElementById("logoutBtn").addEventListener("click", function () {
     // Create XMLHttpRequest object

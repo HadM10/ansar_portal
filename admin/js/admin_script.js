@@ -1409,7 +1409,7 @@ function displayNews(newsData) {
                 <img class="news-image" src="${news.image_url}" alt="News Image">
                 <h2 class="news-title">${news.title}</h2>
                 <p class="news-content">${news.content}</p>
-                <div class="offer-actions">
+                <div class="news-actions">
                 <p class="news-publication-date"><strong>Publication Date:</strong> ${news.publication_date}</p>
                 <button onclick="deleteNews(${news.newsId})">Delete</button>
             </div>

@@ -29,9 +29,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Close the database connection
     $conn->close();
 } else {
-    // If the form is not submitted, redirect or handle accordingly
-    // (e.g., show an error message, redirect to the form page)
-    header("Location: /path/to/news_delete_form.php");
-    exit();
+    // If the request method is not POST, return an error response
+    header('Content-Type: application/json');
+    echo json_encode(array('status' => 'error', 'message' => 'Invalid request method'));
 }
 ?>

@@ -770,11 +770,18 @@ button:hover {
 
 .news-publication-date {
   text-align: right;
-  padding-top: 20px;
 }
 
 .news-publication-date strong {
   color: var(--main-orange);
+}
+
+.news-actions {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 20px;
+  margin-top: 20px;
 }
 
 /* IMAGES */

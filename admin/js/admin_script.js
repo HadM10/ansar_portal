@@ -1402,7 +1402,6 @@ function displayNews(newsData) {
   newsList.innerHTML = "";
 
   newsData.forEach(function (news) {
-    console.log(news.newsId);
     // Create a list item for each news
     var listItem = document.createElement("li");
     listItem.innerHTML = `
@@ -1412,7 +1411,7 @@ function displayNews(newsData) {
                 <p class="news-content">${news.content}</p>
                 <div class="news-actions">
                 <p class="news-publication-date"><strong>Publication Date:</strong> ${news.publication_date}</p>
-                <button onclick="deleteNews(${news.newsId})">Delete</button>
+                <button onclick="deleteNews(${news.news_id})">Delete</button>
             </div>
             </div>
         `;

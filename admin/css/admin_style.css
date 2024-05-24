@@ -784,6 +784,19 @@ button:hover {
   margin-top: 20px;
 }
 
+.news-actions button {
+  background-color: var(--second-orange);
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.news-actions button:hover {
+  background-color: #d43f00;
+}
+
 /* IMAGES */
 
 #uploadImagesForm {

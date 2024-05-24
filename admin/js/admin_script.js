@@ -1409,8 +1409,8 @@ function displayNews(newsData) {
                 <img class="news-image" src="${news.image_url}" alt="News Image">
                 <h2 class="news-title">${news.title}</h2>
                 <p class="news-content">${news.content}</p>
-                <p class="news-publication-date"><strong>Publication Date:</strong> ${news.publication_date}</p>
                 <div class="offer-actions">
+                <p class="news-publication-date"><strong>Publication Date:</strong> ${news.publication_date}</p>
                 <button onclick="deleteNews(${news.newsId})">Delete</button>
             </div>
             </div>
@@ -1430,41 +1430,36 @@ viewNewsBtn.addEventListener("click", function () {
 
 // DELETE NEWS
 
-// Function to delete news
+// Function to delete a news item
 function deleteNews(newsId) {
-  // Make an AJAX request to delete the news
-  var xhr = new XMLHttpRequest();
-  xhr.open("POST", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/delete_news.php", true);
-  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === 4) {
-      try {
-        var response = JSON.parse(xhr.responseText);
-        if (response.status === "success") {
-          alert(response.message);
-          // Optionally, you may refresh the news list or update the UI
-          fetchAndDisplayNews();
-        } else {
-          alert(response.message);
+  var confirmation = confirm("Are you sure you want to delete this news?");
+  if (confirmation) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/delete_news.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        console.log(xhr.responseText);
+        try {
+          var response = JSON.parse(xhr.responseText);
+          if (response.status === "success") {
+            alert(response.message);
+            // Refresh the news list or update the UI
+            fetchAndDisplayNews();
+          } else {
+            alert(response.message);
+          }
+        } catch (error) {
+          console.error("Error parsing JSON:", error);
         }
-      } catch (error) {
-        console.error("Error parsing JSON:", error);
       }
-    }
-  };
+    };
 
-  // Send the request with news ID
-  xhr.send("news_id=" + newsId);
-}
-
-// Function to confirm delete
-function confirmDelete(newsId) {
-  var confirmDelete = confirm("Are you sure you want to delete this news?");
-  if (confirmDelete) {
-    // Call a function to delete the news from the database
-    deleteNews(newsId);
+    // Send the request to delete the news item
+    xhr.send("news_id=" + newsId);
   }
 }
+
 
 
   // UPLOAD AND DISPLAY IMAGES

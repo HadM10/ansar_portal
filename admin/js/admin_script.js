@@ -1411,7 +1411,7 @@ function displayNews(newsData) {
                 <p class="news-content">${news.content}</p>
                 <p class="news-publication-date"><strong>Publication Date:</strong> ${news.publication_date}</p>
                 <div class="offer-actions">
-                <button onclick="deleteOffer(${news.newsId})">Delete</button>
+                <button onclick="deleteNews(${news.newsId})">Delete</button>
             </div>
             </div>
         `;

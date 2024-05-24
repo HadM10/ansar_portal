@@ -5,7 +5,7 @@ include ('db_connection.php');
 include ('headers.php');
 
 // Retrieve all news items from the database
-$selectQuery = "SELECT * FROM news";
+$selectQuery = "SELECT * FROM news DESC";
 $result = $conn->query($selectQuery);
 
 $newsItems = array();

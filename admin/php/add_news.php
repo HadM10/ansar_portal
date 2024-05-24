@@ -12,7 +12,7 @@ include ('db_connection.php');
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_FILES["image"])) {
     // Retrieve news data from the form
     $title = $_POST['title'];
-    $content = $_POST['content'];
+    $news_content = $_POST['content'];
     $publication_date = date('Y-m-d'); // Set the current date
 
     $image_name = basename($_FILES['image']['name']);
@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_FILES["image"])) {
         // Insert the news into the database with the correct image path
         $query = "INSERT INTO news (title, content, publication_date, image_url) VALUES (?, ?, ?, ?)";
         if ($stmt = $conn->prepare($query)) {
-            $stmt->bind_param("ssss", $title, $content, $publication_date, $imageUrl);
+            $stmt->bind_param("ssss", $title, $news_content, $publication_date, $imageUrl);
             if ($stmt->execute()) {
                 echo json_encode(['status' => 'success', 'message' => 'News added successfully']);
             } else {

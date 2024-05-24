@@ -9,7 +9,8 @@ $selectQuery = "SELECT s.store_id, s.store_name, c.category_name, s.store_descri
                 FROM stores s
                 LEFT JOIN storeimages i ON s.store_id = i.store_id
                 LEFT JOIN categories c ON s.category_id = c.category_id
-                GROUP BY s.store_id";
+                GROUP BY s.store_id
+                ORDER BY s.total_likes DESC";
 $result = $conn->query($selectQuery);
 
 $stores = array();

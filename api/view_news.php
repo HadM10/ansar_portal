@@ -5,7 +5,7 @@ include ('db_connection.php');
 include ('headers.php');
 
 // Retrieve all news items from the database
-$selectQuery = "SELECT * FROM news DESC";
+$selectQuery = "SELECT * FROM news ORDER BY news_id DESC;";
 $result = $conn->query($selectQuery);
 
 $newsItems = array();

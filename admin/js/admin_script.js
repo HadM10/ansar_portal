@@ -1402,6 +1402,7 @@ function displayNews(newsData) {
   newsList.innerHTML = "";
 
   newsData.forEach(function (news) {
+    console.log(news.newsId);
     // Create a list item for each news
     var listItem = document.createElement("li");
     listItem.innerHTML = `

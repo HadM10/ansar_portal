@@ -250,6 +250,10 @@ button:hover {
   flex-direction: column;
 }
 
+.store-container p{
+  word-wrap: break-word;
+}
+
 .store-images {
   position: relative;
   width: 100%;

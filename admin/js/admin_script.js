@@ -843,6 +843,7 @@ function editCategory(categoryId) {
     if (xhr.readyState === 4 && xhr.status === 200) {
       try {
         var categoryDetails = JSON.parse(xhr.responseText);
+        console.log(categoryDetails.category_name);
         // Create the edit form dynamically
         var formContainer = document.createElement("div");
         formContainer.innerHTML = `

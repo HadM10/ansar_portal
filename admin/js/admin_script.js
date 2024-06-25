@@ -838,14 +838,12 @@ function deleteCategory(categoryId) {
 // Function to fetch category details and create/edit category form dynamically
 function editCategory(categoryId) {
   var xhr = new XMLHttpRequest();
-  xhr.open("GET", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/view_categories.php?category_id=" + categoryId, true);
+  xhr.open("GET", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/view_categories_details.php?category_id=" + categoryId, true);
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4 && xhr.status === 200) {
       try {
-        var categoryData = JSON.parse(xhr.responseText);
+        var categoryDetails = JSON.parse(xhr.responseText);
 
-        // Find the category that matches the categoryId
-        var categoryDetails = categoryData.find(category => category.category_id === categoryId);
 
         if (categoryDetails) {
           // Create the form container and populate it with category details

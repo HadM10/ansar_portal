@@ -848,7 +848,7 @@ function editCategory(categoryId) {
         var categoryDetails = JSON.parse(xhr.responseText);
 
         // Create a dynamic form with fields filled with category details
-        createEditCategoryForm(categoryId, categoryDetails);
+        createEditCategoryForm(categoryId);
       } catch (error) {
         console.error("Error parsing JSON:", error);
       }

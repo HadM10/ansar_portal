@@ -842,24 +842,29 @@ function editCategory(categoryId) {
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4 && xhr.status === 200) {
       try {
-        var categoryDetails = JSON.parse(xhr.responseText);
-        console.log(categoryDetails);
-        console.log(categoryDetails.category_name);
-        // Create the edit form dynamically
-        var formContainer = document.createElement("div");
-        formContainer.innerHTML = `
-          <form id="editCategoryForm">
-              <h2>Edit Category</h2>
-              <label for="editCategoryName">Category Name:</label>
-              <input type="text" id="editCategoryName" value="${categoryDetails.category_name}" required>
-              <button type="button" onclick="saveCategoryChanges(${categoryId}, getUpdatedCategoryData())">Save Changes</button>
-          </form>
-        `;
+        var categoryData = JSON.parse(xhr.responseText);
+        var categoryDetails = categoryData[categoryId];
 
-        // Replace the existing category container with the edit form
-        var existingCategoryContainer = document.getElementById("categoryList").querySelector(`[data-category-id="${categoryId}"]`);
-        existingCategoryContainer.innerHTML = "";
-        existingCategoryContainer.appendChild(formContainer);
+        if (categoryDetails) {
+          // Create the form container and populate it with category details
+          var formContainer = document.createElement("div");
+          formContainer.innerHTML = `
+              <form id="editCategoryForm">
+                  <h2>Edit Category</h2>
+                  <label for="editCategoryName">Category Name:</label>
+                  <input type="text" id="editCategoryName" value="${categoryDetails.category_name}" required>
+                  <button type="button" onclick="saveCategoryChanges(${categoryId}, getUpdatedCategoryData())">Save Changes</button>
+              </form>
+          `;
+
+          // Replace the existing category container with the edit form
+          var existingCategoryContainer = document.getElementById("categoryList").querySelector(`[data-category-id="${categoryId}"]`);
+          existingCategoryContainer.innerHTML = "";
+          existingCategoryContainer.appendChild(formContainer);
+
+        } else {
+          console.error("Category details not found for category ID:", categoryId);
+        }
       } catch (error) {
         console.error("Error parsing JSON:", error);
       }

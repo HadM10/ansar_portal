@@ -799,7 +799,6 @@ function displayCategories(categoriesData) {
   });
 }
 
-
 viewCategoriesBtn.addEventListener("click", function () {
   // Fetch and display categories
   hideAllSections();
@@ -821,8 +820,11 @@ function deleteCategory(categoryId) {
           var response = JSON.parse(xhr.responseText);
           if (response.status === "success") {
             alert(response.message);
-            // Refresh the category list or update the UI
-            fetchAndDisplayCategories();
+            // Remove the deleted category from the UI
+            var categoryElement = document.querySelector(`[data-category-id="${categoryId}"]`);
+            if (categoryElement) {
+              categoryElement.remove();
+            }
           } else {
             alert(response.message);
           }
@@ -846,9 +848,7 @@ function editCategory(categoryId) {
     if (xhr.readyState === 4 && xhr.status === 200) {
       try {
         var categoryDetails = JSON.parse(xhr.responseText);
-
-        // Create a dynamic form with fields filled with category details
-        createEditCategoryForm(categoryId);
+        createEditCategoryForm(categoryId, categoryDetails);
       } catch (error) {
         console.error("Error parsing JSON:", error);
       }
@@ -889,40 +889,22 @@ function saveCategoryChanges(categoryId, updatedData) {
 }
 
 // Function to create an edit category form dynamically
-function createEditCategoryForm(categoryId) {
-  // Fetch category details using AJAX
-  var xhr = new XMLHttpRequest();
-  xhr.open("GET", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/view_categories.php?category_id=" + categoryId, true);
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === 4 && xhr.status === 200) {
-      try {
-        var categoryDetails = JSON.parse(xhr.responseText);
-        console.log(categoryDetails);
+function createEditCategoryForm(categoryId, categoryDetails) {
+  // Create the form container and populate it with category details
+  var formContainer = document.createElement("div");
+  formContainer.innerHTML = `
+      <form id="editCategoryForm">
+          <h2>Edit Category</h2>
+          <label for="editCategoryName">Category Name:</label>
+          <input type="text" id="editCategoryName" value="${categoryDetails.category_name}" required>
+          <button type="button" onclick="saveCategoryChanges(${categoryId}, getUpdatedCategoryData())">Save Changes</button>
+      </form>
+  `;
 
-        // Create the form container and populate it with category details
-        var formContainer = document.createElement("div");
-        formContainer.innerHTML = `
-            <form id="editCategoryForm">
-                <h2>Edit Category</h2>
-                <label for="editCategoryName">Category Name:</label>
-                <input type="text" id="editCategoryName" value="${categoryDetails.category_name}" required>
-
-                <button type="button" onclick="saveCategoryChanges(${categoryId}, getUpdatedCategoryData())">Save Changes</button>
-            </form>
-        `;
-
-        // Replace the existing category container with the edit form
-        var existingCategoryContainer = document
-          .getElementById("categoryList")
-          .querySelector(`[data-category-id="${categoryId}"]`);
-        existingCategoryContainer.innerHTML = "";
-        existingCategoryContainer.appendChild(formContainer);
-      } catch (error) {
-        console.error("Error parsing JSON:", error);
-      }
-    }
-  };
-  xhr.send();
+  // Replace the existing category container with the edit form
+  var existingCategoryContainer = document.getElementById("categoryList").querySelector(`[data-category-id="${categoryId}"]`);
+  existingCategoryContainer.innerHTML = "";
+  existingCategoryContainer.appendChild(formContainer);
 }
 
 // Function to get updated category data from the edit form
@@ -935,9 +917,6 @@ function getUpdatedCategoryData() {
   return updatedData;
 }
 
-
-
-
 // Add Category Form Submission
 document.getElementById("addCategoryForm").addEventListener("submit", function (event) {
   event.preventDefault();
@@ -949,30 +928,28 @@ document.getElementById("addCategoryForm").addEventListener("submit", function (
   const xhr = new XMLHttpRequest();
   xhr.open("POST", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/add_category.php", true);
   xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4) {
-          console.log(xhr.responseText);
-          try {
-              const response = JSON.parse(xhr.responseText);
-              console.log(response.status);
-              if (response.status === "success") {
-                alert("Category added successfully.");
+    if (xhr.readyState === 4) {
+      console.log(xhr.responseText);
+      try {
+        const response = JSON.parse(xhr.responseText);
+        if (response.status === "success") {
+          alert("Category added successfully.");
           // Hide Add Category section
-         addCategory.style.display = "none";
+          addCategory.style.display = "none";
           // Show View Categories section
           categoryList.style.display = "flex";
           // Fetch and display categories
           fetchAndDisplayCategories();
-              } else {
-                  alert("Error: " + response.error);
-              }
-          } catch (error) {
-              console.error("Error parsing JSON:", error);
-          }
+        } else {
+          alert("Error: " + response.error);
+        }
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
       }
+    }
   };
   xhr.send(formData);
 });
-
 
 // Event listener for button click
 addCategoriesBtn.addEventListener("click", function () {
@@ -981,6 +958,7 @@ addCategoriesBtn.addEventListener("click", function () {
   fetchAndDisplayCategories();
   addCategory.style.display = "block";
 });
+
 
 // SPECIAL OFFERS
 

@@ -16,13 +16,14 @@ if ($result->num_rows > 0) {
         $publication_date = date('Y-m-d', strtotime($row["publication_date"]));
 
         // Calculate the date one month from the publication date
-        $one_month_after_publication = date('Y-m-d', strtotime('+1 month', strtotime($row["publication_date"])));
+        $one_week_after_publication = date('Y-m-d', strtotime('+1 week', strtotime($row["publication_date"])));
+
 
         // Get today's date
         $today_date = date('Y-m-d');
 
         // Check if the current date is after one month from the publication date
-        if ($today_date > $one_month_after_publication) {
+        if ($today_date > $one_week_after_publication) {
             // Delete the news item
             $deleteQuery = "DELETE FROM news WHERE news_id = " . $row["news_id"];
             $conn->query($deleteQuery);

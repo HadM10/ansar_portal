@@ -474,6 +474,52 @@ button:hover {
   background-color: #d43f00;
 }
 
+/* EDIT CATEGORIES */
+
+#editCategoryForm {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  width: 300px;
+}
+
+#editCategoryForm h2 {
+  text-align: center;
+  color: var(--second-orange);
+  margin-bottom: 20px;
+}
+
+#editCategoryForm label {
+  display: block;
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+#editCategoryForm input,
+#editCategoryForm textarea,
+#editCategoryForm select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+#editCategoryForm button {
+  background-color: var(--second-orange);
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#editCategoryForm button:hover {
+  background-color: #d43f00;
+}
+
+
 /* VIEW CATEGORIES */
 
 /* Style for category list */

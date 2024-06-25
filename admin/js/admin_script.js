@@ -793,6 +793,7 @@ function displayCategories(categoriesData) {
           <img src="${category.category_image}" alt="${category.category_name} Image" class="category-image">
           <span><Strong> Category Name: </Strong> ${category.category_name}</span>
           <button class="edit-button" onclick="editCategory(${category.category_id})">Edit</button>
+          <button class="edit-button" onclick="deleteCategory(${category.category_id})">Delete</button>
       `;
     categoryList.appendChild(categoryItem);
   });
@@ -805,6 +806,36 @@ viewCategoriesBtn.addEventListener("click", function () {
   fetchAndDisplayCategories();
   categoryList.style.display = "flex";
 });
+
+// Function to delete a category
+function deleteCategory(categoryId) {
+  var confirmation = confirm("Are you sure you want to delete this category?");
+  if (confirmation) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/delete_category.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        console.log(xhr.responseText);
+        try {
+          var response = JSON.parse(xhr.responseText);
+          if (response.status === "success") {
+            alert(response.message);
+            // Refresh the category list or update the UI
+            fetchAndDisplayCategories();
+          } else {
+            alert(response.message);
+          }
+        } catch (error) {
+          console.error("Error parsing JSON:", error);
+        }
+      }
+    };
+
+    // Send the request to delete the category
+    xhr.send("category_id=" + categoryId);
+  }
+}
 
 // Function to edit category
 function editCategory(categoryId) {
@@ -858,27 +889,40 @@ function saveCategoryChanges(categoryId, updatedData) {
 }
 
 // Function to create an edit category form dynamically
-function createEditCategoryForm(categoryId, categoryDetails) {
-  var formContainer = document.createElement("div");
-  formContainer.innerHTML = `
-      <form id="editCategoryForm">
-          <label for="editCategoryName">Category Name:</label>
-          <input type="text" id="editCategoryName" required>
+function createEditCategoryForm(categoryId) {
+  // Fetch category details using AJAX
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/view_categories.php?category_id=" + categoryId, true);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      try {
+        var categoryDetails = JSON.parse(xhr.responseText);
+        console.log(categoryDetails);
 
-          <button type="button" onclick="saveCategoryChanges(${categoryId}, getUpdatedCategoryData())">Save Changes</button>
-      </form>
-  `;
+        // Create the form container and populate it with category details
+        var formContainer = document.createElement("div");
+        formContainer.innerHTML = `
+            <form id="editCategoryForm">
+                <h2>Edit Category</h2>
+                <label for="editCategoryName">Category Name:</label>
+                <input type="text" id="editCategoryName" value="${categoryDetails.category_name}" required>
 
-  // Set the values in the form fields
-  var editCategoryNameInput = formContainer.querySelector("#editCategoryName");
-  editCategoryNameInput.value = categoryDetails.category_name;
+                <button type="button" onclick="saveCategoryChanges(${categoryId}, getUpdatedCategoryData())">Save Changes</button>
+            </form>
+        `;
 
-  // Replace the existing category container with the edit form
-  var existingCategoryContainer = document
-    .getElementById("categoryList")
-    .querySelector(`[data-category-id="${categoryId}"]`);
-  existingCategoryContainer.innerHTML = "";
-  existingCategoryContainer.appendChild(formContainer);
+        // Replace the existing category container with the edit form
+        var existingCategoryContainer = document
+          .getElementById("categoryList")
+          .querySelector(`[data-category-id="${categoryId}"]`);
+        existingCategoryContainer.innerHTML = "";
+        existingCategoryContainer.appendChild(formContainer);
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
+      }
+    }
+  };
+  xhr.send();
 }
 
 // Function to get updated category data from the edit form

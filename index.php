@@ -136,6 +136,19 @@ if (!isset($_SESSION['user_id']) || (time() - $_SESSION['login_time'] > 1800)) {
 
                 <button type="submit">Add Store</button>
             </form>
+            <form id="uploadImagesForm" enctype="multipart/form-data" method="post">
+                <div>
+                    <label for="storeSelect">Select Store:</label>
+                    <select id="storeSelect" required></select>
+                </div>
+
+                <div>
+                    <label for="imageFiles">Upload Images:</label>
+                    <input type="file" id="imageFiles" name="imageFiles[]" multiple accept="image/*" required>
+                </div>
+
+                <button type="submit" id="uploadImagesBtn">Upload Images</button>
+            </form>
         </div>
 
         <ul id="archivedStoreList"></ul>

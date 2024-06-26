@@ -848,7 +848,7 @@ button:hover {
 
 /* IMAGES */
 
-#uploadImagesForm {
+#uploadImagesForm, #uploadImagesForm2 {
   display: none;
   max-width: 400px;
   margin: 20px auto;
@@ -859,7 +859,7 @@ button:hover {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Light shadow */
 }
 
-#uploadImagesForm label {
+#uploadImagesForm label, #uploadImagesForm2 label {
   display: block;
   margin-bottom: 8px;
   color: #fff; /* White label text */
@@ -867,20 +867,23 @@ button:hover {
 
 #uploadImagesForm select,
 #uploadImagesForm input,
-#uploadImagesForm button {
+#uploadImagesForm button,
+#uploadImagesForm2 select,
+#uploadImagesForm2 input,
+#uploadImagesForm2 button {
   width: 100%;
   padding: 10px;
   margin-bottom: 15px;
   box-sizing: border-box;
 }
 
-#uploadImagesForm button {
+#uploadImagesForm button,#uploadImagesForm2 button {
   background-color: var(--second-orange); /* Orange button background */
   color: #fff; /* White button text */
   cursor: pointer;
 }
 
-#uploadImagesForm button:hover {
+#uploadImagesForm button:hover, #uploadImagesForm2 button:hover {
   background-color: #d43f00; /* Darker orange on hover */
 }
 

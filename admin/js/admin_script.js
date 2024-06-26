@@ -1542,51 +1542,6 @@ document.getElementById("uploadImagesForm").addEventListener("submit", function 
   }
 });
 
-//FOR IMAGES INSIDE STORE
-
-// Add event listener to the form for submitting images
-document.getElementById("uploadImagesForm2").addEventListener("submit", function (event) {
-  event.preventDefault(); // Prevent the default form submission
-
-  var storeId = document.getElementById("storeSelect").value;
-  var imageFiles = document.getElementById("imageFiles").files;
-
-  if (storeId && imageFiles.length > 0) {
-    var formData = new FormData();
-    formData.append("store_id", storeId);
-
-    for (var i = 0; i < imageFiles.length; i++) {
-      formData.append("imageFiles[]", imageFiles[i]);
-    }
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "https://ansarportal-deaa9ded50c7.herokuapp.com/admin/php/upload_images.php", true);
-
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4) {
-        console.log(xhr.responseText);
-        try {
-          var response = JSON.parse(xhr.responseText);
-          if (response.status === "success") {
-            alert(response.message);
-            uploadImagesForm.style.display = "none";
-            uploadedImagesList.style.display = "flex"
-            
-          } else {
-            alert(response.message);
-          }
-        } catch (error) {
-          console.error("Error parsing JSON:", error);
-        }
-      }
-    };
-
-    xhr.send(formData);
-  } else {
-    alert("Please select a store and at least one image file");
-  }
-});
-
 // Function to fetch and display uploaded images
 function fetchAndDisplayAllImages() {
   var xhr = new XMLHttpRequest();

@@ -1,7 +1,5 @@
 <?php
 include ('headers.php');
-
-// admin/php/view_offers.php
 include ('db_connection.php');
 
 // Retrieve special offers information from the database
@@ -19,12 +17,15 @@ if ($result->num_rows > 0) {
         $end_date = date('d-m-Y', strtotime($row["end_date"]));
 
         // Check if the end date is today's date
-        $today_date = date('d-m-Y');
-        if ($end_date == $today_date) {
+        $today_date = date('Y-m-d');
+        if ($row["end_date"] == $today_date) {
             // Delete the offer from the database
             $offer_id = $row["offer_id"];
-            $deleteQuery = "DELETE FROM offers WHERE offer_id = $offer_id";
-            $conn->query($deleteQuery);
+            $deleteQuery = "DELETE FROM offers WHERE offer_id = ?";
+            $stmt = $conn->prepare($deleteQuery);
+            $stmt->bind_param("i", $offer_id);
+            $stmt->execute();
+            $stmt->close();
         } else {
             $offers[] = array(
                 "offer_id" => $row["offer_id"],

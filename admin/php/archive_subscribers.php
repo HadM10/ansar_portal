@@ -64,6 +64,7 @@ $archivedSubscribers = array_filter($subscribers, function ($subscriber) {
     <div class="sidebar">
         <h2>Admin Panel</h2>
         <a href="manage_subscribers.php">Manage Subscribers</a>
+        <a href="https://ansarportal-deaa9ded50c7.herokuapp.com/">Go Back</a>
     </div>
     <div class="content">
         <h2>Archived Subscribers</h2>

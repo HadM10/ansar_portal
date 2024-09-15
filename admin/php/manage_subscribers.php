@@ -143,6 +143,7 @@ foreach ($activeSubscribers as $subscriber) {
     <div class="sidebar">
         <h2>Admin Panel</h2>
         <a href="archive_subscribers.php">Archived Subscribers</a>
+        <a href="https://ansarportal-deaa9ded50c7.herokuapp.com/">Go Back</a>
     </div>
     <div class="content">
         <h2>Manage Subscribers</h2>

@@ -1,0 +1,105 @@
+{
+    "1": {
+        "id": 7,
+        "subscriber_name": "mhmd 3imad",
+        "phone_number": "....",
+        "package": "Basic",
+        "subscription_duration": "30",
+        "start_date": "2024-09-01",
+        "end_date": "2024-09-30",
+        "payment_status": "Not Paid",
+        "archived": 1,
+        "archived_date": null
+    },
+    "2": {
+        "id": 2,
+        "subscriber_name": "mhmd 3imad",
+        "phone_number": "...",
+        "package": "Basic",
+        "subscription_duration": "30",
+        "start_date": "2024-09-01",
+        "end_date": "2024-09-30",
+        "payment_status": "Not Paid",
+        "archived": 1,
+        "archived_date": null
+    },
+    "3": {
+        "id": 3,
+        "subscriber_name": "shaalan",
+        "phone_number": "...",
+        "package": "Premium",
+        "subscription_duration": "30",
+        "start_date": "2024-09-01",
+        "end_date": "2024-09-20",
+        "payment_status": "Paid",
+        "archived": 0,
+        "archived_date": null
+    },
+    "4": {
+        "id": 4,
+        "subscriber_name": "fine food",
+        "phone_number": "...",
+        "package": "Basic",
+        "subscription_duration": "30",
+        "start_date": "2024-09-01",
+        "end_date": "2024-09-30",
+        "payment_status": "Paid",
+        "archived": 0,
+        "archived_date": null
+    },
+    "5": {
+        "id": 5,
+        "subscriber_name": "kdshe",
+        "phone_number": "...",
+        "package": "Basic",
+        "subscription_duration": "30",
+        "start_date": "2024-09-01",
+        "end_date": "2024-09-30",
+        "payment_status": "Paid",
+        "archived": 0
+    },
+    "6": {
+        "id": 6,
+        "subscriber_name": "dmol-firas fayad",
+        "phone_number": "...",
+        "package": "Basic",
+        "subscription_duration": "30",
+        "start_date": "2024-09-01",
+        "end_date": "2024-09-30",
+        "payment_status": "Not Paid",
+        "archived": 0
+    },
+    "7": {
+        "id": 7,
+        "subscriber_name": "phonedoctorz",
+        "phone_number": "...",
+        "package": "Basic",
+        "subscription_duration": "30",
+        "start_date": "2024-09-01",
+        "end_date": "2024-10-05",
+        "payment_status": "Paid",
+        "archived": 0
+    },
+    "8": {
+        "id": 8,
+        "subscriber_name": "ma7al tyeb jamal",
+        "phone_number": "...",
+        "package": "Premium",
+        "subscription_duration": "30",
+        "start_date": "2024-09-10",
+        "end_date": "2024-10-10",
+        "payment_status": "Paid",
+        "archived": 0
+    },
+    "9": {
+        "id": 9,
+        "subscriber_name": "m3had barbish",
+        "phone_number": "...",
+        "package": "Basic",
+        "subscription_duration": "30",
+        "start_date": "2024-09-01",
+        "end_date": "2024-10-10",
+        "payment_status": "Not Paid",
+        "archived": 0
+    }
+}

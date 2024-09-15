@@ -71,7 +71,8 @@ if (!isset($_SESSION['user_id']) || (time() - $_SESSION['login_time'] > 1800)) {
                     <li><a href="#">View User Likes</a></li>
                 </ul>
             </li>
-            <li><a href="#" id="paymentBtn">View Payments</a></li>
+            <li><a href="admin/php/manage_subscribers.php">Manage Subscribers</a></li>
+            <!-- <li><a href="admin/php/archive_subscribers.php">Archived Subscribers</a></li> -->
 
             <li><a href=" #">Images</a>
                 <ul>
